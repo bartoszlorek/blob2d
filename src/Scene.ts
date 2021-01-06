@@ -1,5 +1,17 @@
-export class Scene {
-  update(deltaTime: number) {}
+import {EventEmitter} from 'eventemitter3';
 
-  destroy() {}
+export class Scene<
+  EventTypes extends string = 'scene/eventName'
+> extends EventEmitter<EventTypes> {
+  constructor() {
+    super();
+  }
+
+  public update(deltaTime: number): void {
+    // fill in
+  }
+
+  public destroy(): void {
+    this.removeAllListeners();
+  }
 }

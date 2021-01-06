@@ -6,7 +6,7 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 class Level extends Scene {
   update(deltaFrame: number) {
-    console.log({deltaFrame});
+    // console.log({deltaFrame});
   }
 }
 
