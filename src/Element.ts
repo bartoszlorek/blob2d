@@ -1,8 +1,8 @@
 import {DisplayObject} from 'pixi.js';
 import {Scene} from './Scene';
 
-export class Element<EventTypes extends string = string> {
-  public parent: Scene<EventTypes> | null;
+export class Element<EventType extends string> {
+  public parent: Scene<EventType> | null;
   public sprite: DisplayObject;
 
   constructor(sprite: DisplayObject) {

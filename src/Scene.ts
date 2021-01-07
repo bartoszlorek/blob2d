@@ -11,7 +11,6 @@ export class Scene<EventType extends string> extends EventEmitter<EventType> {
 
   constructor() {
     super();
-
     this.children = [];
 
     // main layers

@@ -16,7 +16,6 @@ export class Docker<EventType extends string> extends EventEmitter<
 
   constructor(app: Application) {
     super();
-
     this.app = app;
     this.accumulatedTime = 0;
     this.scene = null;
