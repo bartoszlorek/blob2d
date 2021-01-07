@@ -4,15 +4,15 @@ import {Scene} from './Scene';
 
 const DELTA_TIME = 1 / 60;
 
-export type OwnEventTypes = 'docker/mount' | 'docker/unmount';
+export type OwnEventType = 'docker/mount' | 'docker/unmount';
 
-export class Docker<EventTypes extends string = string> extends EventEmitter<
-  EventTypes | OwnEventTypes
+export class Docker<EventType extends string> extends EventEmitter<
+  EventType | OwnEventType
 > {
   private app: Application;
   private accumulatedTime: number;
 
-  public scene: Scene<EventTypes> | null;
+  public scene: Scene<EventType> | null;
 
   constructor(app: Application) {
     super();
@@ -34,19 +34,25 @@ export class Docker<EventTypes extends string = string> extends EventEmitter<
     }
   }
 
-  public mount(scene: Scene<EventTypes>): void {
+  public mount(scene: Scene<EventType>): void {
     this.unmount();
     this.scene = scene;
+
+    // start rendering
     this.app.ticker.add(this.tick, this);
     this.app.stage.addChild(scene.graphics);
+
     this.emit('docker/mount');
   }
 
   public unmount(): void {
     if (this.scene !== null) {
       this.emit('docker/unmount');
+
+      // stop rendering
       this.app.ticker.remove(this.tick, this);
       this.app.stage.removeChild(this.scene.graphics);
+
       this.scene.destroy();
       this.scene = null;
     }
