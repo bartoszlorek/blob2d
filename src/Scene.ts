@@ -25,18 +25,18 @@ export class Scene<EventType extends string> extends EventEmitter<EventType> {
     // fill in subclass
   }
 
-  public addChild(child: Element<EventType>): Element<EventType> {
+  public addChild<T extends Element<EventType>>(child: T): T {
     if (child.parent) {
       child.parent.removeChild(child);
     }
 
     child.parent = this;
     this.children.push(child);
-    this.foreground.addChild(child.sprite);
+    this.foreground.addChild(child.display);
     return child;
   }
 
-  public removeChild(child: Element<EventType>): Element<EventType> | null {
+  public removeChild<T extends Element<EventType>>(child: T): T | null {
     const index = this.children.indexOf(child);
 
     if (index === -1) {
@@ -45,7 +45,7 @@ export class Scene<EventType extends string> extends EventEmitter<EventType> {
 
     child.parent = null;
     utils.removeItems(this.children, index, 1);
-    this.foreground.removeChild(child.sprite);
+    this.foreground.removeChild(child.display);
     return child;
   }
 

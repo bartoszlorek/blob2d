@@ -1,5 +1,5 @@
 import PIXI, {Application} from 'pixi.js';
-import {Docker, Element, Scene} from '../src';
+import {Docker, Entity, Scene} from '../src';
 import {EventType, ContextType} from './types';
 
 // disable interpolation when scaling, will make texture be pixelated
@@ -8,20 +8,18 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 const sprite = PIXI.Sprite.from('white_block.png');
 
 class Level extends Scene<EventType> {
-  private playerX: number;
   private context: ContextType;
 
   constructor() {
     super();
 
-    this.playerX = 0;
-    this.context = {
-      player: this.addChild(new Element(sprite)),
-    };
+    const player = this.addChild(new Entity<EventType>(sprite));
+    player.velocity = [200, 200];
+    this.context = {player};
   }
 
-  update(deltaFrame: number) {
-    this.context['player'].sprite.x = ++this.playerX * 5;
+  update(deltaTime: number) {
+    this.context.player.update(deltaTime);
   }
 }
 
@@ -38,8 +36,8 @@ const docker = new Docker<EventType>(app);
 setInterval(() => {
   const level = new Level();
   docker.mount(level);
-}, 2500);
+}, 1000);
 
-// level.on('player/score', () => {
+// docker.on('docker/mount', () => {
 //   console.log('crazy wacky cool!');
 // });

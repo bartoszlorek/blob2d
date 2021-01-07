@@ -1,7 +1,7 @@
-import {Element} from '../src';
+import {Entity} from '../src';
 
 export type EventType = 'player/score';
 
 export type ContextType = {
-  player: Element<EventType>;
+  player: Entity<EventType>;
 };
