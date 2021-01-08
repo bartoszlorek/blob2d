@@ -38,33 +38,27 @@ export class BoundingBox {
     this.max[1] += value;
   }
 
-  align(vector: VectorType): void {
-    this.min[0] = vector[0];
-    this.max[0] = vector[0] + this.width;
-    this.min[1] = vector[1];
-    this.max[1] = vector[1] + this.height;
-  }
-
-  alignX(value: number): void {
-    this.min[0] = value;
-    this.max[0] = value + this.width;
-  }
-
-  alignY(value: number): void {
+  alignTop(value: number): void {
     this.min[1] = value;
     this.max[1] = value + this.height;
   }
 
-  intersects(bbox: BoundingBox): boolean {
-    return !(
-      this.min[0] > bbox.max[0] ||
-      this.min[1] > bbox.max[1] ||
-      this.max[0] < bbox.min[0] ||
-      this.max[1] < bbox.min[1]
-    );
+  alignBottom(value: number): void {
+    this.min[1] = value - this.height;
+    this.max[1] = value;
   }
 
-  intersectsMargin(bbox: BoundingBox, margin: number): boolean {
+  alignLeft(value: number): void {
+    this.min[0] = value;
+    this.max[0] = value + this.width;
+  }
+
+  alignRight(value: number): void {
+    this.min[0] = value - this.width;
+    this.max[0] = value;
+  }
+
+  intersects(bbox: BoundingBox, margin: number = 0): boolean {
     return !(
       this.min[0] > bbox.max[0] + margin ||
       this.min[1] > bbox.max[1] + margin ||
