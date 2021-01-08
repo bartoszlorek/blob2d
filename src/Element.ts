@@ -16,6 +16,10 @@ export class Element<EventType extends string> extends BoundingBox {
     this.updateDisplayPosition();
   }
 
+  public update(deltaTime: number): void {
+    // fill in subclass
+  }
+
   public updateDisplayPosition(): void {
     this.display.x = this.min[0];
     this.display.y = this.min[1];

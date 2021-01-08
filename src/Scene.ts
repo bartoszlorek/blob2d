@@ -22,7 +22,9 @@ export class Scene<EventType extends string> extends EventEmitter<EventType> {
   }
 
   public update(deltaTime: number): void {
-    // fill in subclass
+    for (let i = 0; i < this.children.length; i++) {
+      this.children[i].update(deltaTime);
+    }
   }
 
   public addChild<T extends Element<EventType>>(child: T): T {
