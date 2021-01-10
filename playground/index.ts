@@ -17,8 +17,8 @@ class Level extends Scene<AddonsType, EventsType> {
     });
 
     const player = new Entity<AddonsType, PlayerTraits, EventsType>(sprite, {
-      borderLimit: new BorderLimit(),
       followMouse: new FollowMouse(10),
+      borderLimit: new BorderLimit(),
     });
 
     player.width = 32;
