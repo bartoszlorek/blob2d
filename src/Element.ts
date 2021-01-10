@@ -1,23 +1,22 @@
 import {DisplayObject} from 'pixi.js';
-import {VectorType} from './types';
 import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
 
-export class Element<EventType extends string> extends BoundingBox {
+export class Element<
+  AddonsType extends {},
+  EventsType extends string
+> extends BoundingBox {
   public display: DisplayObject;
-  public parent: Scene<EventType> | null;
+  public scene: Scene<AddonsType, EventsType> | null;
 
-  constructor(display: DisplayObject, min: VectorType, max: VectorType) {
-    super(min, max);
+  constructor(display: DisplayObject) {
+    super();
+
     this.display = display;
-    this.parent = null;
+    this.scene = null;
 
     // every element should update position at least once
     this.updateDisplayPosition();
-  }
-
-  public update(deltaTime: number): void {
-    // fill in subclass
   }
 
   public updateDisplayPosition(): void {
@@ -26,6 +25,6 @@ export class Element<EventType extends string> extends BoundingBox {
   }
 
   public destroy(): void {
-    this.parent?.removeChild(this);
+    this.scene?.removeChild(this);
   }
 }

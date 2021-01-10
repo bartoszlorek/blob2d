@@ -1,17 +1,25 @@
-import {utils, Container} from 'pixi.js';
+import {Container} from 'pixi.js';
 import {EventEmitter} from 'eventemitter3';
+import {IComponent} from './types';
 import {Element} from './Element';
 
-export class Scene<EventType extends string> extends EventEmitter<EventType> {
-  protected readonly children: Element<EventType>[];
+export class Scene<
+  AddonsType extends {},
+  EventsType extends string
+> extends EventEmitter<EventsType> {
+  public addon: AddonsType;
+  public graphics: Container;
 
   protected background: Container;
   protected foreground: Container;
-  public graphics: Container;
 
-  constructor() {
+  private _addons: IComponent[];
+
+  constructor(addon: AddonsType) {
     super();
-    this.children = [];
+
+    this.addon = addon;
+    this._addons = Object.values(addon);
 
     // main layers
     this.background = new Container();
@@ -21,38 +29,32 @@ export class Scene<EventType extends string> extends EventEmitter<EventType> {
     this.graphics.addChild(this.background, this.foreground);
   }
 
-  public update(deltaTime: number): void {
-    for (let i = 0; i < this.children.length; i++) {
-      this.children[i].update(deltaTime);
+  public addChild<T extends Element<AddonsType, EventsType>>(child: T): T {
+    if (child.scene) {
+      child.scene.removeChild(child);
     }
-  }
-
-  public addChild<T extends Element<EventType>>(child: T): T {
-    if (child.parent) {
-      child.parent.removeChild(child);
-    }
-
-    child.parent = this;
-    this.children.push(child);
+    child.scene = this;
     this.foreground.addChild(child.display);
     return child;
   }
 
-  public removeChild<T extends Element<EventType>>(child: T): T | null {
-    const index = this.children.indexOf(child);
-
-    if (index === -1) {
+  public removeChild<T extends Element<AddonsType, EventsType>>(
+    child: T
+  ): T | null {
+    if (this.foreground.removeChild(child.display) === null) {
       return null;
     }
-
-    child.parent = null;
-    utils.removeItems(this.children, index, 1);
-    this.foreground.removeChild(child.display);
+    child.scene = null;
     return child;
   }
 
+  public update(deltaTime: number): void {
+    for (let i = 0; i < this._addons.length; i++) {
+      this._addons[i].update(deltaTime);
+    }
+  }
+
   public destroy(): void {
-    this.children.length = 0;
     this.graphics.destroy({children: true});
     this.removeAllListeners();
   }
