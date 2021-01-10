@@ -1,73 +1,98 @@
 import {VectorType} from './types';
 
 export class BoundingBox {
-  min: VectorType;
-  max: VectorType;
-  width: number;
-  height: number;
+  public min: VectorType;
+  public max: VectorType;
 
-  constructor(min: VectorType, max: VectorType) {
+  private _width: number;
+  private _height: number;
+
+  constructor(min: VectorType = [0, 0], max: VectorType = [0, 0]) {
     this.min = min;
     this.max = max;
-    this.width = max[0] - min[0];
-    this.height = max[1] - min[1];
+    this._width = max[0] - min[0];
+    this._height = max[1] - min[1];
   }
 
-  tileX(tilesize: number): number {
-    return Math.floor((this.min[0] + this.width / 2) / tilesize);
+  get width(): number {
+    return this._width;
   }
 
-  tileY(tilesize: number): number {
-    return Math.floor((this.min[1] + this.height / 2) / tilesize);
+  set width(value: number) {
+    this._width = value;
+    this.max[0] = this.min[0] + value;
   }
 
-  translate(vector: VectorType): void {
+  get height(): number {
+    return this._height;
+  }
+
+  set height(value: number) {
+    this._height = value;
+    this.max[1] = this.min[1] + value;
+  }
+
+  get top(): number {
+    return this.min[1];
+  }
+
+  set top(value: number) {
+    this.min[1] = value;
+    this.max[1] = value + this._height;
+  }
+
+  get bottom(): number {
+    return this.max[1];
+  }
+
+  set bottom(value: number) {
+    this.min[1] = value - this._height;
+    this.max[1] = value;
+  }
+
+  get left(): number {
+    return this.min[0];
+  }
+
+  set left(value: number) {
+    this.min[0] = value;
+    this.max[0] = value + this._width;
+  }
+
+  get right(): number {
+    return this.max[0];
+  }
+
+  set right(value: number) {
+    this.min[0] = value - this._width;
+    this.max[0] = value;
+  }
+
+  public translate(vector: VectorType): void {
     this.min[0] += vector[0];
     this.min[1] += vector[1];
     this.max[0] += vector[0];
     this.max[1] += vector[1];
   }
 
-  translateX(value: number): void {
+  public translateX(value: number): void {
     this.min[0] += value;
     this.max[0] += value;
   }
 
-  translateY(value: number): void {
+  public translateY(value: number): void {
     this.min[1] += value;
     this.max[1] += value;
   }
 
-  alignTop(value: number): void {
-    this.min[1] = value;
-    this.max[1] = value + this.height;
+  public copy(bbox: BoundingBox): void {
+    this.min[0] = bbox.min[0];
+    this.min[1] = bbox.min[1];
+    this.max[0] = bbox.max[0];
+    this.max[1] = bbox.max[1];
   }
 
-  alignBottom(value: number): void {
-    this.min[1] = value - this.height;
-    this.max[1] = value;
-  }
-
-  alignLeft(value: number): void {
-    this.min[0] = value;
-    this.max[0] = value + this.width;
-  }
-
-  alignRight(value: number): void {
-    this.min[0] = value - this.width;
-    this.max[0] = value;
-  }
-
-  intersects(bbox: BoundingBox, margin: number = 0): boolean {
-    return !(
-      this.min[0] > bbox.max[0] + margin ||
-      this.min[1] > bbox.max[1] + margin ||
-      this.max[0] < bbox.min[0] - margin ||
-      this.max[1] < bbox.min[1] - margin
-    );
-  }
-
-  contains(x: number, y: number): boolean {
+  public contains(x: number, y: number): boolean {
     return !(
       this.min[0] > x ||
       this.max[0] < x ||
@@ -76,10 +101,22 @@ export class BoundingBox {
     );
   }
 
-  copy(bbox: BoundingBox): void {
-    this.min[0] = bbox.min[0];
-    this.min[1] = bbox.min[1];
-    this.max[0] = bbox.max[0];
-    this.max[1] = bbox.max[1];
+  public intersects(bbox: BoundingBox, margin: number = 0): boolean {
+    return !(
+      this.min[0] > bbox.max[0] + margin ||
+      this.min[1] > bbox.max[1] + margin ||
+      this.max[0] < bbox.min[0] - margin ||
+      this.max[1] < bbox.min[1] - margin
+    );
+  }
+
+  // an additional method to get X position according to the tile system
+  public getTileX(tilesize: number): number {
+    return Math.floor((this.min[0] + this._width / 2) / tilesize);
+  }
+
+  // an additional method to get Y position according to the tile system
+  public getTileY(tilesize: number): number {
+    return Math.floor((this.min[1] + this._height / 2) / tilesize);
   }
 }
