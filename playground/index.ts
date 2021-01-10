@@ -1,23 +1,34 @@
 import PIXI, {Application} from 'pixi.js';
 import {Docker, Entity, Scene} from '../src';
-import {EventType} from './types';
+import {AddonsType, EventsType, PlayerTraits} from './types';
 import {BorderLimit, FollowMouse} from './traits';
+import {Animation, Entities} from './addons';
 
 // disable interpolation when scaling, will make texture be pixelated
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 const sprite = PIXI.Sprite.from('white_block.png');
 
-class Level extends Scene<EventType> {
+class Level extends Scene<AddonsType, EventsType> {
   constructor() {
-    super();
+    super({
+      entities: new Entities(),
+      animation: new Animation(),
+    });
 
-    const player = new Entity<EventType>(sprite, [0, 0], [32, 32]);
-    player.addTrait(new BorderLimit());
-    player.addTrait(new FollowMouse());
+    const player = new Entity<AddonsType, PlayerTraits, EventsType>(sprite, {
+      borderLimit: new BorderLimit(),
+      followMouse: new FollowMouse(10),
+    });
+
+    player.width = 32;
+    player.height = 32;
     player.velocity = [300, 0];
 
     this.addChild(player);
+    this.addon.entities.addChild(player);
+    this.addon.animation.animate();
+
     console.log(this);
   }
 }
@@ -30,7 +41,7 @@ const app = new Application({
 
 document.body.appendChild(app.view);
 
-const docker = new Docker<EventType>(app);
+const docker = new Docker<AddonsType, EventsType>(app);
 const level = new Level();
 
 docker.mount(level);

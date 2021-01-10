@@ -1,13 +1,14 @@
 import {Trait} from '../../src';
-import {EventType} from '../types';
+import {AddonsType, TraitsType, EventsType} from '../types';
 
-export class FollowMouse extends Trait<EventType> {
+export class FollowMouse extends Trait<AddonsType, TraitsType, EventsType> {
   protected speed: number;
   protected mouseX: number;
   protected mouseY: number;
 
   constructor(speed: number = 5) {
-    super('followMouse');
+    super();
+
     this.speed = speed;
     this.mouseX = 0;
     this.mouseY = 0;
@@ -25,12 +26,10 @@ export class FollowMouse extends Trait<EventType> {
   }
 
   update(deltaTime: number): void {
-    if (!this.parent) return;
+    const desiredX = this.mouseX - this.entity.width / 2 - this.entity.min[0];
+    const desiredY = this.mouseY - this.entity.height / 2 - this.entity.min[1];
 
-    const desiredX = this.mouseX - this.parent.width / 2 - this.parent.min[0];
-    const desiredY = this.mouseY - this.parent.height / 2 - this.parent.min[1];
-
-    this.parent.velocity[0] += desiredX * this.speed - this.parent.velocity[0];
-    this.parent.velocity[1] += desiredY * this.speed - this.parent.velocity[1];
+    this.entity.velocity[0] += desiredX * this.speed - this.entity.velocity[0];
+    this.entity.velocity[1] += desiredY * this.speed - this.entity.velocity[1];
   }
 }
