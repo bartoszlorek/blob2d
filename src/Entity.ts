@@ -3,16 +3,29 @@ import {VectorType} from './types';
 import {Element} from './Element';
 import {Trait} from './Trait';
 
-export class Entity<EventType extends string> extends Element<EventType> {
-  public velocity: VectorType;
-  protected traits: Trait<EventType>[];
-  public trait: {[name: string]: Trait<EventType>};
+export class Entity<
+  AddonsType extends {},
+  TraitsType extends {},
+  EventsType extends string
+> extends Element<AddonsType, EventsType> {
+  static EMPTY = new Entity(new DisplayObject(), {});
 
-  constructor(display: DisplayObject, min: VectorType, max: VectorType) {
-    super(display, min, max);
+  public velocity: VectorType;
+  public trait: {[name: string]: Trait<AddonsType, TraitsType, EventsType>};
+
+  private _traits: Trait<AddonsType, TraitsType, EventsType>[];
+
+  constructor(display: DisplayObject, traits: TraitsType) {
+    super(display);
+
     this.velocity = [0, 0];
-    this.traits = [];
-    this.trait = {};
+    this.trait = traits;
+    this._traits = Object.values(traits);
+
+    // assign this entity to traits
+    for (let i = 0; i < this._traits.length; i++) {
+      this._traits[i].entity = this;
+    }
   }
 
   public update(deltaTime: number): void {
@@ -20,8 +33,8 @@ export class Entity<EventType extends string> extends Element<EventType> {
     this.updateDisplayPosition();
 
     // update traits
-    for (let i = 0; i < this.traits.length; i++) {
-      this.traits[i].update(deltaTime);
+    for (let i = 0; i < this._traits.length; i++) {
+      this._traits[i].update(deltaTime);
     }
 
     // update velocity from the current frame
@@ -29,15 +42,9 @@ export class Entity<EventType extends string> extends Element<EventType> {
     this.translateY(this.velocity[1] * deltaTime);
   }
 
-  public addTrait(trait: Trait<EventType>): void {
-    this.traits.push(trait);
-    this.trait[trait.name] = trait;
-    trait.parent = this;
-  }
-
   public destroy() {
-    for (let i = 0; i < this.traits.length; i++) {
-      this.traits[i].destroy();
+    for (let i = 0; i < this._traits.length; i++) {
+      this._traits[i].destroy();
     }
     super.destroy();
   }
