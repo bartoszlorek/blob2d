@@ -6,5 +6,7 @@ export {Docker} from './Docker';
 export {Element} from './Element';
 export {Entity} from './Entity';
 export {Scene} from './Scene';
+export {TiledMapper} from './TiledMapper';
+export {TiledSheet} from './TiledSheet';
 export {Tilemap} from './Tilemap';
 export {Trait} from './Trait';
