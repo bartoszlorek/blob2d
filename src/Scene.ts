@@ -48,6 +48,7 @@ export class Scene<
   public addChild<T extends Element<AddonsType, EventsType>[]>(
     ...children: T
   ): T[0] {
+    // for one argument we can bypass looping through them
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {
         this.addChild(children[i]);
@@ -69,6 +70,7 @@ export class Scene<
   public removeChild<T extends Element<AddonsType, EventsType>[]>(
     ...children: T
   ): void {
+    // for one argument we can bypass looping through them
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {
         this.removeChild(children[i]);

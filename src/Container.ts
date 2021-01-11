@@ -13,6 +13,7 @@ export class Container<ChildType> {
   }
 
   public removeChild<T extends ChildType[]>(...children: T): T[0] | null {
+    // for one argument we can bypass looping through them
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {
         this.removeChild(children[i]);
