@@ -90,12 +90,12 @@ export class Scene<
   }
 
   public update(deltaTime: number): void {
-    // request changes phase
+    // addons or traits may request to remove a child
     for (let i = 0; i < this._addons.length; i++) {
       this._addons[i].update(deltaTime);
     }
 
-    // cleanup phase
+    // actual removing phase
     while (this._removeIndex > 0) {
       this.unsafeRemoveChild(this._removeStack[--this._removeIndex]);
     }
