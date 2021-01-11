@@ -1,19 +1,19 @@
 {
-  "name": "square-engine",
-  "version": "1.0.0",
+  "name": "blob2d",
+  "version": "0.1.0",
   "scripts": {
     "start": "webpack serve"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bartoszlorek/square-engine.git"
+    "url": "git+https://github.com/bartoszlorek/blob2d.git"
   },
   "author": "Bartosz Lorek",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/bartoszlorek/square-engine/issues"
+    "url": "https://github.com/bartoszlorek/blob2d/issues"
   },
-  "homepage": "https://github.com/bartoszlorek/square-engine#readme",
+  "homepage": "https://github.com/bartoszlorek/blob2d#readme",
   "dependencies": {
     "pixi.js": "^5.3.7"
   },

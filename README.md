@@ -1,19 +1,10 @@
-# 🎮 Square Engine 🎛️
-
-## Features [TODO]:
-
-- Tiles
-- Sprites (Entities with Traits)
-- Collisions
-- Animations
-- Events
-- Keyboard Inputs
-
-## General Structure
+# Blöb2D Game Engine 🎮
 
 <p align="center">
   <img width="500" src="https://user-images.githubusercontent.com/13873576/104199289-8e224380-5427-11eb-861f-20b5a12ef347.png">
 </p>
+
+## General Structure
 
 - **Docker** is a facade for `PixiJS` application responsible for mounting and updating the `Scene` during each frame of the game cycle.
 
@@ -26,3 +17,12 @@
 - **Trait** provides a way to extend `Entity` with additional functionality, like movement caused by user input, or interaction with other `Entities` or `Tiles`.
 
 - **Tile** is a static element of `Scene`. Basically always it's a group of `Tiles` on a grid with specific properties, like collision for `Entities` or purply visual aspects.
+
+## Features [TODO]:
+
+- Sprites and Tiles
+- Entity Traits
+- Collisions
+- Animations
+- Events
+- Keyboard Inputs
