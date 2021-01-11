@@ -1,11 +1,11 @@
-import {IComponent} from './types';
+import {ITrait} from './types';
 import {Entity} from './Entity';
 
 export class Trait<
   AddonsType extends {},
   TraitsType extends {},
   EventsType extends string
-> implements IComponent {
+> implements ITrait {
   public entity: Entity<AddonsType, TraitsType, EventsType>;
 
   constructor() {
