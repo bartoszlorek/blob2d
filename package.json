@@ -1,6 +1,7 @@
 {
   "name": "blob2d",
   "version": "0.1.0",
+  "description": "Modular 2D Game Engine for Web",
   "scripts": {
     "start": "webpack serve"
   },
@@ -8,6 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/bartoszlorek/blob2d.git"
   },
+  "main": "./src/index.ts",
   "author": "Bartosz Lorek",
   "license": "MIT",
   "bugs": {
