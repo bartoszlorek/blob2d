@@ -29,15 +29,15 @@ export class Entity<
   }
 
   public update(deltaTime: number): void {
-    // update position from the previous frame
+    // display phase from the previous frame
     this.updateDisplayPosition();
 
-    // update traits
+    // traits phase from the current frame
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].update(deltaTime);
     }
 
-    // update velocity from the current frame
+    // velocity phase from the current frame
     this.translateX(this.velocity[0] * deltaTime);
     this.translateY(this.velocity[1] * deltaTime);
   }

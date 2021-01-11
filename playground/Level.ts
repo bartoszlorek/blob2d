@@ -7,8 +7,10 @@ const sprite = PIXI.Sprite.from('white_block.png');
 
 export class Level extends Scene<AddonsType, EventsType> {
   constructor() {
-    super({
-      entities: new Entities(),
+    super();
+
+    this.registerAddons({
+      entities: new Entities(this),
       animation: new Animation(),
     });
 
@@ -24,5 +26,9 @@ export class Level extends Scene<AddonsType, EventsType> {
     this.addChild(player);
     this.addon.entities.addChild(player);
     this.addon.animation.animate();
+
+    setTimeout(() => {
+      this.removeChild(player);
+    }, 4000);
   }
 }

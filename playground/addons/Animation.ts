@@ -1,14 +1,15 @@
-import {Addon, Entity} from '../../src';
-import {AddonsType, TraitsType, EventsType} from '../types';
+import {IAddon} from '../../src';
 
-export class Animation extends Addon<
-  Entity<AddonsType, TraitsType, EventsType>
-> {
+export class Animation implements IAddon {
+  public animate(): void {
+    console.log('animate');
+  }
+
   public update(deltaTime: number): void {
     // ...
   }
 
-  public animate(): void {
-    console.log('animate');
+  public destroy(): void {
+    // ...
   }
 }
