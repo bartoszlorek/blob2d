@@ -68,6 +68,22 @@ export class BoundingBox {
     this.max[0] = value;
   }
 
+  get x(): number {
+    return this.left;
+  }
+
+  set x(value: number) {
+    this.left = value;
+  }
+
+  get y(): number {
+    return this.top;
+  }
+
+  set y(value: number) {
+    this.top = value;
+  }
+
   public translate(vector: VectorType): void {
     this.min[0] += vector[0];
     this.min[1] += vector[1];

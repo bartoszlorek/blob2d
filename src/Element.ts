@@ -4,12 +4,13 @@ import {Scene} from './Scene';
 
 export class Element<
   AddonsType extends {},
-  EventsType extends string
+  EventsType extends string,
+  DisplayType extends DisplayObject = DisplayObject
 > extends BoundingBox {
-  public display: DisplayObject;
+  public display: DisplayType;
   public scene: Scene<AddonsType, EventsType> | null;
 
-  constructor(display: DisplayObject) {
+  constructor(display: DisplayType) {
     super();
 
     this.display = display;

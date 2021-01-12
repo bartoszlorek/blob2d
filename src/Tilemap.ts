@@ -1,15 +1,16 @@
-import {Container} from 'pixi.js';
+import {Container, DisplayObject} from 'pixi.js';
 import {VectorType} from './types';
 import {Element} from './Element';
 
 export class Tilemap<
   AddonsType extends {},
   EventsType extends string
-> extends Element<AddonsType, EventsType> {
+> extends Element<AddonsType, EventsType, Container> {
   public dimension: number;
   public tilesize: number;
 
   protected values: number[];
+  protected children: Map<number, DisplayObject>;
   protected _closestArray: number[];
   protected _point: VectorType;
 
@@ -17,6 +18,7 @@ export class Tilemap<
     super(new Container());
 
     this.values = values;
+    this.children = new Map();
     this.dimension = dimension;
     this.tilesize = tilesize;
 
@@ -28,9 +30,47 @@ export class Tilemap<
     this.calculateBoundingBox();
   }
 
+  public fill<T extends DisplayObject>(
+    iteratee: (tileId: number, x: number, y: number) => T
+  ): void {
+    this.children.clear();
+    this.display.removeChildren();
+
+    for (let index = 0; index < this.values.length; index++) {
+      const tileId = this.values[index];
+
+      if (tileId > 0) {
+        const x = index % this.dimension;
+        const y = Math.floor(index / this.dimension);
+        const child = iteratee(tileId, x, y);
+
+        child.position.x = x * this.tilesize;
+        child.position.y = y * this.tilesize;
+        this.children.set(index, child);
+        this.display.addChild(child);
+      }
+    }
+
+    this.updateCache();
+  }
+
+  // important! caching requires preloaded assets
+  public updateCache() {
+    this.display.cacheAsBitmap = false;
+    this.display.cacheAsBitmap = true;
+  }
+
   public removeByIndex(index: number): void {
+    const child = this.children.get(index);
+
+    if (!child) return;
     this.values[index] = 0;
+    this.children.delete(index);
+    this.display.removeChild(child);
+
+    // cleanup
     this.calculateBoundingBox();
+    this.updateCache();
   }
 
   public getIndex(x: number, y: number): number {
@@ -122,17 +162,17 @@ export class Tilemap<
       right = 0;
 
     // search in a direction from top to bottom
-    for (let i = 0; i < this.values.length; i++) {
-      if (this.values[i] > 0) {
-        top = Math.floor(i / this.dimension);
+    for (let index = 0; index < this.values.length; index++) {
+      if (this.values[index] > 0) {
+        top = Math.floor(index / this.dimension);
         break;
       }
     }
 
     // search in a direction from bottom to top
-    for (let i = this.values.length - 1; i >= 0; i--) {
-      if (this.values[i] > 0) {
-        bottom = Math.floor(i / this.dimension);
+    for (let index = this.values.length - 1; index >= 0; index--) {
+      if (this.values[index] > 0) {
+        bottom = Math.floor(index / this.dimension);
         break;
       }
     }
@@ -142,7 +182,7 @@ export class Tilemap<
     let row = 0;
 
     // search in a direction from left to right
-    for (let i = 0; i < this.values.length; i++) {
+    for (let index = 0; index < this.values.length; index++) {
       if (this.values[row * this.dimension + col] > 0) {
         left = col;
         break;
@@ -158,7 +198,7 @@ export class Tilemap<
     row = 0;
 
     // search in a direction from right to left
-    for (let i = 0; i < this.values.length; i++) {
+    for (let index = 0; index < this.values.length; index++) {
       if (this.values[row * this.dimension + col] > 0) {
         right = col;
         break;
@@ -172,7 +212,12 @@ export class Tilemap<
 
     this.min[0] = left * this.tilesize;
     this.min[1] = top * this.tilesize;
-    this.max[0] = (right + 1) * this.tilesize;
-    this.max[1] = (bottom + 1) * this.tilesize;
+    this.width = (right - left + 1) * this.tilesize;
+    this.height = (bottom - top + 1) * this.tilesize;
+  }
+
+  public destroy(): void {
+    this.children.clear();
+    super.destroy();
   }
 }
