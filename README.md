@@ -18,11 +18,21 @@
 
 - **Tile** is a static element of `Scene`. Basically always it's a group of `Tiles` on a grid with specific properties, like collision for `Entities` or purply visual aspects.
 
-## Features [TODO]:
+## Features [TODO] 📝
 
-- Sprites and Tiles
-- Entity Traits
-- Collisions
-- Animations
-- Events
-- Keyboard Inputs
+- ✅ Scene based environment fed by game cycles
+- ✅ Sprites described as bounding box with `position` and `velocity`
+- ✅ Traits system extending the functionality of sprites
+- ✅ Tiles structure with methods to interact with them
+- ✅ Custom and predefined events related to game cycles
+- ❌ Sprite sheets manager
+- ❌ Tiled integration
+- ❌ Collisions
+- ❌ Animations
+- ❌ User inputs
+- ❌ User interface
+- ❌ Motion easings
+- ❌ General physics
+- ❌ Sound
+
+**Notice:** this repository is under development 🚧
