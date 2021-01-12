@@ -33,6 +33,7 @@ export class Tilemap<
   public fill<T extends DisplayObject>(
     iteratee: (tileId: number, x: number, y: number) => T
   ): void {
+    this.children.clear();
     this.display.removeChildren();
 
     for (let index = 0; index < this.values.length; index++) {
