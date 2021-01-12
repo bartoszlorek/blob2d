@@ -53,6 +53,7 @@ export class Tilemap<
     this.updateCache();
   }
 
+  // important! caching requires preloaded assets
   public updateCache() {
     this.display.cacheAsBitmap = false;
     this.display.cacheAsBitmap = true;
