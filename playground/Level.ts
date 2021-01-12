@@ -1,11 +1,11 @@
-import {Sprite, Loader} from 'pixi.js';
+import {Sprite, IResourceDictionary} from 'pixi.js';
 import {Entity, Scene, Tilemap} from '../src';
 import {AddonsType, EventsType, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 
 export class Level extends Scene<AddonsType, EventsType> {
-  constructor(loader: Loader) {
+  constructor(resources: IResourceDictionary) {
     super();
 
     this.registerAddons({
@@ -14,7 +14,7 @@ export class Level extends Scene<AddonsType, EventsType> {
     });
 
     const player = new Entity<AddonsType, PlayerTraits, EventsType>(
-      new Sprite(loader.resources['whiteBox'].texture),
+      new Sprite(resources['whiteBox'].texture),
       {
         followMouse: new FollowMouse(10),
         borderLimit: new BorderLimit(),
@@ -26,7 +26,7 @@ export class Level extends Scene<AddonsType, EventsType> {
     player.velocity = [300, 0];
 
     const ground = new Tilemap<AddonsType, EventsType>([1, 1, 1], 3);
-    ground.fill(() => new Sprite(loader.resources['whiteBox'].texture));
+    ground.fill(() => new Sprite(resources['whiteBox'].texture));
 
     this.addChild(ground, player);
     this.addon.entities.addChild(player);

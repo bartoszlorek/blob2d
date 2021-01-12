@@ -17,7 +17,7 @@ document.body.appendChild(app.view);
 
 loader.add('whiteBox', 'white_block.png').load(() => {
   const docker = new Docker<AddonsType, EventsType>(app);
-  const level = new Level(loader);
+  const level = new Level(loader.resources);
 
   docker.on('docker/mount', () => {
     console.log('crazy wacky cool!');
