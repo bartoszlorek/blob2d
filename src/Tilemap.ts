@@ -53,10 +53,14 @@ export class Tilemap<
     this.updateCache();
   }
 
-  // important! caching requires preloaded assets
-  public updateCache() {
-    this.display.cacheAsBitmap = false;
-    this.display.cacheAsBitmap = true;
+  public getIndex(x: number, y: number): number {
+    return x + this.dimension * y;
+  }
+
+  public getPoint(index: number): VectorType {
+    this._point[0] = index % this.dimension;
+    this._point[1] = Math.floor(index / this.dimension);
+    return this._point;
   }
 
   public removeByIndex(index: number): void {
@@ -72,14 +76,10 @@ export class Tilemap<
     this.updateCache();
   }
 
-  public getIndex(x: number, y: number): number {
-    return x + this.dimension * y;
-  }
-
-  public getPoint(index: number): VectorType {
-    this._point[0] = index % this.dimension;
-    this._point[1] = Math.floor(index / this.dimension);
-    return this._point;
+  // important! caching requires preloaded assets
+  public updateCache() {
+    this.display.cacheAsBitmap = false;
+    this.display.cacheAsBitmap = true;
   }
 
   public closest(x: number, y: number): number[] {
