@@ -40,8 +40,7 @@ export class Tilemap<
       const tileId = this.values[index];
 
       if (tileId > 0) {
-        const x = index % this.dimension;
-        const y = Math.floor(index / this.dimension);
+        const [x, y] = this.getPoint(index);
         const child = iteratee(tileId, x, y);
 
         child.position.x = x * this.tilesize;
