@@ -155,29 +155,64 @@ describe('Tilemap()', () => {
 
   describe('raytrace()', () => {
     // prettier-ignore
-    const values = [
-      1, 2, 3, 4,
-      5, 6, 7, 8,
-      9, 1, 2, 3,
-      4, 5, 6, 7
+    const emptyValues = [
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 0, 0,
+      0, 0, 0, 0
     ];
 
     test.each`
       a         | b         | length
-      ${[0, 0]} | ${[0, 0]} | ${1}
-      ${[0, 0]} | ${[3, 0]} | ${4}
-      ${[0, 0]} | ${[2, 1]} | ${3}
-      ${[0, 0]} | ${[3, 3]} | ${4}
-      ${[0, 0]} | ${[1, 2]} | ${3}
-      ${[0, 0]} | ${[0, 3]} | ${4}
-      ${[3, 3]} | ${[0, 0]} | ${4}
-      ${[3, 3]} | ${[1, 1]} | ${3}
+      ${[0, 0]} | ${[3, 0]} | ${3}
+      ${[0, 0]} | ${[2, 1]} | ${2}
+      ${[0, 0]} | ${[3, 3]} | ${3}
+      ${[0, 0]} | ${[1, 2]} | ${2}
+      ${[0, 0]} | ${[0, 3]} | ${3}
+      ${[3, 3]} | ${[0, 0]} | ${3}
+      ${[3, 3]} | ${[1, 1]} | ${2}
     `(
-      'returns $length as traversed length between $a and $b',
+      'returns $length as traversed length between $a and $b in empty space',
       ({a: [ax, ay], b: [bx, by], length}) => {
-        const map = new Tilemap(values, 4);
+        const map = new Tilemap(emptyValues, 4);
         expect(map.raytrace(ax, ay, bx, by)).toBe(length);
       }
     );
+
+    // prettier-ignore
+    const filledValues = [
+      1, 1, 1, 0,
+      0, 0, 1, 0,
+      0, 0, 1, 0,
+      0, 1, 1, 1
+    ];
+
+    test.each`
+      a         | b         | length
+      ${[0, 1]} | ${[3, 1]} | ${-2}
+      ${[0, 3]} | ${[3, 0]} | ${-2}
+      ${[1, 2]} | ${[3, 0]} | ${-1}
+    `(
+      'returns $length as negative length to obstacle between $a and $b',
+      ({a: [ax, ay], b: [bx, by], length}) => {
+        const map = new Tilemap(filledValues, 4);
+        expect(map.raytrace(ax, ay, bx, by)).toBe(length);
+      }
+    );
+
+    it('returns 0 when starting tile is the same as target', () => {
+      const map = new Tilemap([0, 0], 2);
+      expect(map.raytrace(0, 0, 0, 0)).toBe(0);
+    });
+
+    it('returns 0 when starting tile is fulfilled', () => {
+      const map = new Tilemap([1, 1], 2);
+      expect(map.raytrace(0, 0, 1, 0)).toBe(0);
+    });
+
+    it('returns positive length when target tile is fulfilled', () => {
+      const map = new Tilemap([0, 0, 1], 3);
+      expect(map.raytrace(0, 0, 2, 0)).toBe(2);
+    });
   });
 });

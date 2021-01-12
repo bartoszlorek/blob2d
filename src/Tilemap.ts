@@ -86,12 +86,16 @@ export class Tilemap<
     let y = y0;
 
     while (true) {
-      length += 1;
-
       if (x === x1 && y === y1) {
         return length;
       }
+
+      if (this.values[this.getIndex(x, y)] > 0) {
+        return -length || 0;
+      }
+
       const error2 = 2 * error;
+      length += 1;
 
       if (error2 > -deltaY) {
         error -= deltaY;
