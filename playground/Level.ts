@@ -1,12 +1,11 @@
-import {Entity, Scene} from '../src';
+import {Sprite, Loader} from 'pixi.js';
+import {Entity, Scene, Tilemap} from '../src';
 import {AddonsType, EventsType, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 
-const sprite = PIXI.Sprite.from('white_block.png');
-
 export class Level extends Scene<AddonsType, EventsType> {
-  constructor() {
+  constructor(loader: Loader) {
     super();
 
     this.registerAddons({
@@ -14,21 +13,23 @@ export class Level extends Scene<AddonsType, EventsType> {
       animation: new Animation(),
     });
 
-    const player = new Entity<AddonsType, PlayerTraits, EventsType>(sprite, {
-      followMouse: new FollowMouse(10),
-      borderLimit: new BorderLimit(),
-    });
+    const player = new Entity<AddonsType, PlayerTraits, EventsType>(
+      new Sprite(loader.resources['whiteBox'].texture),
+      {
+        followMouse: new FollowMouse(10),
+        borderLimit: new BorderLimit(),
+      }
+    );
 
     player.width = 32;
     player.height = 32;
     player.velocity = [300, 0];
 
-    this.addChild(player);
+    const ground = new Tilemap<AddonsType, EventsType>([1, 1, 1], 3);
+    ground.fill(() => new Sprite(loader.resources['whiteBox'].texture));
+
+    this.addChild(ground, player);
     this.addon.entities.addChild(player);
     this.addon.animation.animate();
-
-    setTimeout(() => {
-      this.removeChild(player);
-    }, 4000);
   }
 }
