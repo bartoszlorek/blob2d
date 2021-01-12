@@ -73,6 +73,38 @@ export class Tilemap<
     return arr;
   }
 
+  // Bresenham's line algorithm
+  public raytrace(x0: number, y0: number, x1: number, y1: number): number {
+    const deltaX = Math.abs(x1 - x0);
+    const deltaY = Math.abs(y1 - y0);
+    const directionX = x0 < x1 ? 1 : -1;
+    const directionY = y0 < y1 ? 1 : -1;
+
+    let error = deltaX - deltaY;
+    let length = 0;
+    let x = x0;
+    let y = y0;
+
+    while (true) {
+      length += 1;
+
+      if (x === x1 && y === y1) {
+        return length;
+      }
+      const error2 = 2 * error;
+
+      if (error2 > -deltaY) {
+        error -= deltaY;
+        x += directionX;
+      }
+
+      if (error2 < deltaX) {
+        error += deltaX;
+        y += directionY;
+      }
+    }
+  }
+
   protected calculateBoundingBox(): void {
     if (this.values.length === 0) {
       this.width = 0;

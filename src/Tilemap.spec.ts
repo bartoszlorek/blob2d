@@ -152,4 +152,32 @@ describe('Tilemap()', () => {
       ]);
     });
   });
+
+  describe('raytrace()', () => {
+    // prettier-ignore
+    const values = [
+      1, 2, 3, 4,
+      5, 6, 7, 8,
+      9, 1, 2, 3,
+      4, 5, 6, 7
+    ];
+
+    test.each`
+      a         | b         | length
+      ${[0, 0]} | ${[0, 0]} | ${1}
+      ${[0, 0]} | ${[3, 0]} | ${4}
+      ${[0, 0]} | ${[2, 1]} | ${3}
+      ${[0, 0]} | ${[3, 3]} | ${4}
+      ${[0, 0]} | ${[1, 2]} | ${3}
+      ${[0, 0]} | ${[0, 3]} | ${4}
+      ${[3, 3]} | ${[0, 0]} | ${4}
+      ${[3, 3]} | ${[1, 1]} | ${3}
+    `(
+      'returns $length as traversed length between $a and $b',
+      ({a: [ax, ay], b: [bx, by], length}) => {
+        const map = new Tilemap(values, 4);
+        expect(map.raytrace(ax, ay, bx, by)).toBe(length);
+      }
+    );
+  });
 });
