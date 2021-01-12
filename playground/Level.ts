@@ -27,9 +27,16 @@ export class Level extends Scene<AddonsType, EventsType> {
 
     const ground = new Tilemap<AddonsType, EventsType>([1, 1, 1], 3);
     ground.fill(() => new Sprite(resources['whiteBox'].texture));
+    ground.x = 64;
+    ground.y = 64;
+
+    // todo: handle update position internally
+    ground.updateDisplayPosition();
 
     this.addChild(ground, player);
     this.addon.entities.addChild(player);
     this.addon.animation.animate();
+
+    console.log({ground, player});
   }
 }
