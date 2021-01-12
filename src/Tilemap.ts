@@ -73,7 +73,7 @@ export class Tilemap<
     return arr;
   }
 
-  // Bresenham's line algorithm
+  // based on Bresenham’s Line Generation Algorithm
   public raytrace(x0: number, y0: number, x1: number, y1: number): number {
     const deltaX = Math.abs(x1 - x0);
     const deltaY = Math.abs(y1 - y0);
