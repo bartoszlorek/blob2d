@@ -212,8 +212,8 @@ export class Tilemap<
 
     this.min[0] = left * this.tilesize;
     this.min[1] = top * this.tilesize;
-    this.max[0] = (right + 1) * this.tilesize;
-    this.max[1] = (bottom + 1) * this.tilesize;
+    this.width = (right - left + 1) * this.tilesize;
+    this.height = (bottom - top + 1) * this.tilesize;
   }
 
   public destroy(): void {
