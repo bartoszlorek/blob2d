@@ -215,4 +215,9 @@ export class Tilemap<
     this.max[0] = (right + 1) * this.tilesize;
     this.max[1] = (bottom + 1) * this.tilesize;
   }
+
+  public destroy(): void {
+    this.children.clear();
+    super.destroy();
+  }
 }
