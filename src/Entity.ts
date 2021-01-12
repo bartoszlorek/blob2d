@@ -29,17 +29,18 @@ export class Entity<
   }
 
   public update(deltaTime: number): void {
-    // display phase from the previous frame
-    this.updateDisplayPosition();
+    // set position based on velocity from the previous frame
+    this.translateX(this.velocity[0] * deltaTime);
+    this.translateY(this.velocity[1] * deltaTime);
 
-    // traits phase from the current frame
+    // invoke traits that may change velocity for the next
+    // frame or correct display position for the current one
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].update(deltaTime);
     }
 
-    // velocity phase from the current frame
-    this.translateX(this.velocity[0] * deltaTime);
-    this.translateY(this.velocity[1] * deltaTime);
+    // change visuals of display object based on the final position
+    this.updateDisplayPosition();
   }
 
   public destroy() {
