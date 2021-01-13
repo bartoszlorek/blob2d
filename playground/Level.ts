@@ -1,5 +1,5 @@
 import {Sprite, IResourceDictionary} from 'pixi.js';
-import {Entity, Scene, Tilemap} from '../src';
+import {Entity, Scene, Tilemap, Addons} from '../src';
 import {AddonsType, EventsType, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
@@ -9,8 +9,9 @@ export class Level extends Scene<AddonsType, EventsType> {
     super();
 
     this.registerAddons({
-      entities: new Entities(this),
       animation: new Animation(),
+      collisions: new Addons.Collisions(),
+      entities: new Entities(this),
     });
 
     const player = new Entity<AddonsType, PlayerTraits, EventsType>(
@@ -34,8 +35,9 @@ export class Level extends Scene<AddonsType, EventsType> {
     ground.updateDisplayPosition();
 
     this.addChild(ground, player);
-    this.addon.entities.addChild(player);
     this.addon.animation.animate();
+    this.addon.collisions.add(player, ground);
+    this.addon.entities.addChild(player);
 
     console.log({ground, player});
   }

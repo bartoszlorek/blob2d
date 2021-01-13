@@ -1,4 +1,5 @@
 export * from './types';
+export * as Addons from './addons';
 export {BoundingBox} from './BoundingBox';
 export {Camera} from './Camera';
 export {Container} from './Container';
