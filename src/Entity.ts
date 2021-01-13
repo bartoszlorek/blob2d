@@ -10,6 +10,7 @@ export class Entity<
 > extends Element<AddonsType, EventsType> {
   static EMPTY = new Entity(new DisplayObject(), {});
 
+  public readonly type = 'entity';
   public velocity: VectorType;
   public trait: {[name: string]: Trait<AddonsType, TraitsType, EventsType>};
 
