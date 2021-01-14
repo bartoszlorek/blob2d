@@ -101,13 +101,6 @@ export class BoundingBox {
     this.max[1] += value;
   }
 
-  public copy(bbox: BoundingBox): void {
-    this.min[0] = bbox.min[0];
-    this.min[1] = bbox.min[1];
-    this.max[0] = bbox.max[0];
-    this.max[1] = bbox.max[1];
-  }
-
   public contains(x: number, y: number): boolean {
     return !(
       this.min[0] > x ||
@@ -124,6 +117,13 @@ export class BoundingBox {
       this.max[0] < bbox.min[0] - margin ||
       this.max[1] < bbox.min[1] - margin
     );
+  }
+
+  public copy(bbox: BoundingBox): void {
+    this.min[0] = bbox.min[0];
+    this.min[1] = bbox.min[1];
+    this.width = bbox.width;
+    this.height = bbox.height;
   }
 
   // an additional method to get X position according to the tile system
