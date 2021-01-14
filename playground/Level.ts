@@ -48,7 +48,5 @@ export class Level extends Scene<AddonsType, EventsType> {
     this.addon.animation.animate();
     this.addon.collisions.add(player, ground);
     this.addon.entities.addChild(player);
-
-    console.log({ground, player});
   }
 }
