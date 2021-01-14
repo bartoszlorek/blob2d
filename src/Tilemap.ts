@@ -6,10 +6,11 @@ export class Tilemap<
   AddonsType extends {},
   EventsType extends string
 > extends Element<AddonsType, EventsType, Container> {
-  public dimension: number;
-  public tilesize: number;
+  public readonly type = 'tilemap';
+  public readonly values: number[];
+  public readonly dimension: number;
+  public readonly tilesize: number;
 
-  protected values: number[];
   protected children: Map<number, DisplayObject>;
   protected _closestArray: number[];
   protected _point: VectorType;

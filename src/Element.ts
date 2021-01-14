@@ -7,7 +7,7 @@ export class Element<
   EventsType extends string,
   DisplayType extends DisplayObject = DisplayObject
 > extends BoundingBox {
-  public display: DisplayType;
+  public readonly display: DisplayType;
   public scene: Scene<AddonsType, EventsType> | null;
 
   constructor(display: DisplayType) {
