@@ -4,6 +4,16 @@ import {AddonsType, EventsType, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 
+// prettier-ignore
+const groundMap = [
+  1, 1, 1, 1, 1,
+  0, 0, 0, 0, 1,
+  0, 0, 0, 0, 1,
+  1, 0, 0, 0, 0,
+  1, 0, 0, 0, 0,
+  1, 1, 1, 1, 1
+];
+
 export class Level extends Scene<AddonsType, EventsType> {
   constructor(resources: IResourceDictionary) {
     super();
@@ -26,10 +36,10 @@ export class Level extends Scene<AddonsType, EventsType> {
     player.height = 32;
     player.velocity = [300, 0];
 
-    const ground = new Tilemap<AddonsType, EventsType>([1, 1, 1], 3);
+    const ground = new Tilemap<AddonsType, EventsType>(groundMap, 5);
     ground.fill(() => new Sprite(resources['whiteBox'].texture));
-    ground.x = 64;
-    ground.y = 64;
+    ground.x = 100;
+    ground.y = 200;
 
     // todo: handle update position internally
     ground.updateDisplayPosition();

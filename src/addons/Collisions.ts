@@ -1,7 +1,7 @@
 import {IAddon} from '../types';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
-import {detectTilemapCollision} from './TilemapCollisions';
+import {getTileSeparation} from './TilemapCollisions';
 
 type Collider<A, T, E extends string> = Entity<A, T, E> | Tilemap<A, E>;
 
@@ -28,8 +28,14 @@ export class Collisions<
       const [a, b] = this.entries[i];
 
       // todo: add more cases where two or more elements can collide
-      if (a.type === 'entity' && b.type === 'tilemap') {
-        detectTilemapCollision(b, a, deltaTime);
+      if (
+        a.type === 'entity' &&
+        b.type === 'tilemap' &&
+        a.intersects(b, b.tilesize)
+      ) {
+        const separation = getTileSeparation(b, a, deltaTime);
+        a.velocity[0] = separation[0];
+        a.velocity[1] = separation[1];
       }
     }
   }

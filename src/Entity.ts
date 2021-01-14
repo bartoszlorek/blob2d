@@ -30,18 +30,18 @@ export class Entity<
   }
 
   public update(deltaTime: number): void {
-    // invoke traits that may change velocity for the next
-    // frame or correct display position for the current one
+    // render entity based on position from previous step
+    this.updateDisplayPosition();
+
+    // update position for traits, addons or renderer in next step
+    this.translateX(this.velocity[0] * deltaTime);
+    this.translateY(this.velocity[1] * deltaTime);
+
+    // call traits that may introduce changes to the entity
+    // for next addons or renderer in next step
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].update(deltaTime);
     }
-
-    // render based on the current frame position
-    this.updateDisplayPosition();
-
-    // set position for next frame based on velocity
-    this.translateX(this.velocity[0] * deltaTime);
-    this.translateY(this.velocity[1] * deltaTime);
   }
 
   public destroy() {
