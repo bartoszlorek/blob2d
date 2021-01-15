@@ -1,13 +1,13 @@
-import {VectorType} from './types';
+import {Vector2Type} from './types';
 
 export class BoundingBox {
-  public min: VectorType;
-  public max: VectorType;
+  public min: Vector2Type;
+  public max: Vector2Type;
 
   private _width: number;
   private _height: number;
 
-  constructor(min: VectorType = [0, 0], max: VectorType = [0, 0]) {
+  constructor(min: Vector2Type = [0, 0], max: Vector2Type = [0, 0]) {
     this.min = min;
     this.max = max;
     this._width = max[0] - min[0];
@@ -84,7 +84,7 @@ export class BoundingBox {
     this.top = value;
   }
 
-  public translate(vector: VectorType): void {
+  public translate(vector: Vector2Type): void {
     this.min[0] += vector[0];
     this.min[1] += vector[1];
     this.max[0] += vector[0];
