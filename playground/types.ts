@@ -1,6 +1,6 @@
 import {Addons} from '../src';
 import {Animation, Entities} from './addons';
-import {BorderLimit, FollowMouse} from './traits';
+import {BorderLimit, FollowMouse, PatrolMove} from './traits';
 
 export type AddonsType = {
   animation: Animation;
@@ -18,5 +18,5 @@ export type PlayerTraits = {
 };
 
 export type EnemyTraits = {
-  borderLimit: BorderLimit;
+  patrolMove: PatrolMove;
 };
