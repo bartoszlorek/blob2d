@@ -1,11 +1,12 @@
 import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
-import {VectorType} from '../types';
+import {Vector2Type, Vector3Type} from '../types';
 
 // pre-allocated data
 const _clone = new BoundingBox();
-const _vector: VectorType = [0, 0];
+const _vector2: Vector2Type = [0, 0];
+const _vector3: Vector3Type = [0, 0, 0];
 
 export function getTileSeparation<
   AddonsType extends {},
@@ -15,24 +16,35 @@ export function getTileSeparation<
   tilemap: Tilemap<AddonsType, EventsType>,
   entity: Entity<AddonsType, TraitsType, EventsType>,
   deltaTime: number
-): VectorType {
-  // make a clone to not mutate the original entity
+): Vector3Type {
   _clone.copy(entity);
+  _vector3[0] = entity.velocity[0];
+  _vector3[1] = entity.velocity[1];
+  _vector3[2] = 0; //  no collision detected
 
-  // the position multiplied by deltaTime will give a shift in px
-  let velocityX = entity.velocity[0] * deltaTime;
-  let velocityY = entity.velocity[1] * deltaTime;
+  // position multiplied by deltaTime will give a shift in px
+  const velocityX = _vector3[0] * deltaTime;
+  const velocityY = _vector3[1] * deltaTime;
 
-  // the collision detection requires two steps separation: x and y
-  velocityX = getSeparationComponent(0, velocityX, tilemap, _clone);
-  _clone.translateX(velocityX);
+  // to prevent "wall sliding" issue, collision detection requires
+  // perform the x move and the y move as separate steps
+  const separationX = getSeparationComponent(0, velocityX, tilemap, _clone);
+  _clone.translateX(separationX ?? velocityX);
 
-  // the position of cloned bbox is not needed after finding y separation
-  velocityY = getSeparationComponent(1, velocityY, tilemap, _clone);
+  // correct position of cloned bbox is not needed after y step
+  const separationY = getSeparationComponent(1, velocityY, tilemap, _clone);
 
-  _vector[0] = velocityX / deltaTime;
-  _vector[1] = velocityY / deltaTime;
-  return _vector;
+  if (separationX !== null) {
+    _vector3[0] = separationX / deltaTime;
+    _vector3[2] = 1;
+  }
+
+  if (separationY !== null) {
+    _vector3[1] = separationY / deltaTime;
+    _vector3[2] = 1;
+  }
+
+  return _vector3;
 }
 
 // https://jonathanwhiting.com/tutorial/collision/
@@ -45,7 +57,7 @@ function getSeparationComponent<
   mainAxisVelocity: number,
   tilemap: Tilemap<AddonsType, EventsType>,
   bbox: BoundingBox
-): number {
+): number | null {
   const {tilesize} = tilemap;
   const positive = mainAxisVelocity > 0;
   const dir = positive ? 1 : -1;
@@ -71,10 +83,10 @@ function getSeparationComponent<
     for (let j = sideStart; j !== sideEnd; j++) {
       if (j < 0 || j >= sideMax) continue;
 
-      _vector[mainAxis] = i;
-      _vector[sideAxis] = j;
+      _vector2[mainAxis] = i;
+      _vector2[sideAxis] = j;
 
-      const index = tilemap.getIndex.apply(tilemap, _vector);
+      const index = tilemap.getIndex.apply(tilemap, _vector2);
       const value = tilemap.values[index];
 
       if (value > 0) {
@@ -84,5 +96,5 @@ function getSeparationComponent<
     }
   }
 
-  return mainAxisVelocity;
+  return null;
 }
