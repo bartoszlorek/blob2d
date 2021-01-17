@@ -31,7 +31,7 @@ export class Level extends Scene<AddonsType, EventsType> {
     });
 
     const player = new Entity<AddonsType, PlayerTraits, EventsType>(
-      new Sprite(resources['whiteBox'].texture),
+      new Sprite(resources['blueBlock'].texture),
       {
         followMouse: new FollowMouse(10),
         borderLimit: new BorderLimit(),
@@ -40,9 +40,10 @@ export class Level extends Scene<AddonsType, EventsType> {
     player.width = 32;
     player.height = 32;
     player.velocity = [300, 0];
+    player.name = 'player';
 
     const enemy = new Entity<AddonsType, EnemyTraits, EventsType>(
-      new Sprite(resources['whiteBox'].texture),
+      new Sprite(resources['whiteBlock'].texture),
       {
         patrolMove: new PatrolMove(),
       }
@@ -53,12 +54,12 @@ export class Level extends Scene<AddonsType, EventsType> {
     enemy.y = 200;
 
     const ground = new Tilemap<AddonsType, EventsType>(groundMap, 6);
-    ground.fill(() => new Sprite(resources['whiteBox'].texture));
+    ground.fill(() => new Sprite(resources['whiteBlock'].texture));
     ground.x = 100;
     ground.y = 200;
 
     const platform = new Tilemap<AddonsType, EventsType>(platformMap, 4);
-    platform.fill(() => new Sprite(resources['whiteBox'].texture));
+    platform.fill(() => new Sprite(resources['whiteBlock'].texture));
     platform.x = 356;
     platform.y = 264;
 
@@ -68,7 +69,9 @@ export class Level extends Scene<AddonsType, EventsType> {
 
     this.addChild(ground, platform, player, enemy);
     this.addon.animation.animate();
-    this.addon.collisions.add(player, [ground, platform], () => true);
     this.addon.entities.addChild(player, enemy);
+
+    this.addon.collisions.addStatic(player, [ground, platform], () => true);
+    this.addon.collisions.addDynamic(player, enemy, () => true);
   }
 }

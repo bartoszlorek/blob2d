@@ -1,17 +1,11 @@
 import {IAddon} from '../types';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
-import {RefineArrayType, refineArray, concatArray} from '../utils/array';
-import {getTileSeparation} from './TilemapCollisions';
+import {refineArray} from '../utils/array';
 
-interface ICollisionGroup<A, T, E extends string> {
-  readonly entities: Entity<A, T, E>[];
-  readonly tilemaps: Tilemap<A, E>[];
-  callback(
-    bodyA: Entity<A, T, E>,
-    bodyB: Entity<A, T, E> | Tilemap<A, E>
-  ): boolean;
-}
+import {getEntitySeparation} from './CollisionsEntity';
+import {getTileSeparation} from './CollisionsTilemap';
+import {ICollisionGroup} from './CollisionsTypes';
 
 export class Collisions<
   AddonsType extends {},
@@ -25,97 +19,194 @@ export class Collisions<
     this.groups = [];
   }
 
-  /**
-   * @param bodyA - a single `Entity` or array of them
-   * @param bodyB - other `Entity`, `Tilemap` or array of each
-   * @param callback - returns `boolean`
-   *
-   * @example
-   * // e - Entity, t - Tilemap
-   * collisions.add(player, ground, (e, t) => true);
-   * collisions.add(player, enemy, (e, e) => true);
-   * collisions.add(player, [ground, ground], (e, t) => true);
-   * collisions.add([player, player], ground, (e, t) => true);
-   * collisions.add([player, player], [enemy, enemy], (e, e) => true);
-   */
-  public add<
-    BodyA extends
-      | Entity<AddonsType, TraitsType, EventsType>
-      | Entity<AddonsType, TraitsType, EventsType>[],
-    BodyB extends
-      | Entity<AddonsType, TraitsType, EventsType>
-      | Entity<AddonsType, TraitsType, EventsType>[]
-      | Tilemap<AddonsType, EventsType>
-      | Tilemap<AddonsType, EventsType>[]
+  public addStatic<
+    A extends Entity<AddonsType, TraitsType, EventsType>,
+    B extends Tilemap<AddonsType, EventsType>
   >(
-    bodyA: BodyA,
-    bodyB: BodyB,
-    callback: (
-      bodyA: RefineArrayType<BodyA, Entity<AddonsType, TraitsType, EventsType>>,
-      bodyB: RefineArrayType<
-        BodyB,
-        | Entity<AddonsType, TraitsType, EventsType>
-        | Tilemap<AddonsType, EventsType>
-      >
-    ) => boolean
+    entities: A | A[],
+    tilemaps: B | B[],
+    callback: (entity: A, tilemap: B) => boolean
   ): void {
-    const arrA = refineArray(bodyA);
-    const arrB = refineArray<
-      | Entity<AddonsType, TraitsType, EventsType>
-      | Tilemap<AddonsType, EventsType>
-    >(bodyB);
-
-    if (arrA.length === 1 && arrB.length === 0) {
-      throw new Error('collision group with only one entity requires tilemap');
-    }
-
-    if (arrB[0].type === 'entity') {
-      this.groups.push({
-        entities: concatArray(
-          arrA,
-          arrB as Entity<AddonsType, TraitsType, EventsType>[]
-        ),
-        tilemaps: [],
+    this.groups.push(
+      this.validateGroup({
+        type: 'static',
+        entities: refineArray(entities),
+        tilemaps: refineArray(tilemaps),
         callback,
-      });
-    } else {
-      this.groups.push({
-        entities: arrA,
-        tilemaps: arrB as Tilemap<AddonsType, EventsType>[],
+      })
+    );
+  }
+
+  public addDynamic<
+    A extends Entity<AddonsType, TraitsType, EventsType>,
+    B extends Entity<AddonsType, TraitsType, EventsType>
+  >(
+    entitiesA: A | A[],
+    entitiesB: B | B[],
+    callback: (entityA: A, entityB: B) => boolean
+  ): void {
+    this.groups.push(
+      this.validateGroup({
+        type: 'dynamic',
+        entitiesA: refineArray(entitiesA),
+        entitiesB: refineArray(entitiesB),
         callback,
-      });
-    }
+      })
+    );
+  }
+
+  public addSelfDynamic<A extends Entity<AddonsType, TraitsType, EventsType>>(
+    entities: A[],
+    callback: (entityA: A, entityB: A) => boolean
+  ): void {
+    this.groups.push(
+      this.validateGroup({
+        type: 'self_dynamic',
+        entities: refineArray(entities),
+        callback,
+      })
+    );
   }
 
   public update(deltaTime: number): void {
     for (let i = 0; i < this.groups.length; i++) {
-      const {entities, tilemaps, callback} = this.groups[i];
-
-      // for one argument we can bypass looping through them
-      if (entities.length > 1) {
-        // todo: handle more entities
-      } else {
-        const entity = entities[0];
-
-        if (tilemaps.length > 1) {
-          for (let j = 0; j < tilemaps.length; j++) {
-            this.detectTileCollision(entity, tilemaps[j], deltaTime, callback);
-          }
-        } else {
-          this.detectTileCollision(entity, tilemaps[0], deltaTime, callback);
-        }
-      }
+      this.resolveGroup(this.groups[i], deltaTime);
     }
   }
 
-  protected detectTileCollision<
-    EntityType extends Entity<AddonsType, TraitsType, EventsType>,
-    TilemapType extends Tilemap<AddonsType, EventsType>
+  protected resolveGroup(
+    group: ICollisionGroup<AddonsType, TraitsType, EventsType>,
+    deltaTime: number
+  ): void {
+    switch (group.type) {
+      case 'static': {
+        const {entities, tilemaps, callback} = group;
+
+        if (entities.length > 1) {
+          for (let i = 0; i < entities.length; i++) {
+            const entity = entities[i];
+
+            // bypass loop
+            if (tilemaps.length > 1) {
+              for (let j = 0; j < tilemaps.length; j++) {
+                this.collideTile(entity, tilemaps[j], deltaTime, callback);
+              }
+            } else {
+              this.collideTile(entity, tilemaps[0], deltaTime, callback);
+            }
+          }
+        } else {
+          // a single entity collision
+          const entity = entities[0];
+
+          // bypass loop
+          if (tilemaps.length > 1) {
+            for (let j = 0; j < tilemaps.length; j++) {
+              this.collideTile(entity, tilemaps[j], deltaTime, callback);
+            }
+          } else {
+            this.collideTile(entity, tilemaps[0], deltaTime, callback);
+          }
+        }
+
+        break;
+      }
+
+      case 'dynamic': {
+        const {entitiesA, entitiesB, callback} = group;
+
+        // it is optimized for the first subgroup,
+        // which often has only one element
+        if (entitiesA.length > 1) {
+          for (let i = 0; i < entitiesA.length; i++) {
+            const entity = entitiesA[i];
+
+            // bypass loop
+            if (entitiesB.length > 1) {
+              for (let j = 0; j < entitiesB.length; j++) {
+                this.collideEntity(entity, entitiesB[j], deltaTime, callback);
+              }
+            } else {
+              this.collideEntity(entity, entitiesB[0], deltaTime, callback);
+            }
+          }
+        } else {
+          // a single entity collision
+          const entity = entitiesA[0];
+
+          // bypass loop
+          if (entitiesB.length > 1) {
+            for (let j = 0; j < entitiesB.length; j++) {
+              this.collideEntity(entity, entitiesB[j], deltaTime, callback);
+            }
+          } else {
+            this.collideEntity(entity, entitiesB[0], deltaTime, callback);
+          }
+        }
+
+        break;
+      }
+
+      case 'self_dynamic': {
+        const {entities, callback} = group;
+
+        for (let i = 0; i < entities.length; i++) {
+          for (let j = i + 1; j < entities.length; j++) {
+            this.collideEntity(entities[i], entities[j], deltaTime, callback);
+          }
+        }
+
+        break;
+      }
+
+      default:
+        assertNever(group);
+    }
+  }
+
+  protected validateGroup(
+    group: ICollisionGroup<AddonsType, TraitsType, EventsType>
+  ): ICollisionGroup<AddonsType, TraitsType, EventsType> {
+    switch (group.type) {
+      case 'static':
+        if (group.entities.length < 1 || group.tilemaps.length < 1) {
+          throw new Error(
+            'A static collision group requires at least one entity and tilemap.'
+          );
+        }
+        break;
+
+      case 'dynamic':
+        if (group.entitiesA.length < 1 || group.entitiesB.length < 1) {
+          throw new Error(
+            'A dynamic collision group requires at least one entity from each sub-group.'
+          );
+        }
+        break;
+
+      case 'self_dynamic':
+        if (group.entities.length < 2) {
+          throw new Error(
+            'A self dynamic collision group requires at least two entities.'
+          );
+        }
+        break;
+
+      default:
+        assertNever(group);
+    }
+
+    return group;
+  }
+
+  protected collideTile<
+    A extends Entity<AddonsType, TraitsType, EventsType>,
+    B extends Tilemap<AddonsType, EventsType>
   >(
-    entity: EntityType,
-    tilemap: TilemapType,
+    entity: A,
+    tilemap: B,
     deltaTime: number,
-    callback: (entity: EntityType, tilemap: TilemapType) => boolean
+    callback: (entity: A, tilemap: B) => boolean
   ): void {
     if (!entity.intersects(tilemap, tilemap.tilesize)) return;
 
@@ -126,7 +217,28 @@ export class Collisions<
     }
   }
 
+  protected collideEntity<
+    A extends Entity<AddonsType, TraitsType, EventsType>,
+    B extends Entity<AddonsType, TraitsType, EventsType>
+  >(
+    entityA: A,
+    entityB: B,
+    deltaTime: number,
+    callback: (entity: A, tilemap: B) => boolean
+  ): void {
+    if (!entityA.intersects(entityB)) return;
+
+    const separation = getEntitySeparation(entityA, entityB, deltaTime);
+    if (callback(entityA, entityB)) {
+      // todo: apply separation
+    }
+  }
+
   public destroy(): void {
     this.groups.length = 0;
   }
+}
+
+function assertNever(x: never): never {
+  throw new Error('Unexpected object: ' + x);
 }
