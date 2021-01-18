@@ -230,7 +230,11 @@ export class Collisions<
 
     const separation = getEntitySeparation(entityA, entityB, deltaTime);
     if (callback(entityA, entityB)) {
-      // todo: apply separation
+      // todo: use velocity instead of position
+      entityA.translateX(separation[0] / 2);
+      entityA.translateY(separation[1] / 2);
+      entityB.translateX(-separation[0] / 2);
+      entityB.translateY(-separation[1] / 2);
     }
   }
 
