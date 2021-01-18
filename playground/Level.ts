@@ -71,7 +71,11 @@ export class Level extends Scene<AddonsType, EventsType> {
     this.addon.animation.animate();
     this.addon.entities.addChild(player, enemy);
 
-    this.addon.collisions.addStatic(player, [ground, platform], () => true);
-    this.addon.collisions.addDynamic(player, enemy, () => true);
+    this.addon.collisions.addStatic([player, enemy], [ground, platform], cb);
+    this.addon.collisions.addDynamic(player, enemy, cb);
   }
+}
+
+function cb() {
+  return true;
 }
