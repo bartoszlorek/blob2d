@@ -1,7 +1,8 @@
 import {IAddon} from '../types';
 import {Entity} from '../Entity';
+import {Scene} from '../Scene';
 import {Tilemap} from '../Tilemap';
-import {refineArray} from '../utils/array';
+import {refineArray, removeItem} from '../utils/array';
 
 import {getEntitySeparation} from './CollisionsEntity';
 import {getTileSeparation} from './CollisionsTilemap';
@@ -14,8 +15,11 @@ export class Collisions<
 > implements IAddon {
   protected groups: ICollisionGroup<AddonsType, TraitsType, EventsType>[];
 
-  constructor() {
-    // todo: add scene removeChild listener and update groups each time
+  constructor(scene: Scene<AddonsType, EventsType>) {
+    scene.on('scene/removeChild', (child) => {
+      this.removeGroupElement(child);
+    });
+
     this.groups = [];
   }
 
@@ -235,6 +239,44 @@ export class Collisions<
       entityA.translateY(separation[1] / 2);
       entityB.translateX(-separation[0] / 2);
       entityB.translateY(-separation[1] / 2);
+    }
+  }
+
+  protected removeGroupElement<
+    A extends Entity<AddonsType, TraitsType, EventsType>,
+    B extends Tilemap<AddonsType, EventsType>
+  >(element: A | B) {
+    for (let i = 0; i < this.groups.length; i++) {
+      let removed = false; // element can be a part of multiple groups
+      const group = this.groups[i];
+
+      if (element.type === 'entity') {
+        if (group.type === 'dynamic') {
+          if (
+            removeItem(group.entitiesA, element) ||
+            removeItem(group.entitiesB, element)
+          ) {
+            removed = true;
+          }
+        } else {
+          if (removeItem(group.entities, element)) {
+            removed = true;
+          }
+        }
+      } else if (group.type === 'static') {
+        if (removeItem(group.tilemaps, element)) {
+          removed = true;
+        }
+      }
+
+      if (removed) {
+        try {
+          // check if the group can run without the removed element
+          this.validateGroup(group);
+        } catch {
+          removeItem(this.groups, group);
+        }
+      }
     }
   }
 

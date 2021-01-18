@@ -26,7 +26,7 @@ export class Level extends Scene<AddonsType, EventsType> {
 
     this.registerAddons({
       animation: new Animation(),
-      collisions: new Addons.Collisions(),
+      collisions: new Addons.Collisions(this),
       entities: new Entities(this),
     });
 
