@@ -1,4 +1,4 @@
-import {utils} from 'pixi.js';
+import {removeItem} from './utils/array';
 
 export class Container<ChildType> {
   protected readonly children: ChildType[];
@@ -13,19 +13,13 @@ export class Container<ChildType> {
   }
 
   public removeChild<T extends ChildType[]>(...children: T): T[0] | null {
-    // for one argument we can bypass looping through them
+    // bypass loop
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {
         this.removeChild(children[i]);
       }
-    } else {
-      const child = children[0];
-      const index = this.children.indexOf(child);
-
-      if (index === -1) {
-        return null;
-      }
-      utils.removeItems(this.children, index, 1);
+    } else if (!removeItem(this.children, children[0])) {
+      return null;
     }
 
     return children[0];

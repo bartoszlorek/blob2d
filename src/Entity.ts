@@ -1,5 +1,5 @@
 import {DisplayObject} from 'pixi.js';
-import {VectorType} from './types';
+import {Vector2Type} from './types';
 import {Element} from './Element';
 import {Trait} from './Trait';
 
@@ -11,7 +11,7 @@ export class Entity<
   static EMPTY = new Entity(new DisplayObject(), {});
 
   public readonly type = 'entity';
-  public velocity: VectorType;
+  public velocity: Vector2Type;
   public trait: {[name: string]: Trait<AddonsType, TraitsType, EventsType>};
 
   private _traits: Trait<AddonsType, TraitsType, EventsType>[];

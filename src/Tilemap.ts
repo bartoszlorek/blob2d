@@ -1,5 +1,5 @@
 import {Container, DisplayObject} from 'pixi.js';
-import {VectorType} from './types';
+import {Vector2Type} from './types';
 import {Element} from './Element';
 
 export class Tilemap<
@@ -13,7 +13,7 @@ export class Tilemap<
 
   protected children: Map<number, DisplayObject>;
   protected _closestArray: number[];
-  protected _point: VectorType;
+  protected _point: Vector2Type;
 
   constructor(values: number[], dimension: number = 8, tilesize: number = 32) {
     super(new Container());
@@ -58,7 +58,7 @@ export class Tilemap<
     return x + this.dimension * y;
   }
 
-  public getPoint(index: number): VectorType {
+  public getPoint(index: number): Vector2Type {
     this._point[0] = index % this.dimension;
     this._point[1] = Math.floor(index / this.dimension);
     return this._point;

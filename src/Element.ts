@@ -9,12 +9,14 @@ export class Element<
 > extends BoundingBox {
   public readonly display: DisplayType;
   public scene: Scene<AddonsType, EventsType> | null;
+  public name: string | null;
 
   constructor(display: DisplayType) {
     super();
 
     this.display = display;
     this.scene = null;
+    this.name = null;
 
     // every element should update position at least once
     this.updateDisplayPosition();

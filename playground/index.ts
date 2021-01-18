@@ -15,14 +15,17 @@ const app = new Application({
 
 document.body.appendChild(app.view);
 
-loader.add('whiteBox', 'white_block.png').load(() => {
-  const docker = new Docker<AddonsType, EventsType>(app);
-  const level = new Level(loader.resources);
+loader
+  .add('blueBlock', 'blue_block.png')
+  .add('whiteBlock', 'white_block.png')
+  .load(() => {
+    const docker = new Docker<AddonsType, EventsType>(app);
+    const level = new Level(loader.resources);
 
-  docker.on('docker/mount', () => {
-    console.log('crazy wacky cool!');
+    docker.on('docker/mount', () => {
+      console.log('crazy wacky cool!');
+    });
+
+    docker.mount(level);
+    console.log(level);
   });
-
-  docker.mount(level);
-  console.log(level);
-});
