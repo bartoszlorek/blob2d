@@ -2,7 +2,7 @@ import {Sprite, IResourceDictionary} from 'pixi.js';
 import {Entity, Scene, Tilemap, Addons} from '../src';
 import {AddonsType, EventsType, PlayerTraits, EnemyTraits} from './types';
 import {Animation, Entities} from './addons';
-import {BorderLimit, FollowMouse, PatrolMove} from './traits';
+import {BorderLimit, FollowMouse, WaveMove} from './traits';
 
 // prettier-ignore
 const groundMap = [
@@ -45,7 +45,7 @@ export class Level extends Scene<AddonsType, EventsType> {
     const enemy = new Entity<AddonsType, EnemyTraits, EventsType>(
       new Sprite(resources['whiteBlock'].texture),
       {
-        patrolMove: new PatrolMove(),
+        waveMove: new WaveMove(),
       }
     );
     enemy.width = 32;
