@@ -27,7 +27,7 @@
 - ✅ Custom and predefined events related to game cycles
 - ❌ Sprite sheets manager
 - ❌ Tiled integration
-- ❌ Collisions
+- ✅ Collisions
 - ❌ Animations
 - ❌ User inputs
 - ❌ User interface
