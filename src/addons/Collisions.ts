@@ -1,4 +1,4 @@
-import {IAddon} from '../types';
+import {IAddon, Vector2Type} from '../types';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
 import {Tilemap} from '../Tilemap';
@@ -29,7 +29,7 @@ export class Collisions<
   >(
     entities: A | A[],
     tilemaps: B | B[],
-    callback: (entity: A, tilemap: B) => boolean
+    callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
   ): void {
     this.groups.push(
       this.validateGroup({
@@ -47,7 +47,7 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    callback: (entityA: A, entityB: B) => boolean
+    callback: (entityA: A, entityB: B, separation: Vector2Type) => boolean
   ): void {
     this.groups.push(
       this.validateGroup({
@@ -61,7 +61,7 @@ export class Collisions<
 
   public addSelfDynamic<A extends Entity<AddonsType, TraitsType, EventsType>>(
     entities: A[],
-    callback: (entityA: A, entityB: A) => boolean
+    callback: (entityA: A, entityB: A, separation: Vector2Type) => boolean
   ): void {
     this.groups.push(
       this.validateGroup({
@@ -210,14 +210,15 @@ export class Collisions<
     entity: A,
     tilemap: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B) => boolean
+    callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
   ): void {
-    if (!entity.intersects(tilemap, tilemap.tilesize)) return;
+    if (entity.intersects(tilemap, tilemap.tilesize)) {
+      const separation = getTileSeparation(tilemap, entity, deltaTime);
 
-    const separation = getTileSeparation(tilemap, entity, deltaTime);
-    if (separation[2] && callback(entity, tilemap)) {
-      entity.velocity[0] = separation[0];
-      entity.velocity[1] = separation[1];
+      if (separation && callback(entity, tilemap, separation)) {
+        entity.velocity[0] = separation[0];
+        entity.velocity[1] = separation[1];
+      }
     }
   }
 
@@ -228,17 +229,18 @@ export class Collisions<
     entityA: A,
     entityB: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B) => boolean
+    callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
   ): void {
-    if (!entityA.intersects(entityB)) return;
+    if (entityA.intersects(entityB)) {
+      const separation = getEntitySeparation(entityA, entityB, deltaTime);
 
-    const separation = getEntitySeparation(entityA, entityB, deltaTime);
-    if (callback(entityA, entityB)) {
-      // todo: use velocity instead of position
-      entityA.translateX(separation[0] / 2);
-      entityA.translateY(separation[1] / 2);
-      entityB.translateX(-separation[0] / 2);
-      entityB.translateY(-separation[1] / 2);
+      if (callback(entityA, entityB, separation)) {
+        // todo: use velocity instead of position
+        entityA.translateX(separation[0] / 2);
+        entityA.translateY(separation[1] / 2);
+        entityB.translateX(-separation[0] / 2);
+        entityB.translateY(-separation[1] / 2);
+      }
     }
   }
 

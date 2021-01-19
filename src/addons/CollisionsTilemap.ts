@@ -1,12 +1,11 @@
 import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
-import {Vector2Type, Vector3Type} from '../types';
+import {Vector2Type} from '../types';
 
 // pre-allocated data
 const _clone = new BoundingBox();
 const _vector2: Vector2Type = [0, 0];
-const _vector3: Vector3Type = [0, 0, 0];
 
 export function getTileSeparation<
   AddonsType extends {},
@@ -16,15 +15,12 @@ export function getTileSeparation<
   tilemap: Tilemap<AddonsType, EventsType>,
   entity: Entity<AddonsType, TraitsType, EventsType>,
   deltaTime: number
-): Vector3Type {
+): Vector2Type | null {
   _clone.copy(entity);
-  _vector3[0] = entity.velocity[0];
-  _vector3[1] = entity.velocity[1];
-  _vector3[2] = 0; //  no collision detected
 
   // position multiplied by deltaTime will give a shift in px
-  const velocityX = _vector3[0] * deltaTime;
-  const velocityY = _vector3[1] * deltaTime;
+  const velocityX = entity.velocity[0] * deltaTime;
+  const velocityY = entity.velocity[1] * deltaTime;
 
   // to prevent "wall sliding" issue, collision detection requires
   // perform the x move and the y move as separate steps
@@ -34,17 +30,24 @@ export function getTileSeparation<
   // correct position of cloned bbox is not needed after y step
   const separationY = getSeparationComponent(1, velocityY, tilemap, _clone);
 
+  // no collision detected on both axis
+  if (separationX === null && separationY === null) {
+    return null;
+  }
+
   if (separationX !== null) {
-    _vector3[0] = separationX / deltaTime;
-    _vector3[2] = 1;
+    _vector2[0] = separationX / deltaTime;
+  } else {
+    _vector2[0] = entity.velocity[0];
   }
 
   if (separationY !== null) {
-    _vector3[1] = separationY / deltaTime;
-    _vector3[2] = 1;
+    _vector2[1] = separationY / deltaTime;
+  } else {
+    _vector2[1] = entity.velocity[1];
   }
 
-  return _vector3;
+  return _vector2;
 }
 
 // https://jonathanwhiting.com/tutorial/collision/
