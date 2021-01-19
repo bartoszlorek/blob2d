@@ -1,24 +1,37 @@
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
+import {Vector2Type} from '../types';
 
 interface ICollisionStaticGroup<A, T, E extends string> {
   readonly type: 'static';
   readonly entities: Entity<A, T, E>[];
   readonly tilemaps: Tilemap<A, E>[];
-  callback(entity: Entity<A, T, E>, tilemap: Tilemap<A, E>): boolean;
+  callback(
+    entity: Entity<A, T, E>,
+    tilemap: Tilemap<A, E>,
+    separation: Vector2Type
+  ): boolean;
 }
 
 interface ICollisionDynamicGroup<A, T, E extends string> {
   readonly type: 'dynamic';
   readonly entitiesA: Entity<A, T, E>[];
   readonly entitiesB: Entity<A, T, E>[];
-  callback(entityA: Entity<A, T, E>, entityB: Entity<A, T, E>): boolean;
+  callback(
+    entityA: Entity<A, T, E>,
+    entityB: Entity<A, T, E>,
+    separation: Vector2Type
+  ): boolean;
 }
 
 interface ICollisionSelfDynamicGroup<A, T, E extends string> {
   readonly type: 'self_dynamic';
   readonly entities: Entity<A, T, E>[];
-  callback(entityA: Entity<A, T, E>, entityB: Entity<A, T, E>): boolean;
+  callback(
+    entityA: Entity<A, T, E>,
+    entityB: Entity<A, T, E>,
+    separation: Vector2Type
+  ): boolean;
 }
 
 export type ICollisionGroup<A, T, E extends string> =
