@@ -25,7 +25,7 @@
 - ✅ Traits system extending the functionality of sprites
 - ✅ Tiles structure with methods to interact with them
 - ✅ Custom and predefined events related to game cycles
-- ❌ Sprite sheets manager
+- ✅ Sprite sheets manager
 - ❌ Tiled integration
 - ✅ Collisions
 - ❌ Animations
