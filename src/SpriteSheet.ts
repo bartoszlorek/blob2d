@@ -10,11 +10,11 @@ interface BaseSpriteSheet {
 }
 
 export class SpriteSheet {
-  protected sheets: Array<BaseSpriteSheet>;
+  protected sheets: BaseSpriteSheet[];
   protected cachedTextures: Map<number, Texture>;
 
-  constructor(sheets: Array<BaseSpriteSheet>) {
-    this.sheets = sheets;
+  constructor(sheets: BaseSpriteSheet[]) {
+    this.sheets = [...sheets];
     this.cachedTextures = new Map();
   }
 
