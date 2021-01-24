@@ -1,10 +1,11 @@
-type Property = {
+interface Property {
   name: string;
   type: string;
   value: number | string | boolean;
-};
+}
 
-type FiniteTileLayer = {
+export interface FiniteTileLayer {
+  chunks: void; // to discriminating unions
   data: number[];
   height: number;
   id: number;
@@ -15,18 +16,17 @@ type FiniteTileLayer = {
   width: number;
   x: number;
   y: number;
-};
+}
 
-type InfiniteTileLayer = {
-  chunks: [
-    {
-      data: number[];
-      height: number;
-      width: number;
-      x: number;
-      y: number;
-    }
-  ];
+export interface InfiniteTileLayer {
+  data: void; // to discriminating unions
+  chunks: {
+    data: number[];
+    height: number;
+    width: number;
+    x: number;
+    y: number;
+  }[];
   height: number;
   id: number;
   name: string;
@@ -38,43 +38,21 @@ type InfiniteTileLayer = {
   width: number;
   x: number;
   y: number;
-};
+}
 
-type ObjectLayer = {
-  draworder: 'topdown' | 'index';
-  id: number;
-  name: string;
-  objects: unknown[];
-  opacity: number;
+interface ObjectLayer {
   type: 'objectgroup';
-  visible: boolean;
-  x: number;
-  y: number;
-};
+}
 
-type ImageLayer = {
-  id: number;
-  image: string;
-  name: string;
-  opacity: number;
+interface ImageLayer {
   type: 'imagelayer';
-  visible: boolean;
-  x: number;
-  y: number;
-};
+}
 
-type GroupLayer = {
-  id: number;
-  layers: unknown[];
-  name: string;
-  opacity: number;
+interface GroupLayer {
   type: 'group';
-  visible: boolean;
-  x: number;
-  y: number;
-};
+}
 
-export type TiledMapJson = {
+export interface TiledMapJson {
   backgroundcolor: string;
   compressionlevel: number;
   editorsettings: {
@@ -111,9 +89,9 @@ export type TiledMapJson = {
   type: 'map';
   version: number;
   width: number;
-};
+}
 
-export type TiledTilesetJson = {
+export interface TiledTilesetJson {
   columns: number;
   image: string;
   imageheight: number;
@@ -127,4 +105,4 @@ export type TiledTilesetJson = {
   tilewidth: number;
   type: 'tileset';
   version: number;
-};
+}
