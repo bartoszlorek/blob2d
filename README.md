@@ -26,7 +26,7 @@
 - ✅ Tiles structure with methods to interact with them
 - ✅ Custom and predefined events related to game cycles
 - ✅ Sprite sheets manager
-- ❌ Tiled integration
+- ✅ Tiled integration
 - ✅ Collisions
 - ❌ Animations
 - ❌ User inputs
