@@ -8,24 +8,21 @@ PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
 const loader = new Loader();
 const app = new Application({
-  backgroundColor: 0x161e21,
+  backgroundColor: 0x68aed4,
   antialias: false,
   resizeTo: window,
 });
 
 document.body.appendChild(app.view);
 
-loader
-  .add('blueBlock', 'blue_block.png')
-  .add('whiteBlock', 'white_block.png')
-  .load(() => {
-    const docker = new Docker<AddonsType, EventsType>(app);
-    const level = new Level(loader.resources);
+loader.add('sprites', './assets/sprites.png').load(() => {
+  const docker = new Docker<AddonsType, EventsType>(app);
+  const level = new Level(loader.resources);
 
-    docker.on('docker/mount', () => {
-      console.log('crazy wacky cool!');
-    });
-
-    docker.mount(level);
-    console.log(level);
+  docker.on('docker/mount', () => {
+    console.log('crazy wacky cool!');
   });
+
+  docker.mount(level);
+  console.log(level);
+});
