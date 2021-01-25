@@ -1,7 +1,7 @@
 {
   "name": "blob2d",
-  "version": "0.1.1",
-  "description": "Modular 2D Game Engine for Web",
+  "version": "0.1.2",
+  "description": "Typed Modular 2D Game Engine for Web",
   "scripts": {
     "start": "webpack serve"
   },
