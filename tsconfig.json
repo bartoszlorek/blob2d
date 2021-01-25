@@ -3,6 +3,7 @@
     "strict": true,
     "target": "esnext",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "declaration": true,
     "emitDeclarationOnly": true,
     "isolatedModules": true,

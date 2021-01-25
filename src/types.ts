@@ -10,3 +10,8 @@ export interface ITrait {
   update(deltaTime: number): void;
   destroy(): void;
 }
+
+export interface ISpriteSheet<Texture> {
+  getTextureById(id: number): Texture | null;
+  destroy(): void;
+}

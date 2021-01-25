@@ -212,7 +212,7 @@ export class Collisions<
     deltaTime: number,
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
   ): void {
-    if (entity.intersects(tilemap, tilemap.tilesize)) {
+    if (entity.intersects(tilemap.actualBounds, tilemap.tilesize)) {
       const separation = getTileSeparation(tilemap, entity, deltaTime);
 
       if (separation && callback(entity, tilemap, separation)) {

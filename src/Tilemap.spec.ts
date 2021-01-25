@@ -5,7 +5,7 @@ jest.mock('pixi.js', () => ({
 }));
 
 describe('Tilemap()', () => {
-  describe('boundingBox', () => {
+  describe('BoundingBox inheritance', () => {
     it('calculates bounds', () => {
       // prettier-ignore
       const map = new Tilemap([
@@ -17,8 +17,22 @@ describe('Tilemap()', () => {
       expect(map.min).toEqual([0, 0]);
       expect(map.max).toEqual([128, 96]);
     });
+  });
 
-    it('calculates bounds with empty cells on edges', () => {
+  describe('calculateActualBounds()', () => {
+    it('calculates actual bounds', () => {
+      // prettier-ignore
+      const map = new Tilemap([
+        0, 0, 1, 1,
+        1, 1, 1, 0,
+        0, 1, 1, 0
+      ], 4);
+
+      expect(map.actualBounds.min).toEqual([0, 0]);
+      expect(map.actualBounds.max).toEqual([128, 96]);
+    });
+
+    it('excludes empty tiles on edges in the calculation', () => {
       // prettier-ignore
       const map = new Tilemap([
         0, 0, 0, 0,
@@ -26,11 +40,9 @@ describe('Tilemap()', () => {
         0, 0, 0, 0
       ], 4);
 
-      expect(map.min).toEqual([64, 32]);
-      expect(map.max).toEqual([96, 64]);
+      expect(map.actualBounds.min).toEqual([64, 32]);
+      expect(map.actualBounds.max).toEqual([96, 64]);
     });
-
-    it('re-calculates bounds', () => {});
   });
 
   describe('closest()', () => {

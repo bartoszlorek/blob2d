@@ -1,6 +1,7 @@
 import {DisplayObject} from 'pixi.js';
 import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
+import {Vector2Type} from './types';
 
 export class Element<
   AddonsType extends {},
@@ -11,8 +12,8 @@ export class Element<
   public scene: Scene<AddonsType, EventsType> | null;
   public name: string | null;
 
-  constructor(display: DisplayType) {
-    super();
+  constructor(display: DisplayType, min?: Vector2Type, max?: Vector2Type) {
+    super(min, max);
 
     this.display = display;
     this.scene = null;

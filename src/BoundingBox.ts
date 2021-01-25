@@ -1,8 +1,8 @@
 import {Vector2Type} from './types';
 
 export class BoundingBox {
-  public min: Vector2Type;
-  public max: Vector2Type;
+  public readonly min: Vector2Type;
+  public readonly max: Vector2Type;
 
   private _width: number;
   private _height: number;

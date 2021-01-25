@@ -1,24 +1,45 @@
 import {Sprite, IResourceDictionary} from 'pixi.js';
-import {Entity, Scene, Tilemap, Addons} from '../src';
-import {AddonsType, EventsType, PlayerTraits, EnemyTraits} from './types';
+import {
+  Entity,
+  Scene,
+  Tilemap,
+  Addons,
+  TiledMapper,
+  TiledSpriteSheet,
+} from '../src';
+import {AddonsType, EventsType, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
-import {BorderLimit, FollowMouse, WaveMove} from './traits';
+import {BorderLimit, FollowMouse} from './traits';
+import {tilesets, demo01Map} from './assets';
 
-// prettier-ignore
-const groundMap = [
-  1, 1, 1, 1, 1, 0,
-  0, 0, 0, 0, 1, 0,
-  0, 0, 0, 0, 1, 1,
-  1, 0, 0, 0, 0, 0,
-  1, 0, 0, 0, 0, 0,
-  1, 1, 1, 1, 1, 0
-];
+function makePlayer(spritesheet: TiledSpriteSheet) {
+  return (tileid: number, x: number, y: number) => {
+    const player = new Entity<AddonsType, PlayerTraits, EventsType>(
+      new Sprite(spritesheet.getTextureById(tileid)),
+      {
+        followMouse: new FollowMouse(10),
+        borderLimit: new BorderLimit(),
+      }
+    );
 
-// prettier-ignore
-const platformMap = [
-  1, 1, 1, 1,
-  0, 0, 0, 1,
-];
+    player.x = x;
+    player.y = y;
+    player.width = 32;
+    player.height = 32;
+    player.name = 'player';
+    return player;
+  };
+}
+
+function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
+  return (tileids: number[], columns: number, x: number, y: number) => {
+    const map = new Tilemap<AddonsType, EventsType>(tileids, columns);
+
+    map.fill((tileid) => new Sprite(spritesheet.getTextureById(tileid)));
+    map.setPosition(x, y);
+    return map;
+  };
+}
 
 export class Level extends Scene<AddonsType, EventsType> {
   constructor(resources: IResourceDictionary) {
@@ -30,49 +51,19 @@ export class Level extends Scene<AddonsType, EventsType> {
       entities: new Entities(this),
     });
 
-    const player = new Entity<AddonsType, PlayerTraits, EventsType>(
-      new Sprite(resources['blueBlock'].texture),
-      {
-        followMouse: new FollowMouse(10),
-        borderLimit: new BorderLimit(),
-      }
-    );
-    player.width = 32;
-    player.height = 32;
-    player.velocity = [300, 0];
-    player.name = 'player';
+    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
+    const mapper = new TiledMapper(demo01Map);
 
-    const enemy = new Entity<AddonsType, EnemyTraits, EventsType>(
-      new Sprite(resources['whiteBlock'].texture),
-      {
-        waveMove: new WaveMove(),
-      }
-    );
-    enemy.width = 32;
-    enemy.height = 32;
-    enemy.x = 484;
-    enemy.y = 200;
+    const player = mapper.querySprite('player', makePlayer(spritesheet));
+    const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
+    const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
+    const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
 
-    const ground = new Tilemap<AddonsType, EventsType>(groundMap, 6);
-    ground.fill(() => new Sprite(resources['whiteBlock'].texture));
-    ground.x = 100;
-    ground.y = 200;
-
-    const platform = new Tilemap<AddonsType, EventsType>(platformMap, 4);
-    platform.fill(() => new Sprite(resources['whiteBlock'].texture));
-    platform.x = 356;
-    platform.y = 264;
-
-    // todo: handle update position internally
-    ground.updateDisplayPosition();
-    platform.updateDisplayPosition();
-
-    this.addChild(ground, platform, player, enemy);
+    this.addChild(...ground, ...boxes, player, ...front);
     this.addon.animation.animate();
-    this.addon.entities.addChild(player, enemy);
-
-    this.addon.collisions.addStatic([player, enemy], [ground, platform], cb);
-    this.addon.collisions.addDynamic(player, enemy, cb);
+    this.addon.entities.addChild(player);
+    this.addon.collisions.addStatic(player, ground, cb);
+    // this.addon.collisions.addDynamic(player, enemy, cb);
   }
 }
 

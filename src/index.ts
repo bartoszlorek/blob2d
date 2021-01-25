@@ -1,5 +1,6 @@
 export * from './types';
 export * as Addons from './addons';
+export * from './tiled';
 export {BoundingBox} from './BoundingBox';
 export {Camera} from './Camera';
 export {Container} from './Container';
@@ -7,8 +8,5 @@ export {Docker} from './Docker';
 export {Element} from './Element';
 export {Entity} from './Entity';
 export {Scene} from './Scene';
-export {SpriteSheet} from './SpriteSheet';
-export {TiledMapper} from './TiledMapper';
-export {TiledSheet} from './TiledSheet';
 export {Tilemap} from './Tilemap';
 export {Trait} from './Trait';

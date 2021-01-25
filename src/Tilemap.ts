@@ -1,5 +1,6 @@
 import {Container, DisplayObject} from 'pixi.js';
 import {Vector2Type} from './types';
+import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
 
 export class Tilemap<
@@ -8,27 +9,35 @@ export class Tilemap<
 > extends Element<AddonsType, EventsType, Container> {
   public readonly type = 'tilemap';
   public readonly values: number[];
-  public readonly dimension: number;
   public readonly tilesize: number;
+  public readonly columns: number;
+  public readonly actualBounds: BoundingBox;
 
   protected children: Map<number, DisplayObject>;
   protected _closestArray: number[];
   protected _point: Vector2Type;
 
-  constructor(values: number[], dimension: number = 8, tilesize: number = 32) {
-    super(new Container());
+  constructor(values: number[], columns: number = 8, tilesize: number = 32) {
+    super(
+      new Container(),
+      // initial min position
+      [0, 0],
+      // initial max position
+      [columns * tilesize, Math.ceil(values.length / columns) * tilesize]
+    );
 
     this.values = values;
-    this.children = new Map();
-    this.dimension = dimension;
     this.tilesize = tilesize;
+    this.columns = columns;
+    this.actualBounds = new BoundingBox();
+    this.children = new Map();
 
     // pre-allocated data
     this._closestArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._point = [0, 0];
 
     // initial calculation
-    this.calculateBoundingBox();
+    this.calculateActualBounds();
   }
 
   public fill<T extends DisplayObject>(
@@ -54,26 +63,33 @@ export class Tilemap<
     this.updateCache();
   }
 
+  public setPosition(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    this.calculateActualBounds();
+    this.updateDisplayPosition();
+  }
+
   public getIndex(x: number, y: number): number {
-    return x + this.dimension * y;
+    return x + this.columns * y;
   }
 
   public getPoint(index: number): Vector2Type {
-    this._point[0] = index % this.dimension;
-    this._point[1] = Math.floor(index / this.dimension);
+    this._point[0] = index % this.columns;
+    this._point[1] = Math.floor(index / this.columns);
     return this._point;
   }
 
   public removeByIndex(index: number): void {
     const child = this.children.get(index);
 
-    if (!child) return;
+    if (child === undefined) return;
     this.values[index] = 0;
     this.children.delete(index);
     this.display.removeChild(child);
 
     // cleanup
-    this.calculateBoundingBox();
+    this.calculateActualBounds();
     this.updateCache();
   }
 
@@ -94,9 +110,9 @@ export class Tilemap<
     const row1 = y >= 0;
     const row2 = y + 1 >= 0;
 
-    const col0 = !(x - 1 < 0 || x - 1 >= this.dimension);
-    const col1 = !(x < 0 || x >= this.dimension);
-    const col2 = !(x + 1 < 0 || x + 1 >= this.dimension);
+    const col0 = !(x - 1 < 0 || x - 1 >= this.columns);
+    const col1 = !(x < 0 || x >= this.columns);
+    const col2 = !(x + 1 < 0 || x + 1 >= this.columns);
 
     arr[0] = row0 && col0 ? this.values[start0] || 0 : 0;
     arr[1] = row0 && col1 ? this.values[start0 + 1] || 0 : 0;
@@ -149,10 +165,12 @@ export class Tilemap<
     }
   }
 
-  protected calculateBoundingBox(): void {
+  // this method exists for optimization and should be
+  // called whenever the Tilemap changes general position
+  protected calculateActualBounds(): void {
     if (this.values.length === 0) {
-      this.width = 0;
-      this.height = 0;
+      this.actualBounds.width = 0;
+      this.actualBounds.height = 0;
       return;
     }
 
@@ -164,7 +182,7 @@ export class Tilemap<
     // search in a direction from top to bottom
     for (let index = 0; index < this.values.length; index++) {
       if (this.values[index] > 0) {
-        top = Math.floor(index / this.dimension);
+        top = Math.floor(index / this.columns);
         break;
       }
     }
@@ -172,18 +190,18 @@ export class Tilemap<
     // search in a direction from bottom to top
     for (let index = this.values.length - 1; index >= 0; index--) {
       if (this.values[index] > 0) {
-        bottom = Math.floor(index / this.dimension);
+        bottom = Math.floor(index / this.columns);
         break;
       }
     }
 
-    const rowsAmount = Math.ceil(this.values.length / this.dimension);
+    const rowsAmount = Math.ceil(this.values.length / this.columns);
     let col = 0;
     let row = 0;
 
     // search in a direction from left to right
     for (let index = 0; index < this.values.length; index++) {
-      if (this.values[row * this.dimension + col] > 0) {
+      if (this.values[row * this.columns + col] > 0) {
         left = col;
         break;
       }
@@ -194,12 +212,12 @@ export class Tilemap<
       }
     }
 
-    col = this.dimension - 1;
+    col = this.columns - 1;
     row = 0;
 
     // search in a direction from right to left
     for (let index = 0; index < this.values.length; index++) {
-      if (this.values[row * this.dimension + col] > 0) {
+      if (this.values[row * this.columns + col] > 0) {
         right = col;
         break;
       }
@@ -210,10 +228,10 @@ export class Tilemap<
       }
     }
 
-    this.min[0] = left * this.tilesize;
-    this.min[1] = top * this.tilesize;
-    this.width = (right - left + 1) * this.tilesize;
-    this.height = (bottom - top + 1) * this.tilesize;
+    this.actualBounds.min[0] = this.min[0] + left * this.tilesize;
+    this.actualBounds.min[1] = this.min[1] + top * this.tilesize;
+    this.actualBounds.width = (right - left + 1) * this.tilesize;
+    this.actualBounds.height = (bottom - top + 1) * this.tilesize;
   }
 
   public destroy(): void {
