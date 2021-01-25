@@ -1,6 +1,6 @@
 import {BaseTexture, Texture, Rectangle, IResourceDictionary} from 'pixi.js';
 import {ISpriteSheet} from '../types';
-import {TiledMapJson, TiledTilesetJson} from './types';
+import {ITiledMapJSON, ITiledTilesetDictionary} from './types';
 
 interface SourceTileset {
   baseTexture: BaseTexture;
@@ -15,8 +15,8 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
   protected sourceTilesets: SourceTileset[];
 
   constructor(
-    map: TiledMapJson,
-    tilesets: {[name: string]: TiledTilesetJson},
+    map: ITiledMapJSON,
+    tilesets: ITiledTilesetDictionary,
     resources: IResourceDictionary
   ) {
     this.cachedTextures = new Map();

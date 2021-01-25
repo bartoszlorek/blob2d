@@ -1,12 +1,19 @@
-import {TiledMapJson, FiniteTileLayer, InfiniteTileLayer} from './types';
+import {
+  ITiledMapJSON,
+  ITiledFiniteTileLayer,
+  ITiledInfiniteTileLayer,
+} from './types';
 
 type SpritesIteratee = (tileid: number, x: number, y: number) => void;
 type TilesIteratee = (tileids: number[], x: number, y: number) => void;
 
 export class TiledMapper {
-  protected layers: Map<string, FiniteTileLayer | InfiniteTileLayer>;
+  protected layers: Map<
+    string,
+    ITiledFiniteTileLayer | ITiledInfiniteTileLayer
+  >;
 
-  constructor(map: TiledMapJson) {
+  constructor(map: ITiledMapJSON) {
     this.layers = new Map();
 
     for (let i = 0; i < map.layers.length; i++) {

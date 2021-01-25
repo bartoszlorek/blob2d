@@ -1,16 +1,17 @@
-interface Property {
+interface ITiledProperty {
   name: string;
   type: string;
   value: number | string | boolean;
 }
 
-export interface FiniteTileLayer {
-  chunks: void; // to discriminating unions
+export interface ITiledFiniteTileLayer {
+  chunks?: void; // to discriminating unions
   data: number[];
   height: number;
   id: number;
   name: string;
   opacity: number;
+  properties?: ITiledProperty[];
   type: 'tilelayer';
   visible: boolean;
   width: number;
@@ -18,8 +19,8 @@ export interface FiniteTileLayer {
   y: number;
 }
 
-export interface InfiniteTileLayer {
-  data: void; // to discriminating unions
+export interface ITiledInfiniteTileLayer {
+  data?: void; // to discriminating unions
   chunks: {
     data: number[];
     height: number;
@@ -31,6 +32,7 @@ export interface InfiniteTileLayer {
   id: number;
   name: string;
   opacity: number;
+  properties?: ITiledProperty[];
   startx: number;
   starty: number;
   type: 'tilelayer';
@@ -40,19 +42,22 @@ export interface InfiniteTileLayer {
   y: number;
 }
 
-interface ObjectLayer {
+// unsupported layer
+interface ITiledObjectLayer {
   type: 'objectgroup';
 }
 
-interface ImageLayer {
+// unsupported layer
+interface ITiledImageLayer {
   type: 'imagelayer';
 }
 
-interface GroupLayer {
+// unsupported layer
+interface ITiledGroupLayer {
   type: 'group';
 }
 
-export interface TiledMapJson {
+export interface ITiledMapJSON {
   backgroundcolor: string;
   compressionlevel: number;
   editorsettings: {
@@ -61,23 +66,23 @@ export interface TiledMapJson {
       width: number;
     };
     export: {
-      format: 'json';
-      target: string;
+      format?: 'json';
+      target?: string;
     };
   };
   height: number;
   infinite: boolean;
   layers: (
-    | FiniteTileLayer
-    | InfiniteTileLayer
-    | ObjectLayer
-    | ImageLayer
-    | GroupLayer
+    | ITiledFiniteTileLayer
+    | ITiledInfiniteTileLayer
+    | ITiledObjectLayer
+    | ITiledImageLayer
+    | ITiledGroupLayer
   )[];
   nextlayerid: number;
   nextobjectid: number;
   orientation: 'orthogonal' | 'isometric' | 'staggered' | 'hexagonal';
-  properties: Property[];
+  properties?: ITiledProperty[];
   renderorder: 'right-down' | 'right-up' | 'left-down' | 'left-up';
   tiledversion: string;
   tileheight: number;
@@ -91,7 +96,7 @@ export interface TiledMapJson {
   width: number;
 }
 
-export interface TiledTilesetJson {
+export interface ITiledTilesetJSON {
   columns: number;
   image: string;
   imageheight: number;
@@ -105,4 +110,8 @@ export interface TiledTilesetJson {
   tilewidth: number;
   type: 'tileset';
   version: number;
+}
+
+export interface ITiledTilesetDictionary {
+  [name: string]: ITiledTilesetJSON;
 }
