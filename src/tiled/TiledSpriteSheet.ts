@@ -26,6 +26,14 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
       const name = tileset.source.replace('.json', '');
       const nextTileset = sets[index + 1];
 
+      if (tilesets[name] === undefined) {
+        throw new Error(`"${name}" is not defined tileset.`);
+      }
+
+      if (resources[name] === undefined) {
+        throw new Error(`"${name}" is not defined asset of tileset.`);
+      }
+
       return {
         baseTexture: resources[name].texture.baseTexture,
         columns: tilesets[name].columns,
@@ -36,9 +44,9 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
     });
   }
 
-  public getTextureById(tilegid: number): Texture | null {
+  public getTextureById(tilegid: number): Texture {
     if (this.cachedTextures.has(tilegid)) {
-      return this.cachedTextures.get(tilegid) ?? null;
+      return this.cachedTextures.get(tilegid) as Texture;
     }
 
     for (let i = 0; i < this.sourceTilesets.length; i++) {
@@ -49,7 +57,7 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
       }
     }
 
-    return null;
+    throw new Error(`missing texture with gid:${tilegid}`);
   }
 
   protected getTexture(tilegid: number, tileset: SourceTileset): Texture {
