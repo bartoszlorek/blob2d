@@ -5,6 +5,7 @@ module.exports = {
   entry: './playground/index.ts',
   output: {
     filename: 'scripts.js',
+    path: path.join(__dirname, 'playground'),
   },
   devtool: false,
   devServer: {
