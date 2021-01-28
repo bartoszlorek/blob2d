@@ -1,5 +1,7 @@
 # Blöb2D Game Engine 🎮
 
+🚀 Playable demo available here http://bartoszlorek.pl/run/blob2d/ 💾
+
 <p align="center">
   <img width="500" src="https://user-images.githubusercontent.com/13873576/104199289-8e224380-5427-11eb-861f-20b5a12ef347.png">
 </p>
