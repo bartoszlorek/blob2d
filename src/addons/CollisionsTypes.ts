@@ -1,6 +1,6 @@
+import {Vector2Type} from '../_types';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
-import {Vector2Type} from '../types';
 
 interface ICollisionStaticGroup<A, T, E extends string> {
   readonly type: 'static';

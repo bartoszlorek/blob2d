@@ -1,5 +1,5 @@
+import {Vector2Type} from '../_types';
 import {Entity} from '../Entity';
-import {Vector2Type} from '../types';
 
 // pre-allocated data
 const _vector2: Vector2Type = [0, 0];

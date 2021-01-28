@@ -1,7 +1,7 @@
+import {Vector2Type} from '../_types';
 import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
-import {Vector2Type} from '../types';
 
 // pre-allocated data
 const _clone = new BoundingBox();

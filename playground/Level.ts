@@ -1,4 +1,3 @@
-import {Sprite, IResourceDictionary} from 'pixi.js';
 import {
   Entity,
   Scene,
@@ -7,6 +6,7 @@ import {
   TiledMapper,
   TiledSpriteSheet,
 } from '../src';
+import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {AddonsType, EventsType, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
@@ -33,7 +33,11 @@ function makePlayer(spritesheet: TiledSpriteSheet) {
 
 function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   return (tileids: number[], columns: number, x: number, y: number) => {
-    const map = new Tilemap<AddonsType, EventsType>(tileids, columns);
+    const map = new Tilemap<AddonsType, EventsType>(
+      new Container(),
+      tileids,
+      columns
+    );
 
     map.fill((tileid) => new Sprite(spritesheet.getTextureById(tileid)));
     map.setPosition(x, y);
@@ -43,7 +47,7 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
 
 export class Level extends Scene<AddonsType, EventsType> {
   constructor(resources: IResourceDictionary) {
-    super();
+    super(Container);
 
     this.registerAddons({
       animation: new Animation(),

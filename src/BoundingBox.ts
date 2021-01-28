@@ -1,4 +1,4 @@
-import {Vector2Type} from './types';
+import {Vector2Type} from './_types';
 
 export class BoundingBox {
   public readonly min: Vector2Type;

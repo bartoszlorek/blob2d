@@ -1,12 +1,12 @@
-import {DisplayObject} from 'pixi.js';
+import {Vector2Type} from './_types';
+import {IDisplayObject} from './_pixijs';
 import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
-import {Vector2Type} from './types';
 
 export class Element<
   AddonsType extends {},
   EventsType extends string,
-  DisplayType extends DisplayObject = DisplayObject
+  DisplayType extends IDisplayObject = IDisplayObject
 > extends BoundingBox {
   public readonly display: DisplayType;
   public scene: Scene<AddonsType, EventsType> | null;

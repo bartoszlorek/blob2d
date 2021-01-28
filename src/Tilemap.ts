@@ -1,25 +1,30 @@
-import {Container, DisplayObject} from 'pixi.js';
-import {Vector2Type} from './types';
+import {Vector2Type} from './_types';
+import {IContainer, IDisplayObject} from './_pixijs';
 import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
 
 export class Tilemap<
   AddonsType extends {},
   EventsType extends string
-> extends Element<AddonsType, EventsType, Container> {
+> extends Element<AddonsType, EventsType, IContainer> {
   public readonly type = 'tilemap';
   public readonly values: number[];
   public readonly tilesize: number;
   public readonly columns: number;
   public readonly actualBounds: BoundingBox;
 
-  protected children: Map<number, DisplayObject>;
+  protected children: Map<number, IDisplayObject>;
   protected _closestArray: number[];
   protected _point: Vector2Type;
 
-  constructor(values: number[], columns: number = 8, tilesize: number = 32) {
+  constructor(
+    display: IContainer,
+    values: number[],
+    columns: number = 8,
+    tilesize: number = 32
+  ) {
     super(
-      new Container(),
+      display,
       // initial min position
       [0, 0],
       // initial max position
@@ -40,7 +45,7 @@ export class Tilemap<
     this.calculateActualBounds();
   }
 
-  public fill<T extends DisplayObject>(
+  public fill<T extends IDisplayObject>(
     iteratee: (tileId: number, x: number, y: number) => T
   ): void {
     this.children.clear();
@@ -53,8 +58,8 @@ export class Tilemap<
         const [x, y] = this.getPoint(index);
         const child = iteratee(tileId, x, y);
 
-        child.position.x = x * this.tilesize;
-        child.position.y = y * this.tilesize;
+        child.x = x * this.tilesize;
+        child.y = y * this.tilesize;
         this.children.set(index, child);
         this.display.addChild(child);
       }
@@ -63,7 +68,7 @@ export class Tilemap<
     this.updateCache();
   }
 
-  public setPosition(x: number, y: number) {
+  public setPosition(x: number, y: number): void {
     this.x = x;
     this.y = y;
     this.calculateActualBounds();
@@ -94,7 +99,7 @@ export class Tilemap<
   }
 
   // important! caching requires preloaded assets
-  public updateCache() {
+  public updateCache(): void {
     this.display.cacheAsBitmap = false;
     this.display.cacheAsBitmap = true;
   }

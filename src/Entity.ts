@@ -1,5 +1,5 @@
-import {DisplayObject} from 'pixi.js';
-import {Vector2Type} from './types';
+import {Vector2Type} from './_types';
+import {IDisplayObject, NopDisplayObject} from './_pixijs';
 import {Element} from './Element';
 import {Trait} from './Trait';
 
@@ -8,7 +8,7 @@ export class Entity<
   TraitsType extends {},
   EventsType extends string
 > extends Element<AddonsType, EventsType> {
-  static EMPTY = new Entity(new DisplayObject(), {});
+  static EMPTY = new Entity(new NopDisplayObject(), {});
 
   public readonly type = 'entity';
   public velocity: Vector2Type;
@@ -16,7 +16,7 @@ export class Entity<
 
   private _traits: Trait<AddonsType, TraitsType, EventsType>[];
 
-  constructor(display: DisplayObject, traits: TraitsType) {
+  constructor(display: IDisplayObject, traits: TraitsType) {
     super(display);
 
     this.velocity = [0, 0];
@@ -44,7 +44,7 @@ export class Entity<
     }
   }
 
-  public destroy() {
+  public destroy(): void {
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].destroy();
     }
