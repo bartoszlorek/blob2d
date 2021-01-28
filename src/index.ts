@@ -1,4 +1,4 @@
-export * from './types';
+export * from './_types';
 export * as Addons from './addons';
 export * from './tiled';
 export {BoundingBox} from './BoundingBox';

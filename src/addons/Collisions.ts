@@ -1,8 +1,8 @@
-import {IAddon, Vector2Type} from '../types';
+import {IAddon, Vector2Type} from '../_types';
+import {refineArray, removeItem} from '../utils/array';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
 import {Tilemap} from '../Tilemap';
-import {refineArray, removeItem} from '../utils/array';
 
 import {getEntitySeparation} from './CollisionsEntity';
 import {getTileSeparation} from './CollisionsTilemap';

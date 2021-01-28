@@ -1,7 +1,7 @@
-import {ITrait} from './types';
+import {ITrait} from './_types';
 import {Entity} from './Entity';
 
-export class Trait<
+export abstract class Trait<
   AddonsType extends {},
   TraitsType extends {},
   EventsType extends string
