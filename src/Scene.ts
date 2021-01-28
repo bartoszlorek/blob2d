@@ -1,6 +1,6 @@
-import {Container} from 'pixi.js';
+import {IAddon} from './_types';
+import {IContainerConstructor, IContainer} from './_pixijs';
 import {EventEmitter} from 'eventemitter3';
-import {IAddon} from './types';
 import {Element} from './Element';
 
 export type OwnEventsType =
@@ -13,26 +13,26 @@ export class Scene<
   EventsType extends string
 > extends EventEmitter<EventsType | OwnEventsType> {
   public addon: AddonsType;
-  public graphics: Container;
+  public graphics: IContainer;
 
-  protected background: Container;
-  protected foreground: Container;
+  protected background: IContainer;
+  protected foreground: IContainer;
 
   private _addons: IAddon[];
   private _removeStack: Element<AddonsType, EventsType>[];
   private _removeIndex: number;
 
-  constructor() {
+  constructor(BaseContainer: IContainerConstructor) {
     super();
 
     this.addon = {} as AddonsType;
     this._addons = [];
 
     // main layers
-    this.background = new Container();
-    this.foreground = new Container();
+    this.background = new BaseContainer();
+    this.foreground = new BaseContainer();
 
-    this.graphics = new Container();
+    this.graphics = new BaseContainer();
     this.graphics.addChild(this.background, this.foreground);
 
     // processing

@@ -1,4 +1,4 @@
-import {Application} from 'pixi.js';
+import {IApplication} from './_pixijs';
 import {EventEmitter} from 'eventemitter3';
 import {Scene} from './Scene';
 
@@ -12,10 +12,10 @@ export class Docker<
 > extends EventEmitter<EventsType | OwnEventsType> {
   public scene: Scene<AddonsType, EventsType> | null;
 
-  private app: Application;
+  private app: IApplication;
   private accumulatedTime: number;
 
-  constructor(app: Application) {
+  constructor(app: IApplication) {
     super();
 
     this.scene = null;
