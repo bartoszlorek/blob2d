@@ -1,16 +1,16 @@
-import {Addons} from '../src';
+import {Collisions} from '../src';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse, WaveMove} from './traits';
 
-export type AddonsType = {
+export type Addons = {
   animation: Animation;
-  collisions: Addons.Collisions<AddonsType, TraitsType, EventsType>;
+  collisions: Collisions<Addons, Traits, Events>;
   entities: Entities;
 };
 
-export type EventsType = 'player/score';
+export type Events = 'player/score';
 
-export type TraitsType = PlayerTraits | EnemyTraits;
+export type Traits = PlayerTraits | EnemyTraits;
 
 export type PlayerTraits = {
   borderLimit: BorderLimit;

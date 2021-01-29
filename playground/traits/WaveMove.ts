@@ -1,7 +1,7 @@
 import {Trait} from '../../src';
-import {AddonsType, TraitsType, EventsType} from '../types';
+import {Addons, Traits, Events} from '../types';
 
-export class WaveMove extends Trait<AddonsType, TraitsType, EventsType> {
+export class WaveMove extends Trait<Addons, Traits, Events> {
   protected readonly speed: number;
   protected readonly limit: number;
   protected distance: number;

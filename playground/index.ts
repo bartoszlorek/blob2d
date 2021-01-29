@@ -1,6 +1,6 @@
 import PIXI, {Application, Loader} from 'pixi.js';
 import {Docker} from '../src';
-import {AddonsType, EventsType} from './types';
+import {Addons, Events} from './types';
 import {Level} from './Level';
 
 // disable interpolation when scaling, will make texture be pixelated
@@ -16,7 +16,7 @@ const app = new Application({
 document.body.appendChild(app.view);
 
 loader.add('sprites', './assets/sprites.png').load(() => {
-  const docker = new Docker<AddonsType, EventsType>(app);
+  const docker = new Docker<Addons, Events>(app);
   const level = new Level(loader.resources);
 
   docker.on('docker/mount', () => {

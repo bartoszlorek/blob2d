@@ -1,10 +1,10 @@
 import {IAddon, Container, Entity, Scene} from '../../src';
-import {AddonsType, TraitsType, EventsType} from '../types';
+import {Addons, Traits, Events} from '../types';
 
 export class Entities
-  extends Container<Entity<AddonsType, TraitsType, EventsType>>
+  extends Container<Entity<Addons, Traits, Events>>
   implements IAddon {
-  constructor(scene: Scene<AddonsType, EventsType>) {
+  constructor(scene: Scene<Addons, Events>) {
     super();
 
     scene.on('scene/removeChild', (child) => {

@@ -1,7 +1,7 @@
 import {Trait} from '../../src';
-import {AddonsType, TraitsType, EventsType} from '../types';
+import {Addons, Traits, Events} from '../types';
 
-export class FollowMouse extends Trait<AddonsType, TraitsType, EventsType> {
+export class FollowMouse extends Trait<Addons, Traits, Events> {
   protected speed: number;
   protected mouseX: number;
   protected mouseY: number;
