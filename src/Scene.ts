@@ -3,29 +3,29 @@ import {IContainerConstructor, IContainer} from './_pixijs';
 import {EventEmitter} from 'eventemitter3';
 import {Element} from './Element';
 
-export type OwnEventsType =
+export type TOwnEvents =
   | 'scene/addChild'
   | 'scene/removeChild'
   | 'scene/destroy';
 
 export class Scene<
-  AddonsType extends {},
-  EventsType extends string
-> extends EventEmitter<EventsType | OwnEventsType> {
-  public addon: AddonsType;
+  TAddons extends {},
+  TEvents extends string
+> extends EventEmitter<TEvents | TOwnEvents> {
+  public addon: TAddons;
   public graphics: IContainer;
 
   protected background: IContainer;
   protected foreground: IContainer;
 
   private _addons: IAddon[];
-  private _removeStack: Element<AddonsType, EventsType>[];
+  private _removeStack: Element<TAddons, TEvents>[];
   private _removeIndex: number;
 
   constructor(BaseContainer: IContainerConstructor) {
     super();
 
-    this.addon = {} as AddonsType;
+    this.addon = {} as TAddons;
     this._addons = [];
 
     // main layers
@@ -40,14 +40,12 @@ export class Scene<
     this._removeIndex = 0;
   }
 
-  public registerAddons(addons: AddonsType): void {
+  public registerAddons(addons: TAddons): void {
     this.addon = addons;
     this._addons = Object.values(addons);
   }
 
-  public addChild<T extends Element<AddonsType, EventsType>[]>(
-    ...children: T
-  ): T[0] {
+  public addChild<T extends Element<TAddons, TEvents>[]>(...children: T): T[0] {
     // for one argument we can bypass looping through them
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {
@@ -67,7 +65,7 @@ export class Scene<
     return children[0];
   }
 
-  public removeChild<T extends Element<AddonsType, EventsType>[]>(
+  public removeChild<T extends Element<TAddons, TEvents>[]>(
     ...children: T
   ): void {
     // for one argument we can bypass looping through them
@@ -80,7 +78,7 @@ export class Scene<
     }
   }
 
-  private unsafeRemoveChild<T extends Element<AddonsType, EventsType>>(
+  private unsafeRemoveChild<T extends Element<TAddons, TEvents>>(
     child: T
   ): void {
     if (this.foreground.removeChild(child.display)) {

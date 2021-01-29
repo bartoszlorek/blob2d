@@ -1,18 +1,18 @@
 import {removeItem} from './utils/array';
 
-export class Container<ChildType> {
-  protected readonly children: ChildType[];
+export class Container<TChild> {
+  protected readonly children: TChild[];
 
   constructor() {
     this.children = [];
   }
 
-  public addChild<T extends ChildType[]>(...children: T): T[0] {
+  public addChild<T extends TChild[]>(...children: T): T[0] {
     this.children.push(...children);
     return children[0];
   }
 
-  public removeChild<T extends ChildType[]>(...children: T): T[0] | null {
+  public removeChild<T extends TChild[]>(...children: T): T[0] | null {
     // bypass loop
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {

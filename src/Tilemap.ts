@@ -4,9 +4,9 @@ import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
 
 export class Tilemap<
-  AddonsType extends {},
-  EventsType extends string
-> extends Element<AddonsType, EventsType, IContainer> {
+  TAddons extends {},
+  TEvents extends string
+> extends Element<TAddons, TEvents, IContainer> {
   public readonly type = 'tilemap';
   public readonly values: number[];
   public readonly tilesize: number;

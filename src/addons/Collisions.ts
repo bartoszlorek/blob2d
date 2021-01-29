@@ -9,13 +9,13 @@ import {getTileSeparation} from './CollisionsTilemap';
 import {ICollisionGroup} from './CollisionsTypes';
 
 export class Collisions<
-  AddonsType extends {},
-  TraitsType extends {},
-  EventsType extends string
+  TAddons extends {},
+  TTraits extends {},
+  TEvents extends string
 > implements IAddon {
-  protected groups: ICollisionGroup<AddonsType, TraitsType, EventsType>[];
+  protected groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
 
-  constructor(scene: Scene<AddonsType, EventsType>) {
+  constructor(scene: Scene<TAddons, TEvents>) {
     scene.on('scene/removeChild', (child) => {
       this.removeGroupElement(child);
     });
@@ -24,8 +24,8 @@ export class Collisions<
   }
 
   public addStatic<
-    A extends Entity<AddonsType, TraitsType, EventsType>,
-    B extends Tilemap<AddonsType, EventsType>
+    A extends Entity<TAddons, TTraits, TEvents>,
+    B extends Tilemap<TAddons, TEvents>
   >(
     entities: A | A[],
     tilemaps: B | B[],
@@ -42,8 +42,8 @@ export class Collisions<
   }
 
   public addDynamic<
-    A extends Entity<AddonsType, TraitsType, EventsType>,
-    B extends Entity<AddonsType, TraitsType, EventsType>
+    A extends Entity<TAddons, TTraits, TEvents>,
+    B extends Entity<TAddons, TTraits, TEvents>
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
@@ -59,7 +59,7 @@ export class Collisions<
     );
   }
 
-  public addSelfDynamic<A extends Entity<AddonsType, TraitsType, EventsType>>(
+  public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
     callback: (entityA: A, entityB: A, separation: Vector2Type) => boolean
   ): void {
@@ -79,7 +79,7 @@ export class Collisions<
   }
 
   protected resolveGroup(
-    group: ICollisionGroup<AddonsType, TraitsType, EventsType>,
+    group: ICollisionGroup<TAddons, TTraits, TEvents>,
     deltaTime: number
   ): void {
     switch (group.type) {
@@ -169,8 +169,8 @@ export class Collisions<
   }
 
   protected validateGroup(
-    group: ICollisionGroup<AddonsType, TraitsType, EventsType>
-  ): ICollisionGroup<AddonsType, TraitsType, EventsType> {
+    group: ICollisionGroup<TAddons, TTraits, TEvents>
+  ): ICollisionGroup<TAddons, TTraits, TEvents> {
     switch (group.type) {
       case 'static':
         if (group.entities.length < 1 || group.tilemaps.length < 1) {
@@ -204,8 +204,8 @@ export class Collisions<
   }
 
   protected collideTile<
-    A extends Entity<AddonsType, TraitsType, EventsType>,
-    B extends Tilemap<AddonsType, EventsType>
+    A extends Entity<TAddons, TTraits, TEvents>,
+    B extends Tilemap<TAddons, TEvents>
   >(
     entity: A,
     tilemap: B,
@@ -223,8 +223,8 @@ export class Collisions<
   }
 
   protected collideEntity<
-    A extends Entity<AddonsType, TraitsType, EventsType>,
-    B extends Entity<AddonsType, TraitsType, EventsType>
+    A extends Entity<TAddons, TTraits, TEvents>,
+    B extends Entity<TAddons, TTraits, TEvents>
   >(
     entityA: A,
     entityB: B,
@@ -245,8 +245,8 @@ export class Collisions<
   }
 
   protected removeGroupElement<
-    A extends Entity<AddonsType, TraitsType, EventsType>,
-    B extends Tilemap<AddonsType, EventsType>
+    A extends Entity<TAddons, TTraits, TEvents>,
+    B extends Tilemap<TAddons, TEvents>
   >(element: A | B) {
     for (let i = 0; i < this.groups.length; i++) {
       let removed = false; // element can be a part of multiple groups
