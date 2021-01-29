@@ -1,5 +1,5 @@
 export * from './_types';
-export * as Addons from './addons';
+export * from './addons';
 export * from './tiled';
 export {BoundingBox} from './BoundingBox';
 export {Camera} from './Camera';

@@ -2,14 +2,14 @@ import {ITrait} from './_types';
 import {Entity} from './Entity';
 
 export abstract class Trait<
-  AddonsType extends {},
-  TraitsType extends {},
-  EventsType extends string
+  TAddons extends {},
+  TTraits extends {},
+  TEvents extends string
 > implements ITrait {
-  public entity: Entity<AddonsType, TraitsType, EventsType>;
+  public entity: Entity<TAddons, TTraits, TEvents>;
 
   constructor() {
-    this.entity = Entity.EMPTY as Entity<AddonsType, TraitsType, EventsType>;
+    this.entity = Entity.EMPTY as Entity<TAddons, TTraits, TEvents>;
   }
 
   public update(deltaTime: number): void {

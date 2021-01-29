@@ -1,7 +1,7 @@
 import {Trait} from '../../src';
-import {AddonsType, TraitsType, EventsType} from '../types';
+import {Addons, Traits, Events} from '../types';
 
-export class BorderLimit extends Trait<AddonsType, TraitsType, EventsType> {
+export class BorderLimit extends Trait<Addons, Traits, Events> {
   public update(deltaTime: number): void {
     if (this.entity.top < 0) {
       this.entity.top = 0;

@@ -4,13 +4,13 @@ import {Scene} from './Scene';
 
 const DELTA_TIME = 1 / 60;
 
-export type OwnEventsType = 'docker/mount' | 'docker/unmount';
+export type TOwnEvents = 'docker/mount' | 'docker/unmount';
 
 export class Docker<
-  AddonsType extends {},
-  EventsType extends string
-> extends EventEmitter<EventsType | OwnEventsType> {
-  public scene: Scene<AddonsType, EventsType> | null;
+  TAddons extends {},
+  TEvents extends string
+> extends EventEmitter<TEvents | TOwnEvents> {
+  public scene: Scene<TAddons, TEvents> | null;
 
   private app: IApplication;
   private accumulatedTime: number;
@@ -35,7 +35,7 @@ export class Docker<
     }
   }
 
-  public mount(scene: Scene<AddonsType, EventsType>): void {
+  public mount(scene: Scene<TAddons, TEvents>): void {
     this.unmount();
     this.scene = scene;
 

@@ -1,20 +1,20 @@
 import {
+  Collisions,
   Entity,
   Scene,
-  Tilemap,
-  Addons,
   TiledMapper,
   TiledSpriteSheet,
+  Tilemap,
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
-import {AddonsType, EventsType, PlayerTraits} from './types';
+import {Addons, Events, PlayerTraits} from './types';
 import {Animation, Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 import {tilesets, demo01Map} from './assets';
 
 function makePlayer(spritesheet: TiledSpriteSheet) {
   return (tileid: number, x: number, y: number) => {
-    const player = new Entity<AddonsType, PlayerTraits, EventsType>(
+    const player = new Entity<Addons, PlayerTraits, Events>(
       new Sprite(spritesheet.getTextureById(tileid)),
       {
         followMouse: new FollowMouse(10),
@@ -33,11 +33,7 @@ function makePlayer(spritesheet: TiledSpriteSheet) {
 
 function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   return (tileids: number[], columns: number, x: number, y: number) => {
-    const map = new Tilemap<AddonsType, EventsType>(
-      new Container(),
-      tileids,
-      columns
-    );
+    const map = new Tilemap<Addons, Events>(new Container(), tileids, columns);
 
     map.fill((tileid) => new Sprite(spritesheet.getTextureById(tileid)));
     map.setPosition(x, y);
@@ -45,13 +41,13 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   };
 }
 
-export class Level extends Scene<AddonsType, EventsType> {
+export class Level extends Scene<Addons, Events> {
   constructor(resources: IResourceDictionary) {
     super(Container);
 
     this.registerAddons({
       animation: new Animation(),
-      collisions: new Addons.Collisions(this),
+      collisions: new Collisions(this),
       entities: new Entities(this),
     });
 

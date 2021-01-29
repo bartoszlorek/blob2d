@@ -4,15 +4,15 @@ import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
 
 export class Element<
-  AddonsType extends {},
-  EventsType extends string,
-  DisplayType extends IDisplayObject = IDisplayObject
+  TAddons extends {},
+  TEvents extends string,
+  TDisplay extends IDisplayObject = IDisplayObject
 > extends BoundingBox {
-  public readonly display: DisplayType;
-  public scene: Scene<AddonsType, EventsType> | null;
+  public readonly display: TDisplay;
+  public scene: Scene<TAddons, TEvents> | null;
   public name: string | null;
 
-  constructor(display: DisplayType, min?: Vector2Type, max?: Vector2Type) {
+  constructor(display: TDisplay, min?: Vector2Type, max?: Vector2Type) {
     super(min, max);
 
     this.display = display;

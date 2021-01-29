@@ -7,12 +7,12 @@ const _vector2: Vector2Type = [0, 0];
 // http://noonat.github.io/intersect/#aabb-vs-aabb
 // https://gamedev.stackexchange.com/questions/54371/collision-detection-logic/54442
 export function getEntitySeparation<
-  AddonsType extends {},
-  TraitsType extends {},
-  EventsType extends string
+  TAddons extends {},
+  TTraits extends {},
+  TEvents extends string
 >(
-  entityA: Entity<AddonsType, TraitsType, EventsType>,
-  entityB: Entity<AddonsType, TraitsType, EventsType>,
+  entityA: Entity<TAddons, TTraits, TEvents>,
+  entityB: Entity<TAddons, TTraits, TEvents>,
   deltaTime: number
 ): Vector2Type {
   const halfWidthA = entityA.width / 2;

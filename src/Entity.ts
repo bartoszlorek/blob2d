@@ -4,19 +4,19 @@ import {Element} from './Element';
 import {Trait} from './Trait';
 
 export class Entity<
-  AddonsType extends {},
-  TraitsType extends {},
-  EventsType extends string
-> extends Element<AddonsType, EventsType> {
+  TAddons extends {},
+  TTraits extends {},
+  TEvents extends string
+> extends Element<TAddons, TEvents> {
   static EMPTY = new Entity(new NopDisplayObject(), {});
 
   public readonly type = 'entity';
   public velocity: Vector2Type;
-  public trait: {[name: string]: Trait<AddonsType, TraitsType, EventsType>};
+  public trait: {[name: string]: Trait<TAddons, TTraits, TEvents>};
 
-  private _traits: Trait<AddonsType, TraitsType, EventsType>[];
+  private _traits: Trait<TAddons, TTraits, TEvents>[];
 
-  constructor(display: IDisplayObject, traits: TraitsType) {
+  constructor(display: IDisplayObject, traits: TTraits) {
     super(display);
 
     this.velocity = [0, 0];

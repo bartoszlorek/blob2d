@@ -8,12 +8,12 @@ const _clone = new BoundingBox();
 const _vector2: Vector2Type = [0, 0];
 
 export function getTileSeparation<
-  AddonsType extends {},
-  TraitsType extends {},
-  EventsType extends string
+  TAddons extends {},
+  TTraits extends {},
+  TEvents extends string
 >(
-  tilemap: Tilemap<AddonsType, EventsType>,
-  entity: Entity<AddonsType, TraitsType, EventsType>,
+  tilemap: Tilemap<TAddons, TEvents>,
+  entity: Entity<TAddons, TTraits, TEvents>,
   deltaTime: number
 ): Vector2Type | null {
   _clone.copy(entity);
@@ -52,13 +52,10 @@ export function getTileSeparation<
 
 // https://jonathanwhiting.com/tutorial/collision/
 // https://github.com/chrisdickinson/collide-2d-tilemap
-function getSeparationComponent<
-  AddonsType extends {},
-  EventsType extends string
->(
+function getSeparationComponent<TAddons extends {}, TEvents extends string>(
   mainAxis: number,
   mainAxisVelocity: number,
-  tilemap: Tilemap<AddonsType, EventsType>,
+  tilemap: Tilemap<TAddons, TEvents>,
   bbox: BoundingBox
 ): number | null {
   const {tilesize} = tilemap;
