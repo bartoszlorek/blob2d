@@ -1,6 +1,7 @@
 import PIXI, {Application, Loader} from 'pixi.js';
-import {Docker, ScreenButton, Keyboard} from '../src';
+import {Docker} from '../src';
 import {Addons, Events} from './types';
+import {setupGui} from './gui';
 import {Level} from './Level';
 
 // disable interpolation when scaling, will make texture be pixelated
@@ -16,6 +17,8 @@ const app = new Application({
 document.body.appendChild(app.view);
 
 loader.add('sprites', './assets/sprites.png').load(() => {
+  setupGui(); // example of implementation
+
   const docker = new Docker<Addons, Events>(app);
   const level = new Level(loader.resources);
 
@@ -26,15 +29,3 @@ loader.add('sprites', './assets/sprites.png').load(() => {
   docker.mount(level);
   console.log(level);
 });
-
-// gui example
-const $button = document.querySelector<HTMLElement>('.button');
-
-if ($button) {
-  const button = new ScreenButton('ArrowLeft', $button);
-  button.onKeyup = node => node.classList.remove('button--active');
-  button.onKeydown = node => node.classList.add('button--active');
-
-  const keyboard = new Keyboard();
-  keyboard.on('ArrowLeft', pressed => console.log('ArrowLeft', pressed));
-}
