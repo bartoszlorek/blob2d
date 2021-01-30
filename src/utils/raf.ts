@@ -49,6 +49,10 @@ export function setFrameInterval(
   return request;
 }
 
-export function clearFrameRequest(request: IAnimationFrameRequest) {
-  request.canceled = true;
+export function clearFrameRequest(
+  request: IAnimationFrameRequest | null | void
+) {
+  if (request) {
+    request.canceled = true;
+  }
 }

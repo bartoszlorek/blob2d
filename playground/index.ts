@@ -1,5 +1,5 @@
 import PIXI, {Application, Loader} from 'pixi.js';
-import {Docker} from '../src';
+import {Docker, ScreenButton, Keyboard} from '../src';
 import {Addons, Events} from './types';
 import {Level} from './Level';
 
@@ -26,3 +26,15 @@ loader.add('sprites', './assets/sprites.png').load(() => {
   docker.mount(level);
   console.log(level);
 });
+
+// gui example
+const $button = document.querySelector<HTMLElement>('.button');
+
+if ($button) {
+  const button = new ScreenButton('ArrowLeft', $button);
+  button.onKeyup = node => node.classList.remove('button--active');
+  button.onKeydown = node => node.classList.add('button--active');
+
+  const keyboard = new Keyboard();
+  keyboard.on('ArrowLeft', pressed => console.log('ArrowLeft', pressed));
+}

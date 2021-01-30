@@ -12,13 +12,15 @@ const REPEATS_DELAY = 80;
 
 export class ScreenButton<TKey extends string = string> {
   public readonly key: TKey;
+  public node: HTMLElement | null;
   public destroy: () => void;
 
   constructor(key: TKey, node: HTMLElement) {
     this.key = key;
+    this.node = node;
 
-    let timeoutRequest: IAnimationFrameRequest;
-    let intervalRequest: IAnimationFrameRequest;
+    let timeoutRequest: IAnimationFrameRequest | void;
+    let intervalRequest: IAnimationFrameRequest | void;
 
     function clearFrameRequests() {
       clearFrameRequest(timeoutRequest);
@@ -51,10 +53,13 @@ export class ScreenButton<TKey extends string = string> {
     this.destroy = () => {
       node.removeEventListener('touchstart', startListener);
       node.removeEventListener('touchend', endListener);
+      this.node = null;
     };
   }
 
   protected handleEvent(type: 'keydown' | 'keyup') {
+    if (this.node === null) return;
+
     const event = new KeyboardEvent(type, {
       key: this.key,
     });
@@ -63,17 +68,17 @@ export class ScreenButton<TKey extends string = string> {
     window.dispatchEvent(event);
 
     if (type === 'keydown') {
-      this.onKeydown();
+      this.onKeydown(this.node);
     } else {
-      this.onKeyup();
+      this.onKeyup(this.node);
     }
   }
 
-  public onKeydown() {
+  public onKeydown(node: HTMLElement) {
     // fill in subclass
   }
 
-  public onKeyup() {
+  public onKeyup(node: HTMLElement) {
     // fill in subclass
   }
 }
