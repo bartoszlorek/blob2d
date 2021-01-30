@@ -17,9 +17,10 @@ export class Animation<
   protected spritesheet: TiledSpriteSheet;
   protected keyframes: IKeyframesDictionary<TKeys>;
 
+  private accumulatedTime: number;
   private requests: Map<ISprite, TKeys>;
   private cachedFrames: Map<ISprite, TCachedFrames<TKeys>>;
-  private accumulatedTime: number;
+  private playing: Map<ISprite, TKeys>;
 
   constructor(
     scene: Scene<TAddons, TEvents>,
@@ -37,20 +38,26 @@ export class Animation<
     // internal processing
     this.requests = new Map();
     this.cachedFrames = new Map();
+    this.playing = new Map();
 
     scene.on('scene/removeChild', (sprite) => {
       this.removeCache(sprite);
     });
   }
 
-  public play(name: TKeys, sprite: ISprite): void {}
+  public play(name: TKeys, sprite: ISprite): void {
+    this.playing.set(sprite, name);
+  }
 
-  public pause(name: TKeys, sprite: ISprite): void {}
+  public pause(sprite: ISprite): void {
+    this.playing.delete(sprite);
+  }
 
   public update(deltaTime: number): void {
     this.accumulatedTime += deltaTime;
 
     if (this.accumulatedTime >= this.deltaTimePerFrame) {
+      this.addPlayRequests();
       this.resolveRequests();
       this.accumulatedTime = 0;
     }
@@ -72,6 +79,12 @@ export class Animation<
       // initialize cached frames for the sprite
       const initialCachedFrames = {[name]: 0} as TCachedFrames<TKeys>;
       this.cachedFrames.set(sprite, initialCachedFrames);
+    }
+  }
+
+  protected addPlayRequests(): void {
+    for (let [sprite, name] of this.playing) {
+      this.requestFrame(name, sprite);
     }
   }
 
@@ -101,10 +114,12 @@ export class Animation<
   protected removeCache(sprite: ISprite): void {
     this.requests.delete(sprite);
     this.cachedFrames.delete(sprite);
+    this.playing.delete(sprite);
   }
 
   public destroy(): void {
     this.requests.clear();
     this.cachedFrames.clear();
+    this.playing.clear();
   }
 }

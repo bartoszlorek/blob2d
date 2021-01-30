@@ -50,10 +50,6 @@ const keyframes: IKeyframesDictionary<Keyframes> = {
 };
 
 export class Level extends Scene<Addons, Events> {
-  public refs: {
-    player: Entity<Addons, PlayerTraits, Events>;
-  };
-
   constructor(resources: IResourceDictionary) {
     super(Container);
 
@@ -75,17 +71,7 @@ export class Level extends Scene<Addons, Events> {
     this.addon.collisions.addStatic(player, ground, cb);
     // this.addon.collisions.addDynamic(player, platform, cb);
 
-    this.refs = {
-      player,
-    };
-  }
-
-  update(deltaTime: number) {
-    // todo: separate internal and external update of scene
-    super.update(deltaTime);
-
-    // animation
-    this.addon.animation.requestFrame('player_move', this.refs.player.display);
+    this.addon.animation.play('player_move', player.display);
   }
 }
 
