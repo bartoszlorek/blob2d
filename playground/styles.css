@@ -22,6 +22,6 @@ canvas {
   cursor: pointer;
 }
 
-.button--active {
+.button--clicked {
   background-position: 0 -64px;
 }

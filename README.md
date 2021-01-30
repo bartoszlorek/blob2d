@@ -126,3 +126,19 @@ keyboard.on('ArrowRight', (pressed: boolean) => {
 keyboard.off('ArrowRight');
 keyboard.destroy();
 ```
+
+### `ScreenButton`
+
+Simulates clicking a physical keyboard.
+
+```ts
+const $node = document.querySelector<HTMLElement>('.button');
+const button = new ScreenButton('ArrowLeft', $node);
+
+// optional: extends button behavior
+button.onKeydown = node => node.classList.add('clicked');
+button.onKeyup = node => node.classList.remove('clicked');
+
+// listens to the standard key event
+keyboard.on('ArrowLeft', callback);
+```

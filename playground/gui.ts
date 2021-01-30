@@ -5,8 +5,8 @@ export function setupGui() {
 
   if ($button) {
     const button = new ScreenButton('ArrowLeft', $button);
-    button.onKeyup = node => node.classList.remove('button--active');
-    button.onKeydown = node => node.classList.add('button--active');
+    button.onKeyup = node => node.classList.remove('button--clicked');
+    button.onKeydown = node => node.classList.add('button--clicked');
 
     const keyboard = new Keyboard();
     keyboard.on('ArrowLeft', pressed => console.log('ArrowLeft', pressed));
