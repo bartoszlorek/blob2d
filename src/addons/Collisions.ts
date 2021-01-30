@@ -16,8 +16,8 @@ export class Collisions<
   protected groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
 
   constructor(scene: Scene<TAddons, TEvents>) {
-    scene.on('scene/removeChild', (child) => {
-      this.removeGroupElement(child);
+    scene.on('scene/removeElement', (elem) => {
+      this.removeGroupElement(elem);
     });
 
     this.groups = [];
