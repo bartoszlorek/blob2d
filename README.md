@@ -34,7 +34,7 @@
 - ❌ User inputs
 - ❌ User interface
 - ❌ Motion easings
-- ❌ General physics
+- 🤷‍♂️ General physics
 - ❌ Sound
 
 **Notice:** this repository is under development 🚧
