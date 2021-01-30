@@ -23,6 +23,7 @@ export class Keyboard<TKey extends string = string> {
     this.destroy = () => {
       window.removeEventListener('keydown', listener);
       window.removeEventListener('keyup', listener);
+      this.events.clear();
     };
   }
 
