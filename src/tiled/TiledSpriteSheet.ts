@@ -74,7 +74,7 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
     return texture;
   }
 
-  public destroy(): void {
+  public destroy() {
     this.cachedTextures.clear();
     this.sourceTilesets.length = 0;
   }

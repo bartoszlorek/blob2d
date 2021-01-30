@@ -84,19 +84,19 @@ export class BoundingBox {
     this.top = value;
   }
 
-  public translate(vector: Vector2Type): void {
+  public translate(vector: Vector2Type) {
     this.min[0] += vector[0];
     this.min[1] += vector[1];
     this.max[0] += vector[0];
     this.max[1] += vector[1];
   }
 
-  public translateX(value: number): void {
+  public translateX(value: number) {
     this.min[0] += value;
     this.max[0] += value;
   }
 
-  public translateY(value: number): void {
+  public translateY(value: number) {
     this.min[1] += value;
     this.max[1] += value;
   }
@@ -119,7 +119,7 @@ export class BoundingBox {
     );
   }
 
-  public copy(bbox: BoundingBox): void {
+  public copy(bbox: BoundingBox) {
     this.min[0] = bbox.min[0];
     this.min[1] = bbox.min[1];
     this.width = bbox.width;

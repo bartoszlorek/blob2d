@@ -47,7 +47,7 @@ export class Tilemap<
 
   public fill<T extends ISprite>(
     iteratee: (tileId: number, x: number, y: number) => T
-  ): void {
+  ) {
     this.children.clear();
     this.display.removeChildren();
 
@@ -68,7 +68,7 @@ export class Tilemap<
     this.updateCache();
   }
 
-  public setPosition(x: number, y: number): void {
+  public setPosition(x: number, y: number) {
     this.x = x;
     this.y = y;
     this.calculateActualBounds();
@@ -85,7 +85,7 @@ export class Tilemap<
     return this._point;
   }
 
-  public removeByIndex(index: number): void {
+  public removeByIndex(index: number) {
     const child = this.children.get(index);
 
     if (child === undefined) return;
@@ -99,7 +99,7 @@ export class Tilemap<
   }
 
   // important! caching requires preloaded assets
-  public updateCache(): void {
+  public updateCache() {
     this.display.cacheAsBitmap = false;
     this.display.cacheAsBitmap = true;
   }
@@ -172,7 +172,7 @@ export class Tilemap<
 
   // this method exists for optimization and should be
   // called whenever the Tilemap changes general position
-  protected calculateActualBounds(): void {
+  protected calculateActualBounds() {
     if (this.values.length === 0) {
       this.actualBounds.width = 0;
       this.actualBounds.height = 0;
@@ -239,7 +239,7 @@ export class Tilemap<
     this.actualBounds.height = (bottom - top + 1) * this.tilesize;
   }
 
-  public destroy(): void {
+  public destroy() {
     this.children.clear();
     super.destroy();
   }

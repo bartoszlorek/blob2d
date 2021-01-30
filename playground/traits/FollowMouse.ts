@@ -25,7 +25,7 @@ export class FollowMouse extends Trait<Addons, Traits, Events> {
     };
   }
 
-  update(deltaTime: number): void {
+  update(deltaTime: number) {
     const desiredX = this.mouseX - this.entity.width / 2 - this.entity.min[0];
     const desiredY = this.mouseY - this.entity.height / 2 - this.entity.min[1];
 

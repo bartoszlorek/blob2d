@@ -16,8 +16,8 @@ export class Collisions<
   protected groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
 
   constructor(scene: Scene<TAddons, TEvents>) {
-    scene.on('scene/removeChild', (child) => {
-      this.removeGroupElement(child);
+    scene.on('scene/removeElement', elem => {
+      this.removeGroupElement(elem);
     });
 
     this.groups = [];
@@ -30,7 +30,7 @@ export class Collisions<
     entities: A | A[],
     tilemaps: B | B[],
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     this.groups.push(
       this.validateGroup({
         type: 'static',
@@ -48,7 +48,7 @@ export class Collisions<
     entitiesA: A | A[],
     entitiesB: B | B[],
     callback: (entityA: A, entityB: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     this.groups.push(
       this.validateGroup({
         type: 'dynamic',
@@ -62,7 +62,7 @@ export class Collisions<
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
     callback: (entityA: A, entityB: A, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     this.groups.push(
       this.validateGroup({
         type: 'self_dynamic',
@@ -72,7 +72,7 @@ export class Collisions<
     );
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     for (let i = 0; i < this.groups.length; i++) {
       this.resolveGroup(this.groups[i], deltaTime);
     }
@@ -81,7 +81,7 @@ export class Collisions<
   protected resolveGroup(
     group: ICollisionGroup<TAddons, TTraits, TEvents>,
     deltaTime: number
-  ): void {
+  ) {
     // optimization: create resolving method separately
     // for each group type and call it directly
     switch (group.type) {
@@ -92,7 +92,7 @@ export class Collisions<
           for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
 
-            // bypass loop
+            // bypass loop for one element
             if (tilemaps.length > 1) {
               for (let j = 0; j < tilemaps.length; j++) {
                 this.collideTile(entity, tilemaps[j], deltaTime, callback);
@@ -105,7 +105,7 @@ export class Collisions<
           // a single entity collision
           const entity = entities[0];
 
-          // bypass loop
+          // bypass loop for one element
           if (tilemaps.length > 1) {
             for (let j = 0; j < tilemaps.length; j++) {
               this.collideTile(entity, tilemaps[j], deltaTime, callback);
@@ -127,7 +127,7 @@ export class Collisions<
           for (let i = 0; i < entitiesA.length; i++) {
             const entity = entitiesA[i];
 
-            // bypass loop
+            // bypass loop for one element
             if (entitiesB.length > 1) {
               for (let j = 0; j < entitiesB.length; j++) {
                 this.collideEntity(entity, entitiesB[j], deltaTime, callback);
@@ -140,7 +140,7 @@ export class Collisions<
           // a single entity collision
           const entity = entitiesA[0];
 
-          // bypass loop
+          // bypass loop for one element
           if (entitiesB.length > 1) {
             for (let j = 0; j < entitiesB.length; j++) {
               this.collideEntity(entity, entitiesB[j], deltaTime, callback);
@@ -213,7 +213,7 @@ export class Collisions<
     tilemap: B,
     deltaTime: number,
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     if (entity.intersects(tilemap.actualBounds, tilemap.tilesize)) {
       const separation = getTileSeparation(tilemap, entity, deltaTime);
 
@@ -232,7 +232,7 @@ export class Collisions<
     entityB: B,
     deltaTime: number,
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     if (entityA.intersects(entityB)) {
       const separation = getEntitySeparation(entityA, entityB, deltaTime);
 
@@ -284,7 +284,7 @@ export class Collisions<
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     this.groups.length = 0;
   }
 }

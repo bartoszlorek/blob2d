@@ -4,8 +4,8 @@ import {EventEmitter} from 'eventemitter3';
 import {Element} from './Element';
 
 export type TOwnEvents =
-  | 'scene/addChild'
-  | 'scene/removeChild'
+  | 'scene/addElement'
+  | 'scene/removeElement'
   | 'scene/destroy';
 
 export class Scene<
@@ -40,72 +40,68 @@ export class Scene<
     this._removeIndex = 0;
   }
 
-  public registerAddons(addons: TAddons): void {
+  public registerAddons(addons: TAddons) {
     this.addon = addons;
     this._addons = Object.values(addons);
   }
 
-  public addChild<T extends Element<TAddons, TEvents>[]>(...children: T): T[0] {
-    // for one argument we can bypass looping through them
-    if (children.length > 1) {
-      for (let i = 0; i < children.length; i++) {
-        this.addChild(children[i]);
+  public addElement<T extends Element<TAddons, TEvents>[]>(...elems: T) {
+    // bypass loop for one element
+    if (elems.length > 1) {
+      for (let i = 0; i < elems.length; i++) {
+        this.addElement(elems[i]);
       }
     } else {
-      const child = children[0];
+      const elem = elems[0];
 
-      if (child.scene) {
-        child.scene.removeChild(child);
+      if (elem.scene) {
+        elem.scene.removeElement(elem);
       }
-      child.scene = this;
-      this.foreground.addChild(child.display);
-      this.emit('scene/addChild', child);
-    }
 
-    return children[0];
+      elem.scene = this;
+      this.foreground.addChild(elem.display);
+      this.emit('scene/addElement', elem);
+    }
   }
 
-  public removeChild<T extends Element<TAddons, TEvents>[]>(
-    ...children: T
-  ): void {
-    // for one argument we can bypass looping through them
-    if (children.length > 1) {
-      for (let i = 0; i < children.length; i++) {
-        this.removeChild(children[i]);
+  public removeElement<T extends Element<TAddons, TEvents>[]>(...elems: T) {
+    // bypass loop for one element
+    if (elems.length > 1) {
+      for (let i = 0; i < elems.length; i++) {
+        this._removeStack[this._removeIndex++] = elems[i];
       }
     } else {
-      this._removeStack[this._removeIndex++] = children[0];
+      this._removeStack[this._removeIndex++] = elems[0];
     }
   }
 
-  private unsafeRemoveChild<T extends Element<TAddons, TEvents>>(
-    child: T
-  ): void {
-    if (this.foreground.removeChild(child.display)) {
-      this.emit('scene/removeChild', child);
-      child.scene = null;
+  private unsafeRemoveElement<T extends Element<TAddons, TEvents>>(elem: T) {
+    if (this.foreground.removeChild(elem.display)) {
+      this.emit('scene/removeElement', elem);
+      elem.scene = null;
     }
   }
 
-  public update(deltaTime: number): void {
-    // addons or traits may request to remove a child
+  public update(deltaTime: number) {
+    // addons or traits may request to remove an element
     for (let i = 0; i < this._addons.length; i++) {
       this._addons[i].update(deltaTime);
     }
 
     // actual removing phase
     while (this._removeIndex > 0) {
-      this.unsafeRemoveChild(this._removeStack[--this._removeIndex]);
+      this.unsafeRemoveElement(this._removeStack[--this._removeIndex]);
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     this.emit('scene/destroy');
     this.removeAllListeners();
 
     for (let i = 0; i < this._addons.length; i++) {
       this._addons[i].destroy();
     }
+
     this._addons.length = 0;
     this._removeStack.length = 0;
 

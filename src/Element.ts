@@ -23,12 +23,12 @@ export class Element<
     this.updateDisplayPosition();
   }
 
-  public updateDisplayPosition(): void {
+  public updateDisplayPosition() {
     this.display.x = this.min[0];
     this.display.y = this.min[1];
   }
 
-  public destroy(): void {
-    this.scene?.removeChild(this);
+  public destroy() {
+    this.scene?.removeElement(this);
   }
 }
