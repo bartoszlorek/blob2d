@@ -1,4 +1,5 @@
 import {
+  Animation,
   Collisions,
   Entity,
   Scene,
@@ -8,10 +9,11 @@ import {
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {Addons, Events, PlayerTraits} from './types';
-import {Animation, Entities} from './addons';
+import {Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 import {tilesets, demo01Map} from './assets';
 
+// layers/makePlayer.ts
 function makePlayer(spritesheet: TiledSpriteSheet) {
   return (tileid: number, x: number, y: number) => {
     const player = new Entity<Addons, PlayerTraits, Events>(
@@ -31,6 +33,7 @@ function makePlayer(spritesheet: TiledSpriteSheet) {
   };
 }
 
+// layers/makeSimpleTiles.ts
 function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   return (tileids: number[], columns: number, x: number, y: number) => {
     const map = new Tilemap<Addons, Events>(new Container(), tileids, columns);
