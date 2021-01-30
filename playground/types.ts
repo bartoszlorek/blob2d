@@ -1,9 +1,9 @@
-import {Collisions} from '../src';
-import {Animation, Entities} from './addons';
+import {Animation, Collisions} from '../src';
+import {Entities} from './addons';
 import {BorderLimit, FollowMouse, WaveMove} from './traits';
 
 export type Addons = {
-  animation: Animation;
+  animation: Animation<Addons, Events, Keyframes>;
   collisions: Collisions<Addons, Traits, Events>;
   entities: Entities;
 };
@@ -20,3 +20,5 @@ export type PlayerTraits = {
 export type EnemyTraits = {
   waveMove: WaveMove;
 };
+
+export type Keyframes = 'player_move';

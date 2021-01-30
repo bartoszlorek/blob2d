@@ -1,5 +1,5 @@
 import {Vector2Type} from './_types';
-import {IDisplayObject, NopDisplayObject} from './_pixijs';
+import {ISprite, NopSprite} from './_pixijs';
 import {Element} from './Element';
 import {Trait} from './Trait';
 
@@ -7,8 +7,8 @@ export class Entity<
   TAddons extends {},
   TTraits extends {},
   TEvents extends string
-> extends Element<TAddons, TEvents> {
-  static EMPTY = new Entity(new NopDisplayObject(), {});
+> extends Element<TAddons, TEvents, ISprite> {
+  static EMPTY = new Entity(new NopSprite(), {});
 
   public readonly type = 'entity';
   public velocity: Vector2Type;
@@ -16,7 +16,7 @@ export class Entity<
 
   private _traits: Trait<TAddons, TTraits, TEvents>[];
 
-  constructor(display: IDisplayObject, traits: TTraits) {
+  constructor(display: ISprite, traits: TTraits) {
     super(display);
 
     this.velocity = [0, 0];

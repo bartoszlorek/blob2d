@@ -30,7 +30,7 @@
 - ✅ Sprite sheets manager
 - ✅ Tiled integration
 - ✅ Collisions
-- ❌ Animations
+- ✅ Animations
 - ❌ User inputs
 - ❌ User interface
 - ❌ Motion easings

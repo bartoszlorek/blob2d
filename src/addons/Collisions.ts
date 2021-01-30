@@ -82,6 +82,8 @@ export class Collisions<
     group: ICollisionGroup<TAddons, TTraits, TEvents>,
     deltaTime: number
   ): void {
+    // optimization: create resolving method separately
+    // for each group type and call it directly
     switch (group.type) {
       case 'static': {
         const {entities, tilemaps, callback} = group;
