@@ -74,6 +74,10 @@ export class Level extends Scene<Addons, Events> {
     this.addon.entities.addChild(player);
     this.addon.collisions.addStatic(player, ground, cb);
     // this.addon.collisions.addDynamic(player, platform, cb);
+
+    this.refs = {
+      player,
+    };
   }
 
   update(deltaTime: number) {
