@@ -39,7 +39,7 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   return (tileGIDs: number[], columns: number, x: number, y: number) => {
     const map = new Tilemap<Addons, Events>(new Container(), tileGIDs, columns);
 
-    map.fill((tileGID) => new Sprite(spritesheet.getTextureByGID(tileGID)));
+    map.fill(tileGID => new Sprite(spritesheet.getTextureByGID(tileGID)));
     map.setPosition(x, y);
     return map;
   };

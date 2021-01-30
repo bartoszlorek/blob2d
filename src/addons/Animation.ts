@@ -39,7 +39,7 @@ export class Animation<
     this._requests = new Map();
     this._cachedFrames = new Map();
 
-    scene.on('scene/removeElement', (elem) => {
+    scene.on('scene/removeElement', elem => {
       this.removeAnimatedSprite(elem);
     });
   }

@@ -29,6 +29,6 @@ export class Element<
   }
 
   public destroy() {
-    this.scene?.removeChild(this);
+    this.scene?.removeElement(this);
   }
 }
