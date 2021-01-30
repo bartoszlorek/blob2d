@@ -32,7 +32,7 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 - ✅ Tiled integration
 - ✅ Collisions
 - ✅ Animations
-- ❌ User inputs
+- ✅ User inputs
 - ❌ User interface
 - ❌ Motion easings
 - 🤷‍♂️ General physics
@@ -106,4 +106,39 @@ export class Level extends Scene<Addons, Events> {
     this.addon.entities.addChild(player);
   }
 }
+```
+
+## User Inputs
+
+General utilities to build more complex interactions.
+
+### `Keyboard`
+
+Proxy of keyboard events handling both `keyup` and `keydown` state.
+
+```ts
+const keyboard = new Keyboard();
+
+keyboard.on('ArrowRight', (pressed: boolean) => {
+  if (pressed) player.moveRight();
+});
+
+keyboard.off('ArrowRight');
+keyboard.destroy();
+```
+
+### `ScreenButton`
+
+Simulates clicking a physical keyboard.
+
+```ts
+const $node = document.querySelector<HTMLElement>('.button');
+const button = new ScreenButton('ArrowLeft', $node);
+
+// optional: extends button behavior
+button.onKeydown = node => node.classList.add('clicked');
+button.onKeyup = node => node.classList.remove('clicked');
+
+// listens to the standard key event
+keyboard.on('ArrowLeft', callback);
 ```

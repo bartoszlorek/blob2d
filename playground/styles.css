@@ -11,3 +11,17 @@ canvas {
   image-rendering: pixelated;
   -ms-interpolation-mode: nearest-neighbor;
 }
+
+.button {
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  width: 64px;
+  height: 64px;
+  background-image: url('./assets/gui.png');
+  cursor: pointer;
+}
+
+.button--clicked {
+  background-position: 0 -64px;
+}
