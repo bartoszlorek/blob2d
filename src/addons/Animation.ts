@@ -43,6 +43,19 @@ export class Animation<
     });
   }
 
+  public play(name: TKeys, sprite: ISprite): void {}
+
+  public pause(name: TKeys, sprite: ISprite): void {}
+
+  public update(deltaTime: number): void {
+    this.accumulatedTime += deltaTime;
+
+    if (this.accumulatedTime >= this.deltaTimePerFrame) {
+      this.resolveRequests();
+      this.accumulatedTime = 0;
+    }
+  }
+
   public requestFrame(name: TKeys, sprite: ISprite): void {
     this.requests.set(sprite, name);
 
@@ -59,15 +72,6 @@ export class Animation<
       // initialize cached frames for the sprite
       const initialCachedFrames = {[name]: 0} as TCachedFrames<TKeys>;
       this.cachedFrames.set(sprite, initialCachedFrames);
-    }
-  }
-
-  public update(deltaTime: number): void {
-    this.accumulatedTime += deltaTime;
-
-    if (this.accumulatedTime >= this.deltaTimePerFrame) {
-      this.resolveRequests();
-      this.accumulatedTime = 0;
     }
   }
 
