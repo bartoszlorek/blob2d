@@ -95,7 +95,7 @@ export class Level extends Scene<Addons, Events> {
     });
 
     // create a player entity with FollowMouse trait
-    const player = const player = new Entity<Addons, Traits, Events>(
+    const player = new Entity<Addons, Traits, Events>(
       new Sprite(texture), {followMouse: new FollowMouse()}
     );
 
