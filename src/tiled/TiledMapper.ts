@@ -2,7 +2,7 @@ import {
   ITiledMapJSON,
   ITiledFiniteTileLayer,
   ITiledInfiniteTileLayer,
-} from './types';
+} from './TiledTypes';
 
 type SpritesIteratee<T> = (tileGID: number, x: number, y: number) => T;
 type TilesIteratee<T> = (
