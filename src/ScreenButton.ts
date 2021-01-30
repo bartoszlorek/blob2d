@@ -27,7 +27,7 @@ export class ScreenButton<TKey extends string = string> {
       clearFrameRequest(intervalRequest);
     }
 
-    const startListener = (event: TouchEvent) => {
+    const startListener = (event: MouseEvent | TouchEvent) => {
       event.preventDefault();
       clearFrameRequests();
 
@@ -47,10 +47,14 @@ export class ScreenButton<TKey extends string = string> {
       clearFrameRequests();
     };
 
+    node.addEventListener('mousedown', startListener);
+    node.addEventListener('mouseup', endListener);
     node.addEventListener('touchstart', startListener);
     node.addEventListener('touchend', endListener);
 
     this.destroy = () => {
+      node.removeEventListener('mousedown', startListener);
+      node.removeEventListener('mouseup', endListener);
       node.removeEventListener('touchstart', startListener);
       node.removeEventListener('touchend', endListener);
       this.node = null;
