@@ -6,6 +6,7 @@ export {Camera} from './Camera';
 export {Docker} from './Docker';
 export {Element} from './Element';
 export {Entity} from './Entity';
+export {Keyboard} from './Keyboard';
 export {Scene} from './Scene';
 export {Tilemap} from './Tilemap';
 export {Trait} from './Trait';
