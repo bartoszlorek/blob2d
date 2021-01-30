@@ -4,7 +4,7 @@ Playable demo 💾 available here https://bartoszlorek.pl/run/blob2d \
 Package 📦 for new games here https://www.npmjs.com/package/blob2d
 
 <p align="center">
-  <img width="500" src="https://user-images.githubusercontent.com/13873576/106363562-83254980-6329-11eb-8e12-f14c079b904e.png">
+  <img width="500" src="https://user-images.githubusercontent.com/13873576/106365055-4c543100-6333-11eb-8784-2c98eb845dc8.png">
 </p>
 
 ## General Structure
