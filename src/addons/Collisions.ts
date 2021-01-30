@@ -92,7 +92,7 @@ export class Collisions<
           for (let i = 0; i < entities.length; i++) {
             const entity = entities[i];
 
-            // bypass loop
+            // bypass loop for one element
             if (tilemaps.length > 1) {
               for (let j = 0; j < tilemaps.length; j++) {
                 this.collideTile(entity, tilemaps[j], deltaTime, callback);
@@ -105,7 +105,7 @@ export class Collisions<
           // a single entity collision
           const entity = entities[0];
 
-          // bypass loop
+          // bypass loop for one element
           if (tilemaps.length > 1) {
             for (let j = 0; j < tilemaps.length; j++) {
               this.collideTile(entity, tilemaps[j], deltaTime, callback);
@@ -127,7 +127,7 @@ export class Collisions<
           for (let i = 0; i < entitiesA.length; i++) {
             const entity = entitiesA[i];
 
-            // bypass loop
+            // bypass loop for one element
             if (entitiesB.length > 1) {
               for (let j = 0; j < entitiesB.length; j++) {
                 this.collideEntity(entity, entitiesB[j], deltaTime, callback);
@@ -140,7 +140,7 @@ export class Collisions<
           // a single entity collision
           const entity = entitiesA[0];
 
-          // bypass loop
+          // bypass loop for one element
           if (entitiesB.length > 1) {
             for (let j = 0; j < entitiesB.length; j++) {
               this.collideEntity(entity, entitiesB[j], deltaTime, callback);
