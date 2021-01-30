@@ -17,6 +17,16 @@
     "url": "https://github.com/bartoszlorek/blob2d/issues"
   },
   "homepage": "https://github.com/bartoszlorek/blob2d#readme",
+  "keywords": [
+    "game",
+    "pixijs",
+    "typescript",
+    "sprite",
+    "tilemap",
+    "tiled-map-editor",
+    "collision-detection",
+    "physics"
+  ],
   "dependencies": {
     "pixi.js": "^5.3.7"
   },
