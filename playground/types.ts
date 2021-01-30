@@ -3,7 +3,7 @@ import {Entities} from './addons';
 import {BorderLimit, FollowMouse, WaveMove} from './traits';
 
 export type Addons = {
-  animation: Animation<Keyframes>;
+  animation: Animation<Addons, Events, Keyframes>;
   collisions: Collisions<Addons, Traits, Events>;
   entities: Entities;
 };

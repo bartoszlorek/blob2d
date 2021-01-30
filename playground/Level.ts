@@ -39,7 +39,7 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   return (tileGIDs: number[], columns: number, x: number, y: number) => {
     const map = new Tilemap<Addons, Events>(new Container(), tileGIDs, columns);
 
-    map.fill((tileid) => new Sprite(spritesheet.getTextureByGID(tileid)));
+    map.fill((tileGID) => new Sprite(spritesheet.getTextureByGID(tileGID)));
     map.setPosition(x, y);
     return map;
   };
@@ -50,12 +50,16 @@ const keyframes: IKeyframesDictionary<Keyframes> = {
 };
 
 export class Level extends Scene<Addons, Events> {
+  public refs: {
+    player: Entity<Addons, PlayerTraits, Events>;
+  };
+
   constructor(resources: IResourceDictionary) {
     super(Container);
-    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
 
+    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
     this.registerAddons({
-      animation: new Animation(spritesheet, keyframes),
+      animation: new Animation(this, spritesheet, keyframes),
       collisions: new Collisions(this),
       entities: new Entities(this),
     });
@@ -69,9 +73,15 @@ export class Level extends Scene<Addons, Events> {
     this.addChild(...ground, ...boxes, player, ...front);
     this.addon.entities.addChild(player);
     this.addon.collisions.addStatic(player, ground, cb);
-    // this.addon.collisions.addDynamic(player, enemy, cb);
+    // this.addon.collisions.addDynamic(player, platform, cb);
+  }
 
-    this.addon.animation.requestFrame('player_move', player.display);
+  update(deltaTime: number) {
+    // todo: separate internal and external update of scene
+    super.update(deltaTime);
+
+    // animation
+    this.addon.animation.requestFrame('player_move', this.refs.player.display);
   }
 }
 

@@ -17,11 +17,10 @@ export interface ISpriteSheet<Texture> {
 }
 
 export interface IKeyframes {
-  frameGID?: number;
   readonly firstGID: number;
   readonly lastGID: number;
 }
 
 export type IKeyframesDictionary<TKeys extends string> = {
-  [K in TKeys]: IKeyframes | null;
+  [K in TKeys]: IKeyframes;
 };
