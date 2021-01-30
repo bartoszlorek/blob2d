@@ -18,9 +18,9 @@ export class Animation<
   protected keyframes: IKeyframesDictionary<TKeys>;
 
   private accumulatedTime: number;
-  private requests: Map<ISprite, TKeys>;
-  private cachedFrames: Map<ISprite, TCachedFrames<TKeys>>;
-  private playing: Map<ISprite, TKeys>;
+  private _requests: Map<ISprite, TKeys>;
+  private _cachedFrames: Map<ISprite, TCachedFrames<TKeys>>;
+  private _playing: Map<ISprite, TKeys>;
 
   constructor(
     scene: Scene<TAddons, TEvents>,
@@ -35,10 +35,10 @@ export class Animation<
     this.deltaTimePerFrame = deltaTimePerFrame;
     this.accumulatedTime = 0;
 
-    // internal processing
-    this.requests = new Map();
-    this.cachedFrames = new Map();
-    this.playing = new Map();
+    // processing
+    this._requests = new Map();
+    this._cachedFrames = new Map();
+    this._playing = new Map();
 
     scene.on('scene/removeChild', (sprite) => {
       this.removeCache(sprite);
@@ -46,11 +46,11 @@ export class Animation<
   }
 
   public play(name: TKeys, sprite: ISprite): void {
-    this.playing.set(sprite, name);
+    this._playing.set(sprite, name);
   }
 
   public pause(sprite: ISprite): void {
-    this.playing.delete(sprite);
+    this._playing.delete(sprite);
   }
 
   public update(deltaTime: number): void {
@@ -64,10 +64,10 @@ export class Animation<
   }
 
   public requestFrame(name: TKeys, sprite: ISprite): void {
-    this.requests.set(sprite, name);
+    this._requests.set(sprite, name);
 
-    if (this.cachedFrames.has(sprite)) {
-      const spriteCachedFrames = this.cachedFrames.get(
+    if (this._cachedFrames.has(sprite)) {
+      const spriteCachedFrames = this._cachedFrames.get(
         sprite
       ) as TCachedFrames<TKeys>;
 
@@ -78,19 +78,19 @@ export class Animation<
     } else {
       // initialize cached frames for the sprite
       const initialCachedFrames = {[name]: 0} as TCachedFrames<TKeys>;
-      this.cachedFrames.set(sprite, initialCachedFrames);
+      this._cachedFrames.set(sprite, initialCachedFrames);
     }
   }
 
   protected addPlayRequests(): void {
-    for (let [sprite, name] of this.playing) {
+    for (let [sprite, name] of this._playing) {
       this.requestFrame(name, sprite);
     }
   }
 
   protected resolveRequests(): void {
-    for (let [sprite, name] of this.requests) {
-      const spriteCachedFrames = this.cachedFrames.get(
+    for (let [sprite, name] of this._requests) {
+      const spriteCachedFrames = this._cachedFrames.get(
         sprite
       ) as TCachedFrames<TKeys>;
 
@@ -108,18 +108,18 @@ export class Animation<
     }
 
     // each update has separate requests
-    this.requests.clear();
+    this._requests.clear();
   }
 
   protected removeCache(sprite: ISprite): void {
-    this.requests.delete(sprite);
-    this.cachedFrames.delete(sprite);
-    this.playing.delete(sprite);
+    this._requests.delete(sprite);
+    this._cachedFrames.delete(sprite);
+    this._playing.delete(sprite);
   }
 
   public destroy(): void {
-    this.requests.clear();
-    this.cachedFrames.clear();
-    this.playing.clear();
+    this._requests.clear();
+    this._cachedFrames.clear();
+    this._playing.clear();
   }
 }
