@@ -23,7 +23,7 @@ export class Docker<
     this.accumulatedTime = 0;
   }
 
-  private tick(deltaFrame: number): void {
+  private tick(deltaFrame: number) {
     if (this.scene === null) return;
 
     // framerate independent motion
@@ -35,7 +35,7 @@ export class Docker<
     }
   }
 
-  public mount(scene: Scene<TAddons, TEvents>): void {
+  public mount(scene: Scene<TAddons, TEvents>) {
     this.unmount();
     this.scene = scene;
 
@@ -46,7 +46,7 @@ export class Docker<
     this.emit('docker/mount');
   }
 
-  public unmount(): void {
+  public unmount() {
     if (this.scene !== null) {
       this.emit('docker/unmount');
 
@@ -59,7 +59,7 @@ export class Docker<
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     this.unmount();
     this.removeAllListeners();
   }

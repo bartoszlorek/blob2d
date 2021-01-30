@@ -40,7 +40,7 @@ export class Scene<
     this._removeIndex = 0;
   }
 
-  public registerAddons(addons: TAddons): void {
+  public registerAddons(addons: TAddons) {
     this.addon = addons;
     this._addons = Object.values(addons);
   }
@@ -65,9 +65,7 @@ export class Scene<
     return children[0];
   }
 
-  public removeChild<T extends Element<TAddons, TEvents>[]>(
-    ...children: T
-  ): void {
+  public removeChild<T extends Element<TAddons, TEvents>[]>(...children: T) {
     // for one argument we can bypass looping through them
     if (children.length > 1) {
       for (let i = 0; i < children.length; i++) {
@@ -78,16 +76,14 @@ export class Scene<
     }
   }
 
-  private unsafeRemoveChild<T extends Element<TAddons, TEvents>>(
-    child: T
-  ): void {
+  private unsafeRemoveChild<T extends Element<TAddons, TEvents>>(child: T) {
     if (this.foreground.removeChild(child.display)) {
       this.emit('scene/removeChild', child);
       child.scene = null;
     }
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     // addons or traits may request to remove a child
     for (let i = 0; i < this._addons.length; i++) {
       this._addons[i].update(deltaTime);
@@ -99,7 +95,7 @@ export class Scene<
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     this.emit('scene/destroy');
     this.removeAllListeners();
 

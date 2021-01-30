@@ -12,11 +12,11 @@ export abstract class Trait<
     this.entity = Entity.EMPTY as Entity<TAddons, TTraits, TEvents>;
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     // fill in subclass
   }
 
-  public destroy(): void {
+  public destroy() {
     // fill in subclass
   }
 }

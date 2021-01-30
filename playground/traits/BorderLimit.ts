@@ -2,7 +2,7 @@ import {Trait} from '../../src';
 import {Addons, Traits, Events} from '../types';
 
 export class BorderLimit extends Trait<Addons, Traits, Events> {
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     if (this.entity.top < 0) {
       this.entity.top = 0;
       this.entity.velocity[1] = 0;

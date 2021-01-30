@@ -30,7 +30,7 @@ export class Collisions<
     entities: A | A[],
     tilemaps: B | B[],
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     this.groups.push(
       this.validateGroup({
         type: 'static',
@@ -48,7 +48,7 @@ export class Collisions<
     entitiesA: A | A[],
     entitiesB: B | B[],
     callback: (entityA: A, entityB: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     this.groups.push(
       this.validateGroup({
         type: 'dynamic',
@@ -62,7 +62,7 @@ export class Collisions<
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
     callback: (entityA: A, entityB: A, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     this.groups.push(
       this.validateGroup({
         type: 'self_dynamic',
@@ -72,7 +72,7 @@ export class Collisions<
     );
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     for (let i = 0; i < this.groups.length; i++) {
       this.resolveGroup(this.groups[i], deltaTime);
     }
@@ -81,7 +81,7 @@ export class Collisions<
   protected resolveGroup(
     group: ICollisionGroup<TAddons, TTraits, TEvents>,
     deltaTime: number
-  ): void {
+  ) {
     // optimization: create resolving method separately
     // for each group type and call it directly
     switch (group.type) {
@@ -213,7 +213,7 @@ export class Collisions<
     tilemap: B,
     deltaTime: number,
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     if (entity.intersects(tilemap.actualBounds, tilemap.tilesize)) {
       const separation = getTileSeparation(tilemap, entity, deltaTime);
 
@@ -232,7 +232,7 @@ export class Collisions<
     entityB: B,
     deltaTime: number,
     callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
-  ): void {
+  ) {
     if (entityA.intersects(entityB)) {
       const separation = getEntitySeparation(entityA, entityB, deltaTime);
 
@@ -284,7 +284,7 @@ export class Collisions<
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     this.groups.length = 0;
   }
 }

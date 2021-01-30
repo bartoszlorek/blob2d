@@ -16,7 +16,7 @@ export class WaveMove extends Trait<Addons, Traits, Events> {
     this.direction = 1;
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     this.distance += this.speed * deltaTime;
     this.entity.velocity[1] = this.speed * this.direction;
 

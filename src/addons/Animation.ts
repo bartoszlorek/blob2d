@@ -44,15 +44,15 @@ export class Animation<
     });
   }
 
-  public play(name: TKeys, sprite: ISprite): void {
+  public play(name: TKeys, sprite: ISprite) {
     this.playing.set(sprite, name);
   }
 
-  public pause(sprite: ISprite): void {
+  public pause(sprite: ISprite) {
     this.playing.delete(sprite);
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     this.accumulatedTime += deltaTime;
 
     if (this.accumulatedTime >= this.deltaTimePerFrame) {
@@ -62,7 +62,7 @@ export class Animation<
     }
   }
 
-  public requestFrame(name: TKeys, sprite: ISprite): void {
+  public requestFrame(name: TKeys, sprite: ISprite) {
     this._requests.set(sprite, name);
 
     if (this._cachedFrames.has(sprite)) {
@@ -81,13 +81,13 @@ export class Animation<
     }
   }
 
-  protected addPlayRequests(): void {
+  protected addPlayRequests() {
     for (let [sprite, name] of this.playing) {
       this.requestFrame(name, sprite);
     }
   }
 
-  protected resolveRequests(): void {
+  protected resolveRequests() {
     for (let [sprite, name] of this._requests) {
       const spriteCachedFrames = this._cachedFrames.get(
         sprite
@@ -110,13 +110,13 @@ export class Animation<
     this._requests.clear();
   }
 
-  protected removeAnimatedSprite(sprite: ISprite): void {
+  protected removeAnimatedSprite(sprite: ISprite) {
     this._requests.delete(sprite);
     this._cachedFrames.delete(sprite);
     this.playing.delete(sprite);
   }
 
-  public destroy(): void {
+  public destroy() {
     this._requests.clear();
     this._cachedFrames.clear();
     this.playing.clear();

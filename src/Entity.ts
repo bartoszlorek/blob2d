@@ -29,7 +29,7 @@ export class Entity<
     }
   }
 
-  public update(deltaTime: number): void {
+  public update(deltaTime: number) {
     // render entity based on position from previous step
     this.updateDisplayPosition();
 
@@ -44,7 +44,7 @@ export class Entity<
     }
   }
 
-  public destroy(): void {
+  public destroy() {
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].destroy();
     }
