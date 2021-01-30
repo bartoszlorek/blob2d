@@ -14,8 +14,8 @@ export class FollowMouse extends Trait<Addons, Traits, Events> {
     this.mouseY = 0;
 
     const listener = (event: MouseEvent) => {
-      this.mouseX = event.offsetX;
-      this.mouseY = event.offsetY;
+      this.mouseX = event.clientX;
+      this.mouseY = event.clientY;
     };
 
     window.addEventListener('mousemove', listener);
