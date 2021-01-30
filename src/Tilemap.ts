@@ -1,5 +1,5 @@
 import {Vector2Type} from './_types';
-import {IContainer, IDisplayObject} from './_pixijs';
+import {IContainer, ISprite} from './_pixijs';
 import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
 
@@ -13,7 +13,7 @@ export class Tilemap<
   public readonly columns: number;
   public readonly actualBounds: BoundingBox;
 
-  protected children: Map<number, IDisplayObject>;
+  protected children: Map<number, ISprite>;
   protected _closestArray: number[];
   protected _point: Vector2Type;
 
@@ -45,7 +45,7 @@ export class Tilemap<
     this.calculateActualBounds();
   }
 
-  public fill<T extends IDisplayObject>(
+  public fill<T extends ISprite>(
     iteratee: (tileId: number, x: number, y: number) => T
   ): void {
     this.children.clear();

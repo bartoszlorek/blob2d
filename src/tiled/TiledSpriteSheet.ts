@@ -3,11 +3,11 @@ import {BaseTexture, Texture, Rectangle, IResourceDictionary} from 'pixi.js';
 import {ITiledMapJSON, ITiledTilesetDictionary} from './types';
 
 interface SourceTileset {
-  baseTexture: BaseTexture;
-  columns: number;
-  tilesize: number;
-  firstgid: number;
-  lastgid: number;
+  readonly baseTexture: BaseTexture;
+  readonly columns: number;
+  readonly tilesize: number;
+  readonly firstgid: number;
+  readonly lastgid: number;
 }
 
 export class TiledSpriteSheet implements ISpriteSheet<Texture> {
