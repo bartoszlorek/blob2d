@@ -6,9 +6,10 @@ import {
   TiledMapper,
   TiledSpriteSheet,
   Tilemap,
+  IKeyframesDictionary,
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
-import {Addons, Events, PlayerTraits} from './types';
+import {Addons, Events, PlayerTraits, Keyframes} from './types';
 import {Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 import {tilesets, demo01Map} from './assets';
@@ -44,12 +45,20 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   };
 }
 
+const keyframes: IKeyframesDictionary<Keyframes> = {
+  player_move: {
+    currentFrame: 0,
+    firstgid: 0,
+    lastgid: 0,
+  },
+};
+
 export class Level extends Scene<Addons, Events> {
   constructor(resources: IResourceDictionary) {
     super(Container);
 
     this.registerAddons({
-      animation: new Animation(),
+      animation: new Animation(keyframes),
       collisions: new Collisions(this),
       entities: new Entities(this),
     });
@@ -63,10 +72,11 @@ export class Level extends Scene<Addons, Events> {
     const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
 
     this.addChild(...ground, ...boxes, player, ...front);
-    this.addon.animation.animate();
     this.addon.entities.addChild(player);
     this.addon.collisions.addStatic(player, ground, cb);
     // this.addon.collisions.addDynamic(player, enemy, cb);
+
+    this.addon.animation.requestFrame('player_move', player.display);
   }
 }
 
