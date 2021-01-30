@@ -8,6 +8,10 @@ import {getEntitySeparation} from './CollisionsEntity';
 import {getTileSeparation} from './CollisionsTilemap';
 import {ICollisionGroup} from './CollisionsTypes';
 
+/**
+ * Built-in addon for arcade collision detection.
+ * Handles entity-entity and entity-tilemap collisions.
+ */
 export class Collisions<
   TAddons extends {},
   TTraits extends {},

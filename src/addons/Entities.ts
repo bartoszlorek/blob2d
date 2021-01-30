@@ -3,6 +3,9 @@ import {removeItem} from '../utils/array';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
 
+/**
+ * Built-in addon updating traits of each entity.
+ */
 export class Entities<
   TAddons extends {},
   TTraits extends {},

@@ -4,7 +4,7 @@ Playable demo 💾 available here https://bartoszlorek.pl/run/blob2d \
 Package 📦 for new games here https://www.npmjs.com/package/blob2d
 
 <p align="center">
-  <img width="500" src="https://user-images.githubusercontent.com/13873576/104199289-8e224380-5427-11eb-861f-20b5a12ef347.png">
+  <img width="500" src="https://user-images.githubusercontent.com/13873576/106363562-83254980-6329-11eb-8e12-f14c079b904e.png">
 </p>
 
 ## General Structure
@@ -39,3 +39,71 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 - ❌ Sound
 
 **Notice:** this repository is under development 🚧
+
+## Basic Usage
+
+```ts
+// types.ts
+
+export type Addons = {entities: Entities};
+export type Traits = {followMouse: FollowMouse};
+export type Events = 'customEvent';
+export type Keyframes = 'customName';
+```
+
+```ts
+// game.ts
+
+import {Application, Loader} from 'pixi.js';
+import {Docker} from 'blob2d';
+import {Level} from './Level';
+...
+
+const app = new Application();
+const loader = new Loader();
+
+loader.add('sprites', './assets/sprites.png');
+loader.load(() => {
+  const docker = new Docker<Addons, Events>(app);
+  const level = new Level(loader.resources);
+
+  docker.on('docker/mount', () => {
+    console.log('crazy wacky cool!');
+  });
+
+  docker.mount(level);
+});
+
+document.body.appendChild(app.view);
+```
+
+```ts
+// Level.ts
+
+import {Sprite, Container} from 'pixi.js';
+import {Entities, Entity, Scene} from 'blob2d';
+import {FollowMouse} from './traits';
+...
+
+export class Level extends Scene<Addons, Events> {
+  constructor() {
+    super(Container);
+
+    // should be called before accessing any addon
+    this.registerAddons({
+      entities: new Entities(this),
+    });
+
+    // create a player entity with FollowMouse trait
+    const player = const player = new Entity<Addons, Traits, Events>(
+      new Sprite(texture), {followMouse: new FollowMouse()}
+    );
+
+    // add a player entity to the scene
+    this.addElement(player);
+
+    // addon updating traits of each entity
+    this.addon.entities.addChild(player);
+  }
+}
+```
