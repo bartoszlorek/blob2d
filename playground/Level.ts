@@ -1,6 +1,7 @@
 import {
   Animation,
   Collisions,
+  Entities,
   Entity,
   Scene,
   TiledMapper,
@@ -10,7 +11,6 @@ import {
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {Addons, Events, PlayerTraits, Keyframes} from './types';
-import {Entities} from './addons';
 import {BorderLimit, FollowMouse} from './traits';
 import {tilesets, demo01Map} from './assets';
 

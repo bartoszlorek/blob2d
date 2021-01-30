@@ -3,7 +3,6 @@ export * from './addons';
 export * from './tiled';
 export {BoundingBox} from './BoundingBox';
 export {Camera} from './Camera';
-export {Container} from './Container';
 export {Docker} from './Docker';
 export {Element} from './Element';
 export {Entity} from './Entity';

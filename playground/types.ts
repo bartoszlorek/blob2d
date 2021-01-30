@@ -1,11 +1,10 @@
-import {Animation, Collisions} from '../src';
-import {Entities} from './addons';
+import {Animation, Collisions, Entities} from '../src';
 import {BorderLimit, FollowMouse, WaveMove} from './traits';
 
 export type Addons = {
   animation: Animation<Addons, Events, Keyframes>;
   collisions: Collisions<Addons, Traits, Events>;
-  entities: Entities;
+  entities: Entities<Addons, Traits, Events>;
 };
 
 export type Events = 'player/score';
