@@ -13,14 +13,13 @@ export class Animation<
   TKeys extends string
 > implements IAddon {
   public readonly deltaTimePerFrame: number;
-
-  protected spritesheet: TiledSpriteSheet;
-  protected keyframes: IKeyframesDictionary<TKeys>;
+  public readonly playing: Map<ISprite, TKeys>;
+  public spritesheet: TiledSpriteSheet;
+  public keyframes: IKeyframesDictionary<TKeys>;
 
   private accumulatedTime: number;
   private _requests: Map<ISprite, TKeys>;
   private _cachedFrames: Map<ISprite, TCachedFrames<TKeys>>;
-  private _playing: Map<ISprite, TKeys>;
 
   constructor(
     scene: Scene<TAddons, TEvents>,
@@ -30,27 +29,27 @@ export class Animation<
   ) {
     this.spritesheet = spritesheet;
     this.keyframes = keyframes;
+    this.playing = new Map();
 
-    // animation may run at a different FPS than the application
+    // animation may run at a different speed than app
     this.deltaTimePerFrame = deltaTimePerFrame;
     this.accumulatedTime = 0;
 
     // processing
     this._requests = new Map();
     this._cachedFrames = new Map();
-    this._playing = new Map();
 
-    scene.on('scene/removeChild', (sprite) => {
-      this.removeCache(sprite);
+    scene.on('scene/removeChild', (child) => {
+      this.removeAnimatedSprite(child);
     });
   }
 
   public play(name: TKeys, sprite: ISprite): void {
-    this._playing.set(sprite, name);
+    this.playing.set(sprite, name);
   }
 
   public pause(sprite: ISprite): void {
-    this._playing.delete(sprite);
+    this.playing.delete(sprite);
   }
 
   public update(deltaTime: number): void {
@@ -83,7 +82,7 @@ export class Animation<
   }
 
   protected addPlayRequests(): void {
-    for (let [sprite, name] of this._playing) {
+    for (let [sprite, name] of this.playing) {
       this.requestFrame(name, sprite);
     }
   }
@@ -111,15 +110,15 @@ export class Animation<
     this._requests.clear();
   }
 
-  protected removeCache(sprite: ISprite): void {
+  protected removeAnimatedSprite(sprite: ISprite): void {
     this._requests.delete(sprite);
     this._cachedFrames.delete(sprite);
-    this._playing.delete(sprite);
+    this.playing.delete(sprite);
   }
 
   public destroy(): void {
     this._requests.clear();
     this._cachedFrames.clear();
-    this._playing.clear();
+    this.playing.clear();
   }
 }
