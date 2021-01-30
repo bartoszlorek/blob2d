@@ -6,8 +6,8 @@ interface SourceTileset {
   readonly baseTexture: BaseTexture;
   readonly columns: number;
   readonly tilesize: number;
-  readonly firstgid: number;
-  readonly lastgid: number;
+  readonly firstGID: number;
+  readonly lastGID: number;
 }
 
 export class TiledSpriteSheet implements ISpriteSheet<Texture> {
@@ -38,38 +38,38 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
         baseTexture: resources[name].texture.baseTexture,
         columns: tilesets[name].columns,
         tilesize: tilesets[name].tilewidth,
-        firstgid: tileset.firstgid,
-        lastgid: nextTileset ? nextTileset.firstgid - 1 : Infinity,
+        firstGID: tileset.firstgid,
+        lastGID: nextTileset ? nextTileset.firstgid - 1 : Infinity,
       };
     });
   }
 
-  public getTextureById(tilegid: number): Texture {
-    if (this.cachedTextures.has(tilegid)) {
-      return this.cachedTextures.get(tilegid) as Texture;
+  public getTextureByGID(tileGID: number): Texture {
+    if (this.cachedTextures.has(tileGID)) {
+      return this.cachedTextures.get(tileGID) as Texture;
     }
 
     for (let i = 0; i < this.sourceTilesets.length; i++) {
       const tileset = this.sourceTilesets[i];
 
-      if (tileset.firstgid <= tilegid && tileset.lastgid >= tilegid) {
-        return this.getTexture(tilegid, tileset);
+      if (tileset.firstGID <= tileGID && tileset.lastGID >= tileGID) {
+        return this.getTexture(tileGID, tileset);
       }
     }
 
-    throw new Error(`missing texture with gid:${tilegid}`);
+    throw new Error(`missing texture with GID:${tileGID}`);
   }
 
-  protected getTexture(tilegid: number, tileset: SourceTileset): Texture {
-    const {baseTexture, columns, tilesize, firstgid} = tileset;
+  protected getTexture(tileGID: number, tileset: SourceTileset): Texture {
+    const {baseTexture, columns, tilesize, firstGID} = tileset;
 
-    const index = tilegid - firstgid;
+    const index = tileGID - firstGID;
     const x = index % columns;
     const y = Math.floor(index / columns);
 
     const rect = new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize);
     const texture = new Texture(baseTexture, rect);
-    this.cachedTextures.set(tilegid, texture);
+    this.cachedTextures.set(tileGID, texture);
 
     return texture;
   }

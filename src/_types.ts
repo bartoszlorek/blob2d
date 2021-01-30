@@ -12,14 +12,14 @@ export interface ITrait {
 }
 
 export interface ISpriteSheet<Texture> {
-  getTextureById(id: number): Texture | null;
+  getTextureByGID(gid: number): Texture | null;
   destroy(): void;
 }
 
 export interface IKeyframes {
-  currentFrame: number;
-  readonly firstgid: number;
-  readonly lastgid: number;
+  frameGID?: number;
+  readonly firstGID: number;
+  readonly lastGID: number;
 }
 
 export type IKeyframesDictionary<TKeys extends string> = {

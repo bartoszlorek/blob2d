@@ -4,9 +4,9 @@ import {
   ITiledInfiniteTileLayer,
 } from './types';
 
-type SpritesIteratee<T> = (tileid: number, x: number, y: number) => T;
+type SpritesIteratee<T> = (tileGID: number, x: number, y: number) => T;
 type TilesIteratee<T> = (
-  tileids: number[],
+  tileGIDs: number[],
   columns: number,
   x: number,
   y: number
@@ -61,14 +61,14 @@ export class TiledMapper {
         const chunk = layer.chunks[j];
 
         for (let index = 0; index < chunk.data.length; index++) {
-          const tileid = chunk.data[index];
+          const tileGID = chunk.data[index];
 
-          if (tileid > 0) {
+          if (tileGID > 0) {
             const x = (index % chunk.width) + chunk.x;
             const y = Math.floor(index / chunk.width) + chunk.y;
 
             results.push(
-              iteratee(tileid, x * this.tilesize, y * this.tilesize)
+              iteratee(tileGID, x * this.tilesize, y * this.tilesize)
             );
 
             if (first && results.length > 0) {
@@ -79,13 +79,13 @@ export class TiledMapper {
       }
     } else if (layer.data !== undefined) {
       for (let index = 0; index < layer.data.length; index++) {
-        const tileid = layer.data[index];
+        const tileGID = layer.data[index];
 
-        if (tileid > 0) {
+        if (tileGID > 0) {
           const x = (index % layer.width) + layer.x;
           const y = Math.floor(index / layer.width) + layer.y;
 
-          results.push(iteratee(tileid, x * this.tilesize, y * this.tilesize));
+          results.push(iteratee(tileGID, x * this.tilesize, y * this.tilesize));
 
           if (first && results.length > 0) {
             return results;

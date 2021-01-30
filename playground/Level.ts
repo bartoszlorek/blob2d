@@ -16,9 +16,9 @@ import {tilesets, demo01Map} from './assets';
 
 // layers/makePlayer.ts
 function makePlayer(spritesheet: TiledSpriteSheet) {
-  return (tileid: number, x: number, y: number) => {
+  return (tileGID: number, x: number, y: number) => {
     const player = new Entity<Addons, PlayerTraits, Events>(
-      new Sprite(spritesheet.getTextureById(tileid)),
+      new Sprite(spritesheet.getTextureByGID(tileGID)),
       {
         followMouse: new FollowMouse(10),
         borderLimit: new BorderLimit(),
@@ -36,36 +36,31 @@ function makePlayer(spritesheet: TiledSpriteSheet) {
 
 // layers/makeSimpleTiles.ts
 function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
-  return (tileids: number[], columns: number, x: number, y: number) => {
-    const map = new Tilemap<Addons, Events>(new Container(), tileids, columns);
+  return (tileGIDs: number[], columns: number, x: number, y: number) => {
+    const map = new Tilemap<Addons, Events>(new Container(), tileGIDs, columns);
 
-    map.fill((tileid) => new Sprite(spritesheet.getTextureById(tileid)));
+    map.fill((tileid) => new Sprite(spritesheet.getTextureByGID(tileid)));
     map.setPosition(x, y);
     return map;
   };
 }
 
 const keyframes: IKeyframesDictionary<Keyframes> = {
-  player_move: {
-    currentFrame: 0,
-    firstgid: 0,
-    lastgid: 0,
-  },
+  player_move: {firstGID: 1, lastGID: 4},
 };
 
 export class Level extends Scene<Addons, Events> {
   constructor(resources: IResourceDictionary) {
     super(Container);
+    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
 
     this.registerAddons({
-      animation: new Animation(keyframes),
+      animation: new Animation(spritesheet, keyframes),
       collisions: new Collisions(this),
       entities: new Entities(this),
     });
 
-    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
     const mapper = new TiledMapper(demo01Map);
-
     const player = mapper.querySprite('player', makePlayer(spritesheet));
     const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
     const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
