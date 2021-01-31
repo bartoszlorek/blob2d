@@ -27,6 +27,9 @@ export class Collisions<
     this.groups = [];
   }
 
+  /**
+   * Handles an entity-tilemap collision group.
+   */
   public addStatic<
     A extends Entity<TAddons, TTraits, TEvents>,
     B extends Tilemap<TAddons, TEvents>
@@ -45,6 +48,9 @@ export class Collisions<
     );
   }
 
+  /**
+   * Handles an entity-entity collision group.
+   */
   public addDynamic<
     A extends Entity<TAddons, TTraits, TEvents>,
     B extends Entity<TAddons, TTraits, TEvents>
@@ -63,6 +69,10 @@ export class Collisions<
     );
   }
 
+  /**
+   * Handles an entity-entity collision group where
+   * each element should collide with each other.
+   */
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
     callback: (entityA: A, entityB: A, separation: TVector2) => boolean
@@ -76,6 +86,9 @@ export class Collisions<
     );
   }
 
+  /**
+   * Resolves collisions groups at each game tick.
+   */
   public update(deltaTime: number) {
     for (let i = 0; i < this.groups.length; i++) {
       this.resolveGroup(this.groups[i], deltaTime);
@@ -288,6 +301,9 @@ export class Collisions<
     }
   }
 
+  /**
+   * Clears all groups data.
+   */
   public destroy() {
     this.groups.length = 0;
   }

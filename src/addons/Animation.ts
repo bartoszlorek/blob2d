@@ -45,14 +45,23 @@ export class Animation<
     });
   }
 
+  /**
+   * Automatically requests the next frame on every update.
+   */
   public play(name: TKeys, sprite: ISprite) {
     this.playing.set(sprite, name);
   }
 
+  /**
+   * Pauses requesting the next frame.
+   */
   public pause(sprite: ISprite) {
     this.playing.delete(sprite);
   }
 
+  /**
+   * Called on every game tick and limits animation FPS.
+   */
   public update(deltaTime: number) {
     this.accumulatedTime += deltaTime;
 
@@ -63,6 +72,9 @@ export class Animation<
     }
   }
 
+  /**
+   * Request only one more frame of animation.
+   */
   public requestFrame(name: TKeys, sprite: ISprite) {
     this._requests.set(sprite, name);
 
@@ -117,6 +129,9 @@ export class Animation<
     this.playing.delete(sprite);
   }
 
+  /**
+   * Clears all cached data.
+   */
   public destroy() {
     this._requests.clear();
     this._cachedFrames.clear();
