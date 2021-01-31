@@ -9,8 +9,8 @@
   - [Scene](#scene)
   - [Tilemap](#tilemap)
   - [Trait](#trait)
-- [Built-in Addons](/addons#built-in-addons)
-- [Tiled Map Editor](/tiled#tiled-map-editor)
+- [Built-in Addons](/src/addons#built-in-addons)
+- [Tiled Map Editor](/src/tiled#tiled-map-editor)
 - User Inputs
   - [Keyboard](#keyboard)
   - [ScreenButton](#screenbutton)
@@ -131,7 +131,7 @@ interface Element extends BoundingBox
 
 ## Entity
 
-Basic component for dynamic objects of the [Scene](#scene). The entity can be extended with additional functionality by [Trait](#trait). It is a `subclass` of [Element](#element).
+Basic component for dynamic objects of the [Scene](#scene). Each entity can be enriched with its own additional features via [Trait](#trait).
 
 ```ts
 const entity = new Entity<TAddons, TTraits, TEvents>(
@@ -139,6 +139,8 @@ const entity = new Entity<TAddons, TTraits, TEvents>(
   traits   // TTraits
 );
 ```
+
+It is a `subclass` of [Element](#element).
 
 ```ts
 // public interface
@@ -167,7 +169,7 @@ const emitter = new EventEmitter<TEvents>();
 
 ## Scene
 
-Basic component for levels or in-game cutscenes. It is a `subclass` of [EventEmitter](#eventemitter). Functionality of the scene can be extended by `addons`.
+Basic component for levels or in-game cutscenes. Functionality of the scene can be extended by `addons`.
 
 ```ts
 import {Container} from 'pixi.js';
@@ -214,7 +216,7 @@ interface Scene extends EventEmitter
 
 ## Tilemap
 
-Basic component for static objects of the [Scene](#scene). It is a `subclass` of [Element](#element).
+Basic component for static objects of the [Scene](#scene).
 
 ```ts
 const tilemap = new Tilemap<TAddons, TEvents>(
@@ -224,6 +226,8 @@ const tilemap = new Tilemap<TAddons, TEvents>(
   tilesize // [optional] number = 32
 );
 ```
+
+It is a `subclass` of [Element](#element).
 
 ```ts
 // public interface
