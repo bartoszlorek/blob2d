@@ -21,10 +21,16 @@ export class Entities<
     });
   }
 
+  /**
+   * Adds one or many children.
+   */
   public addChild<T extends Entity<TAddons, TTraits, TEvents>[]>(...elems: T) {
     this.children.push(...elems);
   }
 
+  /**
+   * Removes one or many children.
+   */
   public removeChild<T extends Entity<TAddons, TTraits, TEvents>[]>(
     ...elems: T
   ) {
@@ -37,12 +43,18 @@ export class Entities<
     }
   }
 
+  /**
+   * Updates each child.
+   */
   public update(deltaTime: number) {
     for (let i = 0; i < this.children.length; i++) {
       this.children[i].update(deltaTime);
     }
   }
 
+  /**
+   * Clears all children.
+   */
   public destroy() {
     this.children.length = 0;
   }

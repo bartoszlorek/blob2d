@@ -1,4 +1,4 @@
-import {Vector2Type} from './_types';
+import {TVector2} from './_types';
 import {ISprite, NopSprite} from './_pixijs';
 import {Element} from './Element';
 import {Trait} from './Trait';
@@ -11,8 +11,8 @@ export class Entity<
   static EMPTY = new Entity(new NopSprite(), {});
 
   public readonly type = 'entity';
-  public velocity: Vector2Type;
-  public trait: {[name: string]: Trait<TAddons, TTraits, TEvents>};
+  public velocity: TVector2;
+  public trait: TTraits;
 
   private _traits: Trait<TAddons, TTraits, TEvents>[];
 
@@ -29,6 +29,9 @@ export class Entity<
     }
   }
 
+  /**
+   * Updates each trait and applies velocity.
+   */
   public update(deltaTime: number) {
     // render entity based on position from previous step
     this.updateDisplayPosition();
@@ -44,6 +47,9 @@ export class Entity<
     }
   }
 
+  /**
+   * Clears traits data.
+   */
   public destroy() {
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].destroy();

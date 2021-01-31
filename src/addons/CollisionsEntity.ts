@@ -1,8 +1,8 @@
-import {Vector2Type} from '../_types';
+import {TVector2} from '../_types';
 import {Entity} from '../Entity';
 
 // pre-allocated data
-const _vector2: Vector2Type = [0, 0];
+const _vector2: TVector2 = [0, 0];
 
 // http://noonat.github.io/intersect/#aabb-vs-aabb
 // https://gamedev.stackexchange.com/questions/54371/collision-detection-logic/54442
@@ -14,7 +14,7 @@ export function getEntitySeparation<
   entityA: Entity<TAddons, TTraits, TEvents>,
   entityB: Entity<TAddons, TTraits, TEvents>,
   deltaTime: number
-): Vector2Type {
+): TVector2 {
   const halfWidthA = entityA.width / 2;
   const halfHeightA = entityA.height / 2;
   const halfWidthB = entityB.width / 2;

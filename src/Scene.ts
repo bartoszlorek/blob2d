@@ -40,11 +40,18 @@ export class Scene<
     this._removeIndex = 0;
   }
 
+  /**
+   * Should be called in the constructor before
+   * accessing any addons of the current scene.
+   */
   public registerAddons(addons: TAddons) {
     this.addon = addons;
     this._addons = Object.values(addons);
   }
 
+  /**
+   * Adds one or many elements.
+   */
   public addElement<T extends Element<TAddons, TEvents>[]>(...elems: T) {
     // bypass loop for one element
     if (elems.length > 1) {
@@ -64,6 +71,9 @@ export class Scene<
     }
   }
 
+  /**
+   * Removes one or many elements.
+   */
   public removeElement<T extends Element<TAddons, TEvents>[]>(...elems: T) {
     // bypass loop for one element
     if (elems.length > 1) {
@@ -82,6 +92,10 @@ export class Scene<
     }
   }
 
+  /**
+   * Updates registered addons and perform the actual
+   * removal of garbage collected elements.
+   */
   public update(deltaTime: number) {
     // addons or traits may request to remove an element
     for (let i = 0; i < this._addons.length; i++) {
@@ -94,6 +108,10 @@ export class Scene<
     }
   }
 
+  /**
+   * Clears all added events and addons
+   * and removes elements from the renderer.
+   */
   public destroy() {
     this.emit('scene/destroy');
     this.removeAllListeners();

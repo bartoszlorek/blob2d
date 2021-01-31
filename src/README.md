@@ -9,45 +9,60 @@
   - [Scene](#scene)
   - [Tilemap](#tilemap)
   - [Trait](#trait)
-- Built-in Addons
-  - [Animation](#animation)
-  - [Collisions](#collisions)
-  - [Entities](#entities)
+- [Built-in Addons](/addons#built-in-addons)
+- [Tiled Map Editor](/tiled#tiled-map-editor)
 - User Inputs
   - [Keyboard](#keyboard)
   - [ScreenButton](#screenbutton)
 - Motion Helpers
   - [Easing](#easing)
 
-## `BoundingBox`
+## BoundingBox
 
 The `parent class` for the [Element](#element).
 
 ```ts
-const bbox = new BoundingBox([0, 0], [32, 32]); // min xy, max xy
+const bbox = new BoundingBox(
+  min, // [optional] TVector2 = [0, 0]
+  max  // [optional] TVector2 = [0, 0]
+);
 ```
 
 ```ts
-interface BoundingBox {
-  readonly min: TVector2;
-  readonly max: TVector2;
-  width: number;
-  height: number;
-  top: number;
-  bottom: number;
-  right: number;
-  x: number;
-  y: number;
-  translate(vector: TVector2): void;
-  translateX(value: number): void;
-  translateY(value: number): void;
-  contains(x: number, y: number): boolean;
-  intersects(bbox: BoundingBox, margin?: number = 0): boolean;
-  copy(bbox: BoundingBox): void;
+// public interface
+interface BoundingBox
+{
+  public readonly min: TVector2;
+  public readonly max: TVector2;
+  public width: number;
+  public height: number;
+  public top: number;
+  public bottom: number;
+  public right: number;
+  public x: number;
+  public y: number;
+
+  // moves both min and max vectors by the given vector 
+  public translate(vector: TVector2): void;
+
+  // moves the x axis by the given value
+  public translateX(value: number): void;
+
+  // moves the y axis by the given value
+  public translateY(value: number): void;
+
+  // returns true when given coordinates are inside bbox area
+  public contains(x: number, y: number): boolean;
+
+  // returns true when given bbox intersects with another one
+  public intersects(bbox: BoundingBox, margin?: number = 0): boolean;
+
+  // copies all fields from another bbox
+  public copy(bbox: BoundingBox): void;
 }
 ```
 
-## `Docker`
+## Docker
 
 It is a bridge between the [Scene](#scene) and the [PixiJS](https://www.pixijs.com/) Application.
 
@@ -55,7 +70,9 @@ It is a bridge between the [Scene](#scene) and the [PixiJS](https://www.pixijs.c
 import {Application} from 'pixi.js';
 
 const app = new Application();
-const docker = new Docker<Addons, Events>(app);
+const docker = new Docker<TAddons, TEvents>(
+  app // IApplication
+);
 ```
 
 Extends external [EventEmitter](#eventemitter) dependency and provides own events:
@@ -66,67 +83,98 @@ Extends external [EventEmitter](#eventemitter) dependency and provides own event
 ```
 
 ```ts
-interface Docker extends EventEmitter {
-  scene: Scene | null;
-  mount(scene: Scene): void;
-  unmount(): void;
-  destroy(): void;
+// public interface
+interface Docker extends EventEmitter
+{
+  public scene: Scene | null;
+
+  // unmounts the current scene
+  // and mounts the given one
+  public mount(scene: Scene): void;
+
+  // unmounts the current scene
+  public unmount(): void;
+
+  // removes all added events
+  // and unmounts the current scene
+  public destroy(): void;
 }
 ```
 
-## `Element`
+## Element
 
 It is a `subclass` of [BoundingBox](#boundingbox).
 
 ```ts
-// e.g. PixiJS Sprite or Container is the DisplayObject
-const element = new Element<Addons, Events, DisplayObject>(display);
+const element = new Element<TAddons, TEvents, TDisplay>(
+  display, // TDisplay, e.g. Sprite or Container
+  min,     // [optional] TVector2 = [0, 0]
+  max      // [optional] TVector2 = [0, 0]
+);
 ```
 
 ```ts
-interface Element extends BoundingBox {
-  readonly display: TDisplay;
-  scene: Scene | null;
-  name: string | null;
-  updateDisplayPosition(): void;
-  destroy(): void;
+// public interface
+interface Element extends BoundingBox
+{
+  public readonly display: TDisplay;
+  public scene: Scene<TAddons, TEvents> | null;
+  public name: string | null;
+
+  // updates display object from bbox position
+  public updateDisplayPosition(): void;
+
+  // removes this element from the parent scene
+  public destroy(): void;
 }
 ```
 
-## `Entity`
+## Entity
 
 Basic component for dynamic objects of the [Scene](#scene). The entity can be extended with additional functionality by [Trait](#trait). It is a `subclass` of [Element](#element).
 
 ```ts
-const entity = new Entity<Addons, Traits, Events>(sprite);
+const entity = new Entity<TAddons, TTraits, TEvents>(
+  display, // ISprite
+  traits   // TTraits
+);
 ```
 
 ```ts
-interface Entity extends Element {
-  readonly type = 'entity';
-  velocity: TVector2;
-  trait: ITraitDictionary;
-  update(deltaTime: number): void;
-  destroy(): void;
+// public interface
+interface Entity extends Element
+{
+  static EMPTY = new Entity();
+  public readonly type = 'entity';
+  public velocity: TVector2;
+  public trait: TTraits;
+
+  // updates each trait and applies velocity
+  public update(deltaTime: number): void;
+
+  // clears traits data
+  public destroy(): void;
 }
 ```
 
-## `EventEmitter`
+## EventEmitter
 
 External dependency [EventEmitter3](https://www.npmjs.com/package/eventemitter3) and a `parent class` for [Docker](#docker) and [Scene](#scene). **Important:** both Docker and Scene remove all added listeners when destroyed.
 
 ```ts
-const emitter = new EventEmitter<Events>();
+const emitter = new EventEmitter<TEvents>();
 ```
 
-## `Scene`
+## Scene
 
 Basic component for levels or in-game cutscenes. It is a `subclass` of [EventEmitter](#eventemitter). Functionality of the scene can be extended by `addons`.
 
 ```ts
 import {Container} from 'pixi.js';
 
-const scene = new Scene<Addons, Events>(Container);
+const scene = new Scene<TAddons, TEvents>(
+  Container // IContainerConstructor
+);
 ```
 
 Extends external [EventEmitter](#eventemitter) dependency and provides own events:
@@ -138,207 +186,138 @@ Extends external [EventEmitter](#eventemitter) dependency and provides own event
 ```
 
 ```ts
-interface Scene extends EventEmitter {
-  addon: TAddons;
-  graphics: IContainer;
-  registerAddons(addons: TAddons): void;
-  addElement(...elems: Element[]): void;
-  removeElement(...elems: Element[]): void;
-  update(deltaTime: number): void;
-  destroy(): void;
+// public interface
+interface Scene extends EventEmitter
+{
+  public addon: TAddons;
+  public graphics: IContainer;
+
+  // should be called in the constructor before
+  // accessing any addons of the current scene
+  public registerAddons(addons: TAddons): void;
+
+  // adds one or many elements
+  public addElement(...elems: Element[]): void;
+
+  // removes one or many elements
+  public removeElement(...elems: Element[]): void;
+
+  // updates registered addons and perform the actual
+  // removal of garbage collected elements
+  public update(deltaTime: number): void;
+
+  // clears all added events and addons
+  // and removes elements from the renderer
+  public destroy(): void;
 }
 ```
 
-## `Tilemap`
+## Tilemap
 
 Basic component for static objects of the [Scene](#scene). It is a `subclass` of [Element](#element).
 
 ```ts
-const tilemap = new Tilemap<Addons, Events>(container, values);
+const tilemap = new Tilemap<TAddons, TEvents>(
+  display, // IContainer,
+  values,  // number[],
+  columns, // [optional] number = 8,
+  tilesize // [optional] number = 32
+);
 ```
 
 ```ts
-interface Tilemap extends Element {
-  readonly type = 'tilemap';
-  readonly values: number[];
-  readonly tilesize: number;
-  readonly columns: number;
-  readonly actualBounds: BoundingBox;
+// public interface
+interface Tilemap extends Element
+{
+  public readonly type = 'tilemap';
+  public readonly values: number[];
+  public readonly tilesize: number;
+  public readonly columns: number;
+  public readonly actualBounds: BoundingBox;
 
-  setPosition(x: number, y: number): void;
-  getIndex(x: number, y: number): number;
-  getPoint(index: number): TVector2;
-  removeByIndex(index: number): void;
-  updateCache(): void;
-
-  // maps DisplayObject to the grid of values
-  fill(
-    iteratee: (value: number, x: number, y: number) => ISprite
+  // iterates over the grid of values
+  // and map them with returned sprite
+  public fill(
+    iteratee: (
+      value: number,
+      x: number,
+      y: number
+    ) => ISprite
   ): void;
 
+  // updates position of the entire container
+  public setPosition(x: number, y: number): void;
+
+  // returns index of tile for the given x and y
+  public getIndex(x: number, y: number): number;
+
+  // returns position of tile for the given index
+  public getPoint(index: number): TVector2;
+
+  // removes tile for the given index
+  public removeByIndex(index: number): void;
+
+  // caches the entire container
+  public updateCache(): void;
+
   // returns values of nearest tiles
-  closest(x: number, y: number): number[];
+  public closest(x: number, y: number): number[];
 
   // returns distance between two points A and B;
   // returns a negative value as the distance to
   // the obstacle between A and B
-  raytrace(x0: number, y0: number, x1: number, y1: number): number;
+  public raytrace(x0: number, y0: number, x1: number, y1: number): number;
 
-  destroy(): void;
+  // clears tiles data
+  public destroy(): void;
 }
 ```
 
-## `Trait`
+## Trait
 
 Provides a way to extends the functionality of [Entity](#entity).
 
 ```ts
-const trait = new Trait<Addons, Traits, Events>();
+const trait = new Trait<TAddons, TTraits, TEvents>();
 ```
 
 ```ts
-interface Trait {
-  entity: Entity;
-  update(deltaTime: number): void;
-  destroy(): void;
+// public interface
+interface Trait
+{
+  public entity: Entity;
+
+  // it can be utilized by a subclass trait
+  // for a particular functionality
+  public update(deltaTime: number): void;
+
+  // invoked by a parent entity when destroyed
+  public destroy(): void;
 }
 ```
 
-## `Animation`
-
-```ts
-const keyframes = {
-  player_move: {firstGID: 1, lastGID: 4},
-};
-
-const animation = new Animation(scene, spritesheet, keyframes);
-```
-
-```ts
-interface Animation {
-  readonly deltaTimePerFrame: number;
-  readonly playing: Map<ISprite, TKeys>;
-  spritesheet: TiledSpriteSheet;
-  keyframes: IKeyframesDictionary<TKeys>;
-
-
-  addStatic(
-    entities: Entity | Entity[],
-    tilemaps: Tilemap | Tilemap[],
-    callback: (
-      entity: Entity,
-      tilemap: Tilemap,
-      separation: TVector2
-    ) => boolean
-  ): void;
-
-  addDynamic(
-    entitiesA: Entity | Entity[],
-    entitiesB: Entity | Entity[],
-    callback: (
-      entityA: Entity,
-      entityB: Entity,
-      separation: TVector2
-    ) => boolean
-  ): void;
-
-  addSelfDynamic(
-    entities: Entity[],
-    callback: (
-      entityA: A,
-      entityB: A,
-      separation: TVector2
-    ) => boolean
-  ): void;
-
-  update(deltaTime: number): void;
-  destroy(): void;
-}
-```
-
-## `Collisions`
-
-Built-in addon for arcade collision detection. Handles entity-entity and entity-tilemap collisions.
-
-```ts
-new Collisions<Addons, Traits, Events>(scene);
-```
-
-```ts
-interface Collisions {
-  addStatic(
-    entities: Entity | Entity[],
-    tilemaps: Tilemap | Tilemap[],
-    callback: (
-      entity: Entity,
-      tilemap: Tilemap,
-      separation: TVector2
-    ) => boolean
-  ): void;
-
-  addDynamic(
-    entitiesA: Entity | Entity[],
-    entitiesB: Entity | Entity[],
-    callback: (
-      entityA: Entity,
-      entityB: Entity,
-      separation: TVector2
-    ) => boolean
-  ): void;
-
-  addSelfDynamic(
-    entities: Entity[],
-    callback: (
-      entityA: A,
-      entityB: A,
-      separation: TVector2
-    ) => boolean
-  ): void;
-
-  update(deltaTime: number): void;
-  destroy(): void;
-}
-```
-
-## `Entities`
-
-Built-in addon updating [traits](#trait) of each entity.
-
-```ts
-new Entities<Addons, Traits, Events>(scene);
-```
-
-```ts
-interface Entities {
-  addChild(...elems: Entity[]): void;
-  removeChild(...elems: Entity[]): void;
-  update(deltaTime: number): void;
-  destroy(): void;
-}
-```
-
-## `Keyboard`
+## Keyboard
 
 Proxy of keyboard events handling both `keyup` and `keydown` state.
 
 ```ts
-const keyboard = new Keyboard();
+const keyboard = new Keyboard<TKey>();
 
 keyboard.on('ArrowRight', (pressed: boolean) => {
   if (pressed) player.moveRight();
 });
 
 keyboard.off('ArrowRight');
-keyboard.destroy();
+keyboard.destroy(); // for a cleanup
 ```
 
-## `ScreenButton`
+## ScreenButton
 
 Simulates clicking a physical keyboard.
 
 ```ts
 const $node = document.querySelector<HTMLElement>('.button');
-const button = new ScreenButton('ArrowLeft', $node);
+const button = new ScreenButton<TKey>('ArrowLeft', $node);
 
 // optional: extends button behavior
 button.onKeydown = node => node.classList.add('clicked');
@@ -348,7 +327,7 @@ button.onKeyup = node => node.classList.remove('clicked');
 keyboard.on('ArrowLeft', callback);
 ```
 
-## `Easing`
+## Easing
 
 Match the best easing type for your animation. https://matthewlein.com/tools/ceaser
 

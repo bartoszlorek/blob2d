@@ -1,5 +1,5 @@
-export type Vector2Type = [number, number];
-export type Vector3Type = [number, number, number];
+export type TVector2 = [number, number];
+export type TVector3 = [number, number, number];
 
 export interface IAddon {
   update(deltaTime: number): void;
@@ -15,12 +15,3 @@ export interface ISpriteSheet<Texture> {
   getTextureByGID(gid: number): Texture | null;
   destroy(): void;
 }
-
-export interface IKeyframes {
-  readonly firstGID: number;
-  readonly lastGID: number;
-}
-
-export type IKeyframesDictionary<TKeys extends string> = {
-  [K in TKeys]: IKeyframes;
-};

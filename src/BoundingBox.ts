@@ -1,13 +1,13 @@
-import {Vector2Type} from './_types';
+import {TVector2} from './_types';
 
 export class BoundingBox {
-  public readonly min: Vector2Type;
-  public readonly max: Vector2Type;
+  public readonly min: TVector2;
+  public readonly max: TVector2;
 
   private _width: number;
   private _height: number;
 
-  constructor(min: Vector2Type = [0, 0], max: Vector2Type = [0, 0]) {
+  constructor(min: TVector2 = [0, 0], max: TVector2 = [0, 0]) {
     this.min = min;
     this.max = max;
     this._width = max[0] - min[0];
@@ -84,23 +84,35 @@ export class BoundingBox {
     this.top = value;
   }
 
-  public translate(vector: Vector2Type) {
+  /**
+   * Moves both min and max vectors by the given vector.
+   */
+  public translate(vector: TVector2) {
     this.min[0] += vector[0];
     this.min[1] += vector[1];
     this.max[0] += vector[0];
     this.max[1] += vector[1];
   }
 
+  /**
+   * Moves the x axis by the given value.
+   */
   public translateX(value: number) {
     this.min[0] += value;
     this.max[0] += value;
   }
 
+  /**
+   * Moves the y axis by the given value.
+   */
   public translateY(value: number) {
     this.min[1] += value;
     this.max[1] += value;
   }
 
+  /**
+   * Returns true when given coordinates are inside bbox area.
+   */
   public contains(x: number, y: number): boolean {
     return !(
       this.min[0] > x ||
@@ -110,6 +122,9 @@ export class BoundingBox {
     );
   }
 
+  /**
+   * Returns true when given bbox intersects with another one.
+   */
   public intersects(bbox: BoundingBox, margin: number = 0): boolean {
     return !(
       this.min[0] > bbox.max[0] + margin ||
@@ -119,6 +134,9 @@ export class BoundingBox {
     );
   }
 
+  /**
+   * Copies all fields from another bbox.
+   */
   public copy(bbox: BoundingBox) {
     this.min[0] = bbox.min[0];
     this.min[1] = bbox.min[1];

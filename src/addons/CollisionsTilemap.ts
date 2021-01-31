@@ -1,11 +1,11 @@
-import {Vector2Type} from '../_types';
+import {TVector2} from '../_types';
 import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
 
 // pre-allocated data
 const _clone = new BoundingBox();
-const _vector2: Vector2Type = [0, 0];
+const _vector2: TVector2 = [0, 0];
 
 export function getTileSeparation<
   TAddons extends {},
@@ -15,7 +15,7 @@ export function getTileSeparation<
   tilemap: Tilemap<TAddons, TEvents>,
   entity: Entity<TAddons, TTraits, TEvents>,
   deltaTime: number
-): Vector2Type | null {
+): TVector2 | null {
   _clone.copy(entity);
 
   // position multiplied by deltaTime will give a shift in px
