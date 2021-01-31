@@ -17,9 +17,9 @@ const keyframes: IKeyframesDictionary<TKeys> = {
 };
 
 const animation = new Animation<TAddons, TEvents, TKeys>(
-  scene, // Scene<TAddons, TEvents>,
-  spritesheet, // TiledSpriteSheet,
-  keyframes, // IKeyframesDictionary<TKeys>,
+  scene,            // Scene<TAddons, TEvents>,
+  spritesheet,      // TiledSpriteSheet,
+  keyframes,        // IKeyframesDictionary<TKeys>,
   deltaTimePerFrame // [optional] number = 1/12
 );
 ```

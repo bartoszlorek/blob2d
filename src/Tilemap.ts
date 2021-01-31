@@ -46,17 +46,17 @@ export class Tilemap<
   }
 
   public fill<T extends ISprite>(
-    iteratee: (tileId: number, x: number, y: number) => T
+    iteratee: (value: number, x: number, y: number) => T
   ) {
     this.children.clear();
     this.display.removeChildren();
 
     for (let index = 0; index < this.values.length; index++) {
-      const tileId = this.values[index];
+      const value = this.values[index];
 
-      if (tileId > 0) {
+      if (value > 0) {
         const [x, y] = this.getPoint(index);
-        const child = iteratee(tileId, x, y);
+        const child = iteratee(value, x, y);
 
         child.x = x * this.tilesize;
         child.y = y * this.tilesize;

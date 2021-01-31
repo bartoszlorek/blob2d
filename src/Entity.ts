@@ -12,7 +12,7 @@ export class Entity<
 
   public readonly type = 'entity';
   public velocity: Vector2Type;
-  public trait: {[name: string]: Trait<TAddons, TTraits, TEvents>};
+  public trait: TTraits;
 
   private _traits: Trait<TAddons, TTraits, TEvents>[];
 
