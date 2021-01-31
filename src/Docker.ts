@@ -35,6 +35,9 @@ export class Docker<
     }
   }
 
+  /**
+   * Unmounts the current scene and mounts the given one.
+   */
   public mount(scene: Scene<TAddons, TEvents>) {
     this.unmount();
     this.scene = scene;
@@ -46,6 +49,9 @@ export class Docker<
     this.emit('docker/mount');
   }
 
+  /**
+   * Unmounts the current scene.
+   */
   public unmount() {
     if (this.scene !== null) {
       this.emit('docker/unmount');
@@ -59,6 +65,9 @@ export class Docker<
     }
   }
 
+  /**
+   * Removes all added events and unmounts the current scene.
+   */
   public destroy() {
     this.unmount();
     this.removeAllListeners();

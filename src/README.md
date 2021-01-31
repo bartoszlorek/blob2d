@@ -56,7 +56,7 @@ interface BoundingBox
   // returns true when given bbox intersects with another one
   public intersects(bbox: BoundingBox, margin?: number = 0): boolean;
 
-  // copies all fields from another one
+  // copies all fields from another bbox
   public copy(bbox: BoundingBox): void;
 }
 ```
@@ -195,7 +195,7 @@ interface Scene extends EventEmitter
   // accessing any addons of the current scene
   public registerAddons(addons: TAddons): void;
 
-  // add one or many elements
+  // adds one or many elements
   public addElement(...elems: Element[]): void;
 
   // removes one or many elements
@@ -267,7 +267,7 @@ interface Tilemap extends Element
   // the obstacle between A and B
   public raytrace(x0: number, y0: number, x1: number, y1: number): number;
 
-  // clears all tile data
+  // clears tiles data
   public destroy(): void;
 }
 ```

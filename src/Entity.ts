@@ -29,6 +29,9 @@ export class Entity<
     }
   }
 
+  /**
+   * Updates each trait and applies velocity.
+   */
   public update(deltaTime: number) {
     // render entity based on position from previous step
     this.updateDisplayPosition();
@@ -44,6 +47,9 @@ export class Entity<
     }
   }
 
+  /**
+   * Clears traits data.
+   */
   public destroy() {
     for (let i = 0; i < this._traits.length; i++) {
       this._traits[i].destroy();

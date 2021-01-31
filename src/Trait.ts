@@ -12,10 +12,17 @@ export abstract class Trait<
     this.entity = Entity.EMPTY as Entity<TAddons, TTraits, TEvents>;
   }
 
+  /**
+   * It can be utilized by a subclass trait
+   * for a particular functionality.
+   */
   public update(deltaTime: number) {
     // fill in subclass
   }
 
+  /**
+   * Invoked by a parent entity when destroyed.
+   */
   public destroy() {
     // fill in subclass
   }

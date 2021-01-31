@@ -23,11 +23,17 @@ export class Element<
     this.updateDisplayPosition();
   }
 
+  /**
+   * Updates display object from bbox position.
+   */
   public updateDisplayPosition() {
     this.display.x = this.min[0];
     this.display.y = this.min[1];
   }
 
+  /**
+   * Removes this element from the parent scene.
+   */
   public destroy() {
     this.scene?.removeElement(this);
   }

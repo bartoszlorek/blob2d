@@ -45,6 +45,10 @@ export class Tilemap<
     this.calculateActualBounds();
   }
 
+  /**
+   * Iterates over the grid of values
+   * and map them with returned sprite.
+   */
   public fill<T extends ISprite>(
     iteratee: (value: number, x: number, y: number) => T
   ) {
@@ -68,6 +72,9 @@ export class Tilemap<
     this.updateCache();
   }
 
+  /**
+   * Updates position of the entire container.
+   */
   public setPosition(x: number, y: number) {
     this.x = x;
     this.y = y;
@@ -75,16 +82,25 @@ export class Tilemap<
     this.updateDisplayPosition();
   }
 
+  /**
+   * Returns index of tile for the given x and y.
+   */
   public getIndex(x: number, y: number): number {
     return x + this.columns * y;
   }
 
+  /**
+   * Returns position of tile for the given index.
+   */
   public getPoint(index: number): TVector2 {
     this._point[0] = index % this.columns;
     this._point[1] = Math.floor(index / this.columns);
     return this._point;
   }
 
+  /**
+   * Removes tile for a given index.
+   */
   public removeByIndex(index: number) {
     const child = this.children.get(index);
 
@@ -98,12 +114,17 @@ export class Tilemap<
     this.updateCache();
   }
 
-  // important! caching requires preloaded assets
+  /**
+   * Important! caching requires preloaded assets.
+   */
   public updateCache() {
     this.display.cacheAsBitmap = false;
     this.display.cacheAsBitmap = true;
   }
 
+  /**
+   * Returns values of nearest tiles.
+   */
   public closest(x: number, y: number): number[] {
     const arr = this._closestArray;
 
@@ -134,7 +155,13 @@ export class Tilemap<
     return arr;
   }
 
-  // based on Bresenham’s Line Generation Algorithm
+  /**
+   * Returns distance between two points A and B.
+   * Returns a negative value as the distance to
+   * the obstacle between A and B.
+   *
+   * based on Bresenham’s Line Generation Algorithm
+   */
   public raytrace(x0: number, y0: number, x1: number, y1: number): number {
     const deltaX = Math.abs(x1 - x0);
     const deltaY = Math.abs(y1 - y0);
@@ -170,8 +197,10 @@ export class Tilemap<
     }
   }
 
-  // this method exists for optimization and should be
-  // called whenever the Tilemap changes general position
+  /**
+   * This method exists for optimization and should be
+   * called whenever the Tilemap changes general position.
+   */
   protected calculateActualBounds() {
     if (this.values.length === 0) {
       this.actualBounds.width = 0;
@@ -239,6 +268,9 @@ export class Tilemap<
     this.actualBounds.height = (bottom - top + 1) * this.tilesize;
   }
 
+  /**
+   * Clears tiles data.
+   */
   public destroy() {
     this.children.clear();
     super.destroy();
