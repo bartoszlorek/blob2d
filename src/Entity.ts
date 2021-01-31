@@ -1,4 +1,4 @@
-import {Vector2Type} from './_types';
+import {TVector2} from './_types';
 import {ISprite, NopSprite} from './_pixijs';
 import {Element} from './Element';
 import {Trait} from './Trait';
@@ -11,7 +11,7 @@ export class Entity<
   static EMPTY = new Entity(new NopSprite(), {});
 
   public readonly type = 'entity';
-  public velocity: Vector2Type;
+  public velocity: TVector2;
   public trait: TTraits;
 
   private _traits: Trait<TAddons, TTraits, TEvents>[];

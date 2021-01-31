@@ -1,4 +1,4 @@
-import {Vector2Type} from './_types';
+import {TVector2} from './_types';
 import {IDisplayObject} from './_pixijs';
 import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
@@ -12,7 +12,7 @@ export class Element<
   public scene: Scene<TAddons, TEvents> | null;
   public name: string | null;
 
-  constructor(display: TDisplay, min?: Vector2Type, max?: Vector2Type) {
+  constructor(display: TDisplay, min?: TVector2, max?: TVector2) {
     super(min, max);
 
     this.display = display;

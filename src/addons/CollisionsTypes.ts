@@ -1,4 +1,4 @@
-import {Vector2Type} from '../_types';
+import {TVector2} from '../_types';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
 
@@ -9,7 +9,7 @@ interface ICollisionStaticGroup<A, T, E extends string> {
   callback(
     entity: Entity<A, T, E>,
     tilemap: Tilemap<A, E>,
-    separation: Vector2Type
+    separation: TVector2
   ): boolean;
 }
 
@@ -20,7 +20,7 @@ interface ICollisionDynamicGroup<A, T, E extends string> {
   callback(
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
-    separation: Vector2Type
+    separation: TVector2
   ): boolean;
 }
 
@@ -30,7 +30,7 @@ interface ICollisionSelfDynamicGroup<A, T, E extends string> {
   callback(
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
-    separation: Vector2Type
+    separation: TVector2
   ): boolean;
 }
 

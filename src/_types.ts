@@ -1,4 +1,4 @@
-export type Vector2Type = [number, number];
+export type TVector2 = [number, number];
 export type Vector3Type = [number, number, number];
 
 export interface IAddon {

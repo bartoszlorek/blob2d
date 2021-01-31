@@ -1,4 +1,4 @@
-import {IAddon, Vector2Type} from '../_types';
+import {IAddon, TVector2} from '../_types';
 import {refineArray, removeItem} from '../utils/array';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
@@ -33,7 +33,7 @@ export class Collisions<
   >(
     entities: A | A[],
     tilemaps: B | B[],
-    callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
+    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
   ) {
     this.groups.push(
       this.validateGroup({
@@ -51,7 +51,7 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    callback: (entityA: A, entityB: B, separation: Vector2Type) => boolean
+    callback: (entityA: A, entityB: B, separation: TVector2) => boolean
   ) {
     this.groups.push(
       this.validateGroup({
@@ -65,7 +65,7 @@ export class Collisions<
 
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
-    callback: (entityA: A, entityB: A, separation: Vector2Type) => boolean
+    callback: (entityA: A, entityB: A, separation: TVector2) => boolean
   ) {
     this.groups.push(
       this.validateGroup({
@@ -216,7 +216,7 @@ export class Collisions<
     entity: A,
     tilemap: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
+    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
   ) {
     if (entity.intersects(tilemap.actualBounds, tilemap.tilesize)) {
       const separation = getTileSeparation(tilemap, entity, deltaTime);
@@ -235,7 +235,7 @@ export class Collisions<
     entityA: A,
     entityB: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: Vector2Type) => boolean
+    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
   ) {
     if (entityA.intersects(entityB)) {
       const separation = getEntitySeparation(entityA, entityB, deltaTime);

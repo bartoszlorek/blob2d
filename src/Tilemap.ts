@@ -1,4 +1,4 @@
-import {Vector2Type} from './_types';
+import {TVector2} from './_types';
 import {IContainer, ISprite} from './_pixijs';
 import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
@@ -15,7 +15,7 @@ export class Tilemap<
 
   protected children: Map<number, ISprite>;
   protected _closestArray: number[];
-  protected _point: Vector2Type;
+  protected _point: TVector2;
 
   constructor(
     display: IContainer,
@@ -79,7 +79,7 @@ export class Tilemap<
     return x + this.columns * y;
   }
 
-  public getPoint(index: number): Vector2Type {
+  public getPoint(index: number): TVector2 {
     this._point[0] = index % this.columns;
     this._point[1] = Math.floor(index / this.columns);
     return this._point;
