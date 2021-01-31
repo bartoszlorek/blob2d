@@ -4,6 +4,7 @@ export * from './tiled';
 export {BoundingBox} from './BoundingBox';
 export {Camera} from './Camera';
 export {Docker} from './Docker';
+export {Easing} from './Easing';
 export {Element} from './Element';
 export {Entity} from './Entity';
 export {Keyboard} from './Keyboard';
