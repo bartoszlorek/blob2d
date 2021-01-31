@@ -44,14 +44,18 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 
 ## Basic Usage
 
+First, create basic types for the core component of the engine.
+
 ```ts
 // types.ts
 
 export type Addons = {entities: Entities};
 export type Traits = {followMouse: FollowMouse};
-export type Events = 'customEvent';
-export type Keyframes = 'customName';
+export type Events = 'player/score' | 'player/die';
+export type Keyframes = 'player_jump' | 'player_run';
 ```
+
+Then create an Application and pass it to the `Docker`. From now on, you can mount and unmount different subclasses of `Scene` like a playable level or cutscene.
 
 ```ts
 // game.ts
@@ -68,16 +72,13 @@ loader.add('sprites', './assets/sprites.png');
 loader.load(() => {
   const docker = new Docker<Addons, Events>(app);
   const level = new Level(loader.resources);
-
-  docker.on('docker/mount', () => {
-    console.log('crazy wacky cool!');
-  });
-
   docker.mount(level);
 });
 
 document.body.appendChild(app.view);
 ```
+
+The `Scene` is a ground where you can combine all parts of your game like addons, entities, tilemaps, etc. into a cohesive product. You can create multiple scenes with different functionality of the game.
 
 ```ts
 // Level.ts
