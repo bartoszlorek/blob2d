@@ -45,7 +45,7 @@ interface Animation
   // request only one more frame of animation
   public requestFrame(name: TKeys, sprite: ISprite): void;
 
-  // clears all cached data
+  // clears cached data
   public destroy(): void;
 }
 ```
@@ -65,7 +65,7 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 interface Collisions
 {
   // handles an entity-tilemap collision group
-  addStatic(
+  public addStatic(
     entities: Entity | Entity[],
     tilemaps: Tilemap | Tilemap[],
     callback: (
@@ -76,7 +76,7 @@ interface Collisions
   ): void;
 
   // handles an entity-entity collision group
-  addDynamic(
+  public addDynamic(
     entitiesA: Entity | Entity[],
     entitiesB: Entity | Entity[],
     callback: (
@@ -88,7 +88,7 @@ interface Collisions
 
   // handles an entity-entity collision group where
   // each element should collide with each other
-  addSelfDynamic(
+  public addSelfDynamic(
     entities: Entity[],
     callback: (
       entityA: Entity,
@@ -98,10 +98,10 @@ interface Collisions
   ): void;
 
   // resolves collisions groups at each game tick
-  update(deltaTime: number): void;
+  public update(deltaTime: number): void;
 
-  // clears all groups data 
-  destroy(): void;
+  // clears groups data 
+  public destroy(): void;
 }
 ```
 
@@ -120,15 +120,15 @@ const entities = new Entities<TAddons, TTraits, TEvents>(
 interface Entities
 {
   // adds one or many children
-  addChild(...elems: Entity[]): void;
+  public addChild(...elems: Entity[]): void;
 
   // removes one or many children
-  removeChild(...elems: Entity[]): void;
+  public removeChild(...elems: Entity[]): void;
 
   // updates each child
-  update(deltaTime: number): void;
+  public update(deltaTime: number): void;
 
   // clears all children
-  destroy(): void;
+  public destroy(): void;
 }
 ```

@@ -99,7 +99,7 @@ export class Tilemap<
   }
 
   /**
-   * Removes tile for a given index.
+   * Removes tile for the given index.
    */
   public removeByIndex(index: number) {
     const child = this.children.get(index);

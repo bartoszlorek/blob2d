@@ -10,6 +10,7 @@
   - [Tilemap](#tilemap)
   - [Trait](#trait)
 - [Built-in Addons](/addons#built-in-addons)
+- [Tiled Map Editor](/tiled#tiled-map-editor)
 - User Inputs
   - [Keyboard](#keyboard)
   - [ScreenButton](#screenbutton)
@@ -41,13 +42,13 @@ interface BoundingBox
   public x: number;
   public y: number;
 
-  // moves both min and max vectors by a given vector 
+  // moves both min and max vectors by the given vector 
   public translate(vector: TVector2): void;
 
-  // moves the x axis by a given value
+  // moves the x axis by the given value
   public translateX(value: number): void;
 
-  // moves the y axis by a given value
+  // moves the y axis by the given value
   public translateY(value: number): void;
 
   // returns true when given coordinates are inside bbox area
@@ -253,7 +254,7 @@ interface Tilemap extends Element
   // returns position of tile for the given index
   public getPoint(index: number): TVector2;
 
-  // removes tile for a given index
+  // removes tile for the given index
   public removeByIndex(index: number): void;
 
   // caches the entire container

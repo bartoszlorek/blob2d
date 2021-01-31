@@ -21,7 +21,7 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
   ) {
     this.cachedTextures = new Map();
 
-    // format all tilesets of a given map to sources
+    // format all tilesets of the given map to sources
     this.sourceTilesets = map.tilesets.map((tileset, index, sets) => {
       const name = tileset.source.replace('.json', '');
       const nextTileset = sets[index + 1];

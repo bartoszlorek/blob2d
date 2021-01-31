@@ -85,7 +85,7 @@ export class BoundingBox {
   }
 
   /**
-   * Moves both min and max vectors by a given vector.
+   * Moves both min and max vectors by the given vector.
    */
   public translate(vector: TVector2) {
     this.min[0] += vector[0];
@@ -95,7 +95,7 @@ export class BoundingBox {
   }
 
   /**
-   * Moves the x axis by a given value.
+   * Moves the x axis by the given value.
    */
   public translateX(value: number) {
     this.min[0] += value;
@@ -103,7 +103,7 @@ export class BoundingBox {
   }
 
   /**
-   * Moves the y axis by a given value.
+   * Moves the y axis by the given value.
    */
   public translateY(value: number) {
     this.min[1] += value;
