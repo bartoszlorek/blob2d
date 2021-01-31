@@ -34,7 +34,7 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 - ✅ Animations
 - ✅ User inputs
 - ❌ User interface
-- ❌ Motion easings
+- ✅ Motion easings
 - 🤷‍♂️ General physics
 - ❌ Sound
 
@@ -141,4 +141,22 @@ button.onKeyup = node => node.classList.remove('clicked');
 
 // listens to the standard key event
 keyboard.on('ArrowLeft', callback);
+```
+
+## Motion Easings
+
+https://matthewlein.com/tools/ceaser
+
+### `Easing`
+
+Match the best easing type for your animation.
+
+```ts
+const value = Easing.linear(t);
+const value = Easing.easeInQuad(t);
+const value = Easing.easeInElastic(t);
+
+// or create an instance
+const easing = new Easing(250); // milliseconds
+const value = easing.easeInQuad(deltaTime);
 ```
