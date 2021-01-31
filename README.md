@@ -40,7 +40,7 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 
 ## Documentation 📑
 
-[Avaible here](/src#table-of-contents)
+[Avaible here](src/README.md#table-of-contents)
 
 ## Basic Usage
 
