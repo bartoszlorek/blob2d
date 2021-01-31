@@ -21,7 +21,7 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 
 - **Tile** is a static element of `Scene`. Basically always it's a group of `Tiles` on a grid with specific properties, like collision for `Entities` or purply visual aspects.
 
-## Features [TODO] 📝
+## Features 📝
 
 - ✅ Scene based environment fed by game cycles
 - ✅ Sprites described as bounding box with `position` and `velocity`
@@ -38,7 +38,9 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 - 🤷‍♂️ General physics
 - ❌ Sound
 
-**Notice:** this repository is under development 🚧
+## Documentation 📑
+
+[Avaible here](/src#table-of-contents)
 
 ## Basic Usage
 
