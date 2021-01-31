@@ -15,12 +15,3 @@ export interface ISpriteSheet<Texture> {
   getTextureByGID(gid: number): Texture | null;
   destroy(): void;
 }
-
-export interface IKeyframes {
-  readonly firstGID: number;
-  readonly lastGID: number;
-}
-
-export type IKeyframesDictionary<TKeys extends string> = {
-  [K in TKeys]: IKeyframes;
-};

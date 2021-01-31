@@ -1,7 +1,8 @@
 import {ISprite} from '../_pixijs';
-import {IAddon, IKeyframesDictionary} from '../_types';
+import {IAddon} from '../_types';
 import {TiledSpriteSheet} from '../tiled';
 import {Scene} from '../Scene';
+import {IKeyframesDictionary} from './AnimationTypes';
 
 type TCachedFrames<TKeys extends string> = {[K in TKeys]: number};
 
