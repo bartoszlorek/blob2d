@@ -9,8 +9,8 @@
   - [Scene](#scene)
   - [Tilemap](#tilemap)
   - [Trait](#trait)
-- [Built-in Addons](addons#built-in-addons)
-- [Tiled Map Editor](tiled#tiled-map-editor)
+- [Built-in Addons](addons/README.md)
+- [Tiled Map Editor](tiled/README.md)
 - User Inputs
   - [Keyboard](#keyboard)
   - [ScreenButton](#screenbutton)
