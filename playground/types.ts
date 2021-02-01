@@ -1,5 +1,5 @@
 import {Animation, Collisions, Entities} from '../src';
-import {BorderLimit, FollowMouse, WaveMove} from './traits';
+import {BorderLimit, FollowMouse, WaveMovement} from './traits';
 
 export type Addons = {
   animation: Animation<Addons, Events, Keyframes>;
@@ -9,15 +9,15 @@ export type Addons = {
 
 export type Events = 'player/score';
 
-export type Traits = PlayerTraits | EnemyTraits;
+export type Traits = PlayerTraits | PlatformTraits;
 
 export type PlayerTraits = {
   borderLimit: BorderLimit;
   followMouse: FollowMouse;
 };
 
-export type EnemyTraits = {
-  waveMove: WaveMove;
+export type PlatformTraits = {
+  waveMovement: WaveMovement;
 };
 
 export type Keyframes = 'player_move';

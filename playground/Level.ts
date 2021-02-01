@@ -10,8 +10,8 @@ import {
   IKeyframesDictionary,
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
-import {Addons, Events, PlayerTraits, Keyframes} from './types';
-import {BorderLimit, FollowMouse} from './traits';
+import {Addons, Events, PlayerTraits, PlatformTraits, Keyframes} from './types';
+import {BorderLimit, FollowMouse, WaveMovement} from './traits';
 import {tilesets, demo01Map} from './assets';
 
 // layers/makePlayer.ts
@@ -31,6 +31,25 @@ function makePlayer(spritesheet: TiledSpriteSheet) {
     player.height = 32;
     player.name = 'player';
     return player;
+  };
+}
+
+// layers/makePlatform.ts
+function makePlatform(spritesheet: TiledSpriteSheet) {
+  return (tileGID: number, x: number, y: number) => {
+    const platform = new Entity<Addons, PlatformTraits, Events>(
+      new Sprite(spritesheet.getTextureByGID(tileGID)),
+      {
+        waveMovement: new WaveMovement(y, 32),
+      }
+    );
+
+    platform.x = x;
+    platform.y = y;
+    platform.width = 32;
+    platform.height = 32;
+    platform.name = 'platform';
+    return platform;
   };
 }
 
@@ -62,14 +81,15 @@ export class Level extends Scene<Addons, Events> {
 
     const mapper = new TiledMapper(demo01Map);
     const player = mapper.querySprite('player', makePlayer(spritesheet));
+    const platform = mapper.querySprite('platform', makePlatform(spritesheet));
     const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
     const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
     const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
 
-    this.addElement(...ground, ...boxes, player, ...front);
-    this.addon.entities.addChild(player);
+    this.addElement(...ground, ...boxes, player, ...front, platform);
+    this.addon.entities.addChild(player, platform);
     this.addon.collisions.addStatic(player, ground, cb);
-    // this.addon.collisions.addDynamic(player, platform, cb);
+    this.addon.collisions.addDynamic(player, platform, cb);
 
     this.addon.animation.play('player_move', player.display);
   }
