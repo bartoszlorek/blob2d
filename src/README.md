@@ -118,7 +118,7 @@ const element = new Element<TAddons, TEvents, TDisplay>(
 interface Element extends BoundingBox
 {
   public readonly display: TDisplay;
-  public scene: Scene<TAddons, TEvents> | null;
+  public scene: Scene | null;
   public name: string | null;
 
   // updates display object from bbox position
