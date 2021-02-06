@@ -10,7 +10,11 @@ export class Entity<
 > extends Element<TAddons, TEvents, ISprite> {
   static EMPTY = new Entity(new NopSprite(), {});
 
+  // general type of the element
   public readonly type = 'entity';
+
+  // controls whether physics affects the rigidbody
+  public physics: 'dynamic' | 'kinematic' = 'dynamic';
   public velocity: TVector2;
   public trait: TTraits;
 

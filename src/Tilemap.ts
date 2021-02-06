@@ -7,6 +7,7 @@ export class Tilemap<
   TAddons extends {},
   TEvents extends string
 > extends Element<TAddons, TEvents, IContainer> {
+  // general type of the element
   public readonly type = 'tilemap';
   public readonly values: number[];
   public readonly tilesize: number;
