@@ -4,32 +4,38 @@ export class BoundingBox {
   public readonly min: TVector2;
   public readonly max: TVector2;
 
-  private _width: number;
-  private _height: number;
+  private _width: number = 0;
+  private _height: number = 0;
 
   constructor(min: TVector2 = [0, 0], max: TVector2 = [0, 0]) {
     this.min = min;
     this.max = max;
-    this._width = max[0] - min[0];
-    this._height = max[1] - min[1];
+    this.width = max[0] - min[0];
+    this.height = max[1] - min[1];
   }
 
   get width(): number {
     return this._width;
   }
 
+  /**
+   * It rounds a width value to an integer number.
+   */
   set width(value: number) {
-    this._width = value;
-    this.max[0] = this.min[0] + value;
+    this._width = Math.round(value);
+    this.max[0] = this.min[0] + this._width;
   }
 
   get height(): number {
     return this._height;
   }
 
+  /**
+   * It rounds a width value to an integer number.
+   */
   set height(value: number) {
-    this._height = value;
-    this.max[1] = this.min[1] + value;
+    this._height = Math.round(value);
+    this.max[1] = this.min[0] + this._height;
   }
 
   get top(): number {
