@@ -60,41 +60,68 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 );
 ```
 
+### Collision Response
+
+The callback function passed to the collision detection method that determines what should happen when two objects collide. The function takes three arguments: two colliders a separation object.
+
+```ts
+type TSeparation = {
+  length: TVector2 | number;
+  normal: TVector2;
+}
+```
+
+**Hint:** Pass a custom function that won't change velocity of colliding object when you want to just detect collision without actual responding to it.
+
 ```ts
 // public interface
 interface Collisions
 {
+  // built-in response for a static collision.
+  static staticResponse(
+    entity: Entity,
+    tilemap: Tilemap,
+    separation: TSeparation<TVector2>
+  ): void;
+
+  // built-in response for a dynamic collision.
+  static dynamicResponse(
+    entityA: Entity,
+    entityB: Entity,
+    separation: TSeparation<number>
+  ): void;
+
   // handles an entity-tilemap collision group
   public addStatic(
     entities: Entity | Entity[],
     tilemaps: Tilemap | Tilemap[],
-    callback: (
+    response: (
       entity: Entity,
       tilemap: Tilemap,
-      separation: TVector2
-    ) => boolean
+      separation: TSeparation<TVector2>
+    ) => void
   ): void;
 
   // handles an entity-entity collision group
   public addDynamic(
     entitiesA: Entity | Entity[],
     entitiesB: Entity | Entity[],
-    callback: (
+    response: (
       entityA: Entity,
       entityB: Entity,
-      separation: TVector2
-    ) => boolean
+      separation: TSeparation<number>
+    ) => void
   ): void;
 
   // handles an entity-entity collision group where
   // each element should collide with each other
   public addSelfDynamic(
     entities: Entity[],
-    callback: (
+    response: (
       entityA: Entity,
       entityB: Entity,
-      separation: TVector2
-    ) => boolean
+      separation: TSeparation<number>
+    ) => void
   ): void;
 
   // resolves collisions groups at each game tick

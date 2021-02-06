@@ -1,12 +1,17 @@
 import {IAddon, TVector2} from '../_types';
 import {refineArray, removeItem} from '../utils/array';
+import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
 import {Tilemap} from '../Tilemap';
 
 import {getEntitySeparation} from './CollisionsEntity';
 import {getTileSeparation} from './CollisionsTilemap';
-import {ICollisionGroup} from './CollisionsTypes';
+import {ICollisionGroup, TSeparation} from './CollisionsTypes';
+
+// pre-allocated data
+const _cloneA = new BoundingBox();
+const _cloneB = new BoundingBox();
 
 /**
  * Built-in addon for arcade collision detection.
@@ -36,14 +41,14 @@ export class Collisions<
   >(
     entities: A | A[],
     tilemaps: B | B[],
-    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
+    response: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
   ) {
     this.groups.push(
       this.validateGroup({
         type: 'static',
         entities: refineArray(entities),
         tilemaps: refineArray(tilemaps),
-        callback,
+        response,
       })
     );
   }
@@ -57,14 +62,14 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    callback: (entityA: A, entityB: B, separation: TVector2) => boolean
+    response: (entityA: A, entityB: B, separation: TSeparation<number>) => void
   ) {
     this.groups.push(
       this.validateGroup({
         type: 'dynamic',
         entitiesA: refineArray(entitiesA),
         entitiesB: refineArray(entitiesB),
-        callback,
+        response,
       })
     );
   }
@@ -75,13 +80,13 @@ export class Collisions<
    */
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
-    callback: (entityA: A, entityB: A, separation: TVector2) => boolean
+    response: (entityA: A, entityB: A, separation: TSeparation<number>) => void
   ) {
     this.groups.push(
       this.validateGroup({
         type: 'self_dynamic',
         entities: refineArray(entities),
-        callback,
+        response,
       })
     );
   }
@@ -99,11 +104,11 @@ export class Collisions<
     group: ICollisionGroup<TAddons, TTraits, TEvents>,
     deltaTime: number
   ) {
-    // optimization: create resolving method separately
+    // TODO: (optimization) create resolving method separately
     // for each group type and call it directly
     switch (group.type) {
       case 'static': {
-        const {entities, tilemaps, callback} = group;
+        const {entities, tilemaps, response} = group;
 
         if (entities.length > 1) {
           for (let i = 0; i < entities.length; i++) {
@@ -112,10 +117,10 @@ export class Collisions<
             // bypass loop for one element
             if (tilemaps.length > 1) {
               for (let j = 0; j < tilemaps.length; j++) {
-                this.collideTile(entity, tilemaps[j], deltaTime, callback);
+                this.collideTile(entity, tilemaps[j], deltaTime, response);
               }
             } else {
-              this.collideTile(entity, tilemaps[0], deltaTime, callback);
+              this.collideTile(entity, tilemaps[0], deltaTime, response);
             }
           }
         } else {
@@ -125,10 +130,10 @@ export class Collisions<
           // bypass loop for one element
           if (tilemaps.length > 1) {
             for (let j = 0; j < tilemaps.length; j++) {
-              this.collideTile(entity, tilemaps[j], deltaTime, callback);
+              this.collideTile(entity, tilemaps[j], deltaTime, response);
             }
           } else {
-            this.collideTile(entity, tilemaps[0], deltaTime, callback);
+            this.collideTile(entity, tilemaps[0], deltaTime, response);
           }
         }
 
@@ -136,7 +141,7 @@ export class Collisions<
       }
 
       case 'dynamic': {
-        const {entitiesA, entitiesB, callback} = group;
+        const {entitiesA, entitiesB, response} = group;
 
         // it is optimized for the first subgroup,
         // which often has only one element
@@ -147,10 +152,10 @@ export class Collisions<
             // bypass loop for one element
             if (entitiesB.length > 1) {
               for (let j = 0; j < entitiesB.length; j++) {
-                this.collideEntity(entity, entitiesB[j], deltaTime, callback);
+                this.collideEntity(entity, entitiesB[j], deltaTime, response);
               }
             } else {
-              this.collideEntity(entity, entitiesB[0], deltaTime, callback);
+              this.collideEntity(entity, entitiesB[0], deltaTime, response);
             }
           }
         } else {
@@ -160,10 +165,10 @@ export class Collisions<
           // bypass loop for one element
           if (entitiesB.length > 1) {
             for (let j = 0; j < entitiesB.length; j++) {
-              this.collideEntity(entity, entitiesB[j], deltaTime, callback);
+              this.collideEntity(entity, entitiesB[j], deltaTime, response);
             }
           } else {
-            this.collideEntity(entity, entitiesB[0], deltaTime, callback);
+            this.collideEntity(entity, entitiesB[0], deltaTime, response);
           }
         }
 
@@ -171,11 +176,11 @@ export class Collisions<
       }
 
       case 'self_dynamic': {
-        const {entities, callback} = group;
+        const {entities, response} = group;
 
         for (let i = 0; i < entities.length; i++) {
           for (let j = i + 1; j < entities.length; j++) {
-            this.collideEntity(entities[i], entities[j], deltaTime, callback);
+            this.collideEntity(entities[i], entities[j], deltaTime, response);
           }
         }
 
@@ -229,15 +234,15 @@ export class Collisions<
     entity: A,
     tilemap: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
+    response: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
   ) {
-    if (entity.intersects(tilemap.actualBounds, tilemap.tilesize)) {
-      const separation = getTileSeparation(tilemap, entity, deltaTime);
+    _cloneA.copy(entity);
+    _cloneA.translateX(entity.velocity[0] * deltaTime);
+    _cloneA.translateY(entity.velocity[1] * deltaTime);
 
-      if (separation && callback(entity, tilemap, separation)) {
-        entity.velocity[0] = separation[0];
-        entity.velocity[1] = separation[1];
-      }
+    if (_cloneA.intersects(tilemap.actualBounds)) {
+      const separation = getTileSeparation(tilemap, entity, deltaTime);
+      if (separation) response(entity, tilemap, separation);
     }
   }
 
@@ -248,18 +253,30 @@ export class Collisions<
     entityA: A,
     entityB: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
+    response: (entity: A, tilemap: B, separation: TSeparation<number>) => void
   ) {
-    if (entityA.intersects(entityB)) {
-      const separation = getEntitySeparation(entityA, entityB, deltaTime);
+    _cloneA.copy(entityA);
+    _cloneA.translateX(entityA.velocity[0] * deltaTime);
+    _cloneA.translateY(entityA.velocity[1] * deltaTime);
 
-      if (callback(entityA, entityB, separation)) {
-        // todo: use velocity instead of position
-        entityA.translateX(separation[0] / 2);
-        entityA.translateY(separation[1] / 2);
-        entityB.translateX(-separation[0] / 2);
-        entityB.translateY(-separation[1] / 2);
+    _cloneB.copy(entityB);
+    _cloneB.translateX(entityB.velocity[0] * deltaTime);
+    _cloneB.translateY(entityB.velocity[1] * deltaTime);
+
+    if (_cloneA.intersects(_cloneB)) {
+      const isDynamicA = entityA.physics === 'dynamic';
+      const isDynamicB = entityB.physics === 'dynamic';
+      let separation;
+
+      if (isDynamicA > isDynamicB) {
+        separation = getEntitySeparation(entityA, _cloneB, deltaTime);
+      } else if (isDynamicA < isDynamicB) {
+        separation = getEntitySeparation(_cloneA, entityB, deltaTime);
+      } else {
+        separation = getEntitySeparation(entityA, entityB, deltaTime);
       }
+
+      response(entityA, entityB, separation);
     }
   }
 
@@ -306,6 +323,54 @@ export class Collisions<
    */
   public destroy() {
     this.groups.length = 0;
+  }
+
+  /**
+   * Built-in response for a static collision.
+   */
+  static staticResponse<TAddons, TTraits, TEvents extends string>(
+    entity: Entity<TAddons, TTraits, TEvents>,
+    tilemap: Tilemap<TAddons, TEvents>,
+    separation: TSeparation<TVector2>
+  ): void {
+    const {magnitude, normal} = separation;
+    if (normal[0] !== 0) entity.velocity[0] = magnitude[0] * normal[0];
+    if (normal[1] !== 0) entity.velocity[1] = magnitude[1] * normal[1];
+  }
+
+  /**
+   * Built-in response for a dynamic collision.
+   */
+  static dynamicResponse<TAddons, TTraitsA, TTraitsB, TEvents extends string>(
+    entityA: Entity<TAddons, TTraitsA, TEvents>,
+    entityB: Entity<TAddons, TTraitsB, TEvents>,
+    separation: TSeparation<number>
+  ): void {
+    const {magnitude, normal} = separation;
+    const isDynamicA = entityA.physics === 'dynamic';
+    const isDynamicB = entityB.physics === 'dynamic';
+
+    if (isDynamicA > isDynamicB) {
+      if (normal[0] !== 0) {
+        entityA.velocity[0] = magnitude * normal[0];
+      } else {
+        entityA.velocity[1] = magnitude * normal[1];
+      }
+    } else if (isDynamicA < isDynamicB) {
+      if (normal[0] !== 0) {
+        entityB.velocity[0] = magnitude * -normal[0];
+      } else {
+        entityB.velocity[1] = magnitude * -normal[1];
+      }
+    } else {
+      if (normal[0] !== 0) {
+        entityA.velocity[0] = (magnitude / 2) * normal[0];
+        entityB.velocity[0] = (magnitude / 2) * -normal[0];
+      } else {
+        entityA.velocity[1] = (magnitude / 2) * normal[1];
+        entityB.velocity[1] = (magnitude / 2) * -normal[1];
+      }
+    }
   }
 }
 

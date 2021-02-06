@@ -1,8 +1,11 @@
-import {TVector2} from '../_types';
-import {Entity} from '../Entity';
+import {BoundingBox} from '../BoundingBox';
+import {TSeparation} from './CollisionsTypes';
 
 // pre-allocated data
-const _vector2: TVector2 = [0, 0];
+const _separation: TSeparation<number> = {
+  magnitude: 0,
+  normal: [0, 0],
+};
 
 // http://noonat.github.io/intersect/#aabb-vs-aabb
 // https://gamedev.stackexchange.com/questions/54371/collision-detection-logic/54442
@@ -11,10 +14,10 @@ export function getEntitySeparation<
   TTraits extends {},
   TEvents extends string
 >(
-  entityA: Entity<TAddons, TTraits, TEvents>,
-  entityB: Entity<TAddons, TTraits, TEvents>,
+  entityA: BoundingBox,
+  entityB: BoundingBox,
   deltaTime: number
-): TVector2 {
+): TSeparation<number> {
   const halfWidthA = entityA.width / 2;
   const halfHeightA = entityA.height / 2;
   const halfWidthB = entityB.width / 2;
@@ -25,22 +28,25 @@ export function getEntitySeparation<
   const overlapX = halfWidthA + halfWidthB - Math.abs(distanceX);
   const overlapY = halfHeightA + halfHeightB - Math.abs(distanceY);
 
-  _vector2[0] = 0;
-  _vector2[1] = 0;
-
   if (overlapY <= overlapX) {
+    _separation.magnitude = overlapY / deltaTime;
+    _separation.normal[0] = 0; // no effects
+
     if (distanceY < 0) {
-      _vector2[1] = overlapY;
+      _separation.normal[1] = 1;
     } else if (distanceY > 0) {
-      _vector2[1] = -overlapY;
+      _separation.normal[1] = -1;
     }
   } else {
+    _separation.magnitude = overlapX / deltaTime;
+    _separation.normal[1] = 0; // no effects
+
     if (distanceX < 0) {
-      _vector2[0] = overlapX;
+      _separation.normal[0] = 1;
     } else if (distanceX > 0) {
-      _vector2[0] = -overlapX;
+      _separation.normal[0] = -1;
     }
   }
 
-  return _vector2;
+  return _separation;
 }

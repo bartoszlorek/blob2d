@@ -17,6 +17,7 @@ export class WaveMovement extends Trait<Addons, Traits, Events> {
   }
 
   public update(deltaTime: number) {
+    this.entity.velocity[0] = 0;
     this.entity.velocity[1] = this.speed * this.direction;
 
     if (this.direction > 0) {
