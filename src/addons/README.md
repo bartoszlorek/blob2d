@@ -62,11 +62,11 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 
 ### Collision Response
 
-The callback function passed to the collision detection method that determines what should happen when two objects collide. The function takes three arguments: two colliders a separation object.
+The function passed to the collision detection method that determines what should happen when two objects collide. It takes three arguments: two colliders and separation object.
 
 ```ts
 type TSeparation = {
-  length: TVector2 | number;
+  magnitude: TVector2 | number;
   normal: TVector2;
 }
 ```
