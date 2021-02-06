@@ -42,7 +42,7 @@ export class Tilemap<
     this._closestArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._point = [0, 0];
 
-    // transform calculation
+    // transform sensitive calculations
     this.onTransformChange = () => {
       this.calculateActualBounds();
       this.updateDisplayPosition();
