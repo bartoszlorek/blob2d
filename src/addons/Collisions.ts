@@ -281,13 +281,13 @@ export class Collisions<
       }
 
       if (entityA.physics === 'kinematic' && entityB.physics === 'dynamic') {
-        const separation = getEntitySeparation(entityB, _cloneA, deltaTime);
+        const separation = getEntitySeparation(_cloneA, entityB, deltaTime);
 
         if (callback(entityA, entityB, separation)) {
           if (separation.normal[0] !== 0) {
-            entityB.velocity[0] = separation.normal[0] * separation.length;
+            entityB.velocity[0] = -separation.normal[0] * separation.length;
           } else {
-            entityB.velocity[1] = separation.normal[1] * separation.length;
+            entityB.velocity[1] = -separation.normal[1] * separation.length;
           }
         }
         return;
