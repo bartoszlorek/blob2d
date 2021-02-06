@@ -148,6 +148,9 @@ interface Entity extends Element
 {
   static EMPTY = new Entity();
   public readonly type = 'entity';
+
+  // controls whether physics affects the rigidbody
+  public physics: 'dynamic' | 'kinematic';
   public velocity: TVector2;
   public traits: TTraits;
 
