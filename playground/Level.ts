@@ -88,7 +88,7 @@ export class Level extends Scene<Addons, Events> {
     const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
 
     // addons
-    const {entities, collisions, animation} = this.addon;
+    const {entities, collisions, animation} = this.addons;
     entities.addChild(player, platform);
     collisions.addStatic(player, ground, Collisions.staticResponse);
     collisions.addDynamic(player, platform, Collisions.dynamicResponse);

@@ -12,21 +12,21 @@ export class Scene<
   TAddons extends {},
   TEvents extends string
 > extends EventEmitter<TEvents | TOwnEvents> {
-  public addon: TAddons;
+  public addons: TAddons;
   public graphics: IContainer;
 
   protected background: IContainer;
   protected foreground: IContainer;
 
-  private _addons: IAddon[];
+  private _addonsList: IAddon[];
   private _removeStack: Element<TAddons, TEvents>[];
   private _removeIndex: number;
 
   constructor(BaseContainer: IContainerConstructor) {
     super();
 
-    this.addon = {} as TAddons;
-    this._addons = [];
+    this.addons = {} as TAddons;
+    this._addonsList = [];
 
     // main layers
     this.background = new BaseContainer();
@@ -45,8 +45,8 @@ export class Scene<
    * accessing any addons of the current scene.
    */
   public registerAddons(addons: TAddons) {
-    this.addon = addons;
-    this._addons = Object.values(addons);
+    this.addons = addons;
+    this._addonsList = Object.values(addons);
   }
 
   /**
@@ -98,8 +98,8 @@ export class Scene<
    */
   public update(deltaTime: number) {
     // addons or traits may request to remove an element
-    for (let i = 0; i < this._addons.length; i++) {
-      this._addons[i].update(deltaTime);
+    for (let i = 0; i < this._addonsList.length; i++) {
+      this._addonsList[i].update(deltaTime);
     }
 
     // actual removing phase
@@ -116,11 +116,11 @@ export class Scene<
     this.emit('scene/destroy');
     this.removeAllListeners();
 
-    for (let i = 0; i < this._addons.length; i++) {
-      this._addons[i].destroy();
+    for (let i = 0; i < this._addonsList.length; i++) {
+      this._addonsList[i].destroy();
     }
 
-    this._addons.length = 0;
+    this._addonsList.length = 0;
     this._removeStack.length = 0;
 
     // remove all pixijs dependencies

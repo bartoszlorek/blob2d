@@ -106,7 +106,7 @@ export class Level extends Scene<Addons, Events> {
     this.addElement(player);
 
     // addon updating traits of each entity
-    this.addon.entities.addChild(player);
+    this.addons.entities.addChild(player);
   }
 }
 ```
