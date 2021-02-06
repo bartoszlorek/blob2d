@@ -36,11 +36,12 @@ interface BoundingBox
   public readonly max: TVector2;
   public width: number;
   public height: number;
-  public top: number;
-  public bottom: number;
-  public right: number;
   public x: number;
   public y: number;
+  public top: number;
+  public bottom: number;
+  public left: number;
+  public right: number;
 
   // moves both min and max vectors by the given vector 
   public translate(vector: TVector2): void;
