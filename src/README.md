@@ -252,9 +252,6 @@ interface Tilemap extends Element
     ) => ISprite
   ): void;
 
-  // updates position of the entire container
-  public setPosition(x: number, y: number): void;
-
   // returns index of tile for the given x and y
   public getIndex(x: number, y: number): number;
 
