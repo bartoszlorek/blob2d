@@ -40,6 +40,6 @@ export type ICollisionGroup<A, T, E extends string> =
   | ICollisionSelfDynamicGroup<A, T, E>;
 
 export type TSeparation<T extends number | TVector2> = {
-  length: T;
+  magnitude: T;
   normal: TVector2;
 };

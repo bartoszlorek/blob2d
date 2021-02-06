@@ -3,7 +3,7 @@ import {TSeparation} from './CollisionsTypes';
 
 // pre-allocated data
 const _separation: TSeparation<number> = {
-  length: 0,
+  magnitude: 0,
   normal: [0, 0],
 };
 
@@ -29,7 +29,7 @@ export function getEntitySeparation<
   const overlapY = halfHeightA + halfHeightB - Math.abs(distanceY);
 
   if (overlapY <= overlapX) {
-    _separation.length = overlapY / deltaTime;
+    _separation.magnitude = overlapY / deltaTime;
     _separation.normal[0] = 0; // no effects
 
     if (distanceY < 0) {
@@ -38,7 +38,7 @@ export function getEntitySeparation<
       _separation.normal[1] = -1;
     }
   } else {
-    _separation.length = overlapX / deltaTime;
+    _separation.magnitude = overlapX / deltaTime;
     _separation.normal[1] = 0; // no effects
 
     if (distanceX < 0) {

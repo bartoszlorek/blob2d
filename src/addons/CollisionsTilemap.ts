@@ -8,7 +8,7 @@ import {TSeparation} from './CollisionsTypes';
 const _clone = new BoundingBox();
 const _vector2: TVector2 = [0, 0];
 const _separation: TSeparation<TVector2> = {
-  length: [0, 0],
+  magnitude: [0, 0],
   normal: [0, 0],
 };
 
@@ -42,18 +42,18 @@ export function getTileSeparation<
 
   if (separationX !== null) {
     _separation.normal[0] = separationX < 0 ? -1 : 1;
-    _separation.length[0] = Math.abs(separationX / deltaTime);
+    _separation.magnitude[0] = Math.abs(separationX / deltaTime);
   } else {
     _separation.normal[0] = 0;
-    _separation.length[0] = 0;
+    _separation.magnitude[0] = 0;
   }
 
   if (separationY !== null) {
     _separation.normal[1] = separationY < 0 ? -1 : 1;
-    _separation.length[1] = Math.abs(separationY / deltaTime);
+    _separation.magnitude[1] = Math.abs(separationY / deltaTime);
   } else {
     _separation.normal[1] = 0;
-    _separation.length[1] = 0;
+    _separation.magnitude[1] = 0;
   }
 
   return _separation;
