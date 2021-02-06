@@ -10,7 +10,7 @@ interface ICollisionStaticGroup<A, T, E extends string> {
     entity: Entity<A, T, E>,
     tilemap: Tilemap<A, E>,
     separation: TVector2
-  ): boolean;
+  ): void;
 }
 
 interface ICollisionDynamicGroup<A, T, E extends string> {
@@ -21,7 +21,7 @@ interface ICollisionDynamicGroup<A, T, E extends string> {
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
     separation: TSeparation
-  ): boolean;
+  ): void;
 }
 
 interface ICollisionSelfDynamicGroup<A, T, E extends string> {
@@ -31,7 +31,7 @@ interface ICollisionSelfDynamicGroup<A, T, E extends string> {
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
     separation: TSeparation
-  ): boolean;
+  ): void;
 }
 
 export type ICollisionGroup<A, T, E extends string> =

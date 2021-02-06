@@ -87,15 +87,14 @@ export class Level extends Scene<Addons, Events> {
     const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
     const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
 
+    // addons
+    const {entities, collisions, animation} = this.addon;
+    entities.addChild(player, platform);
+    collisions.addStatic(player, ground, Collisions.staticResponse);
+    collisions.addDynamic(player, platform, Collisions.dynamicResponse);
+    animation.play('player_move', player.display);
+
+    // renderer
     this.addElement(...ground, ...boxes, player, ...front, platform);
-    this.addon.entities.addChild(player, platform);
-    this.addon.collisions.addStatic(player, ground, cb);
-    this.addon.collisions.addDynamic(player, platform, cb);
-
-    this.addon.animation.play('player_move', player.display);
   }
-}
-
-function cb() {
-  return true;
 }
