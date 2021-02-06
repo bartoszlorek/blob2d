@@ -41,7 +41,7 @@ export class Collisions<
   >(
     entities: A | A[],
     tilemaps: B | B[],
-    callback: (entity: A, tilemap: B, separation: TVector2) => void
+    callback: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
   ) {
     this.groups.push(
       this.validateGroup({
@@ -62,7 +62,7 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    callback: (entityA: A, entityB: B, separation: TSeparation) => void
+    callback: (entityA: A, entityB: B, separation: TSeparation<number>) => void
   ) {
     this.groups.push(
       this.validateGroup({
@@ -80,7 +80,7 @@ export class Collisions<
    */
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
-    callback: (entityA: A, entityB: A, separation: TSeparation) => void
+    callback: (entityA: A, entityB: A, separation: TSeparation<number>) => void
   ) {
     this.groups.push(
       this.validateGroup({
@@ -234,9 +234,13 @@ export class Collisions<
     entity: A,
     tilemap: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TVector2) => void
+    callback: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
   ) {
-    if (entity.intersects(tilemap.actualBounds, tilemap.tilesize)) {
+    _cloneA.copy(entity);
+    _cloneA.translateX(entity.velocity[0] * deltaTime);
+    _cloneA.translateY(entity.velocity[1] * deltaTime);
+
+    if (_cloneA.intersects(tilemap.actualBounds)) {
       const separation = getTileSeparation(tilemap, entity, deltaTime);
 
       if (separation) {
@@ -252,7 +256,7 @@ export class Collisions<
     entityA: A,
     entityB: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TSeparation) => void
+    callback: (entity: A, tilemap: B, separation: TSeparation<number>) => void
   ) {
     _cloneA.copy(entityA);
     _cloneA.translateX(entityA.velocity[0] * deltaTime);
@@ -330,10 +334,11 @@ export class Collisions<
   static staticResponse<TAddons, TTraits, TEvents extends string>(
     entity: Entity<TAddons, TTraits, TEvents>,
     tilemap: Tilemap<TAddons, TEvents>,
-    separation: TVector2
+    separation: TSeparation<TVector2>
   ): void {
-    entity.velocity[0] = separation[0];
-    entity.velocity[1] = separation[1];
+    const {length, normal} = separation;
+    if (normal[0] !== 0) entity.velocity[0] = normal[0] * length[0];
+    if (normal[1] !== 0) entity.velocity[1] = normal[1] * length[1];
   }
 
   /**
@@ -342,7 +347,7 @@ export class Collisions<
   static dynamicResponse<TAddons, TTraitsA, TTraitsB, TEvents extends string>(
     entityA: Entity<TAddons, TTraitsA, TEvents>,
     entityB: Entity<TAddons, TTraitsB, TEvents>,
-    separation: TSeparation
+    separation: TSeparation<number>
   ): void {
     const {length, normal} = separation;
     const isDynamicA = entityA.physics === 'dynamic';

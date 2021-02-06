@@ -2,10 +2,15 @@ import {TVector2} from '../_types';
 import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Tilemap} from '../Tilemap';
+import {TSeparation} from './CollisionsTypes';
 
 // pre-allocated data
 const _clone = new BoundingBox();
 const _vector2: TVector2 = [0, 0];
+const _separation: TSeparation<TVector2> = {
+  length: [0, 0],
+  normal: [0, 0],
+};
 
 export function getTileSeparation<
   TAddons extends {},
@@ -15,7 +20,7 @@ export function getTileSeparation<
   tilemap: Tilemap<TAddons, TEvents>,
   entity: Entity<TAddons, TTraits, TEvents>,
   deltaTime: number
-): TVector2 | null {
+): TSeparation<TVector2> | null {
   _clone.copy(entity);
 
   // position multiplied by deltaTime will give a shift in px
@@ -36,18 +41,22 @@ export function getTileSeparation<
   }
 
   if (separationX !== null) {
-    _vector2[0] = separationX / deltaTime;
+    _separation.normal[0] = separationX < 0 ? -1 : 1;
+    _separation.length[0] = Math.abs(separationX / deltaTime);
   } else {
-    _vector2[0] = entity.velocity[0];
+    _separation.normal[0] = 0;
+    _separation.length[0] = 0;
   }
 
   if (separationY !== null) {
-    _vector2[1] = separationY / deltaTime;
+    _separation.normal[1] = separationY < 0 ? -1 : 1;
+    _separation.length[1] = Math.abs(separationY / deltaTime);
   } else {
-    _vector2[1] = entity.velocity[1];
+    _separation.normal[1] = 0;
+    _separation.length[1] = 0;
   }
 
-  return _vector2;
+  return _separation;
 }
 
 // https://jonathanwhiting.com/tutorial/collision/

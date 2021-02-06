@@ -9,7 +9,7 @@ interface ICollisionStaticGroup<A, T, E extends string> {
   callback(
     entity: Entity<A, T, E>,
     tilemap: Tilemap<A, E>,
-    separation: TVector2
+    separation: TSeparation<TVector2>
   ): void;
 }
 
@@ -20,7 +20,7 @@ interface ICollisionDynamicGroup<A, T, E extends string> {
   callback(
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
-    separation: TSeparation
+    separation: TSeparation<number>
   ): void;
 }
 
@@ -30,7 +30,7 @@ interface ICollisionSelfDynamicGroup<A, T, E extends string> {
   callback(
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
-    separation: TSeparation
+    separation: TSeparation<number>
   ): void;
 }
 
@@ -39,7 +39,7 @@ export type ICollisionGroup<A, T, E extends string> =
   | ICollisionDynamicGroup<A, T, E>
   | ICollisionSelfDynamicGroup<A, T, E>;
 
-export type TSeparation = {
-  length: number;
+export type TSeparation<T extends number | TVector2> = {
+  length: T;
   normal: TVector2;
 };

@@ -2,7 +2,7 @@ import {BoundingBox} from '../BoundingBox';
 import {TSeparation} from './CollisionsTypes';
 
 // pre-allocated data
-const _separation: TSeparation = {
+const _separation: TSeparation<number> = {
   length: 0,
   normal: [0, 0],
 };
@@ -13,7 +13,11 @@ export function getEntitySeparation<
   TAddons extends {},
   TTraits extends {},
   TEvents extends string
->(entityA: BoundingBox, entityB: BoundingBox, deltaTime: number): TSeparation {
+>(
+  entityA: BoundingBox,
+  entityB: BoundingBox,
+  deltaTime: number
+): TSeparation<number> {
   const halfWidthA = entityA.width / 2;
   const halfHeightA = entityA.height / 2;
   const halfWidthB = entityB.width / 2;
