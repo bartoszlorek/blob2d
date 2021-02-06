@@ -42,8 +42,11 @@ export class Tilemap<
     this._closestArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._point = [0, 0];
 
-    // initial calculation
-    this.calculateActualBounds();
+    // transform sensitive calculations
+    this.onTransformChange = () => {
+      this.calculateActualBounds();
+      this.updateDisplayPosition();
+    };
   }
 
   /**
@@ -74,16 +77,6 @@ export class Tilemap<
   }
 
   /**
-   * Updates position of the entire container.
-   */
-  public setPosition(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-    this.calculateActualBounds();
-    this.updateDisplayPosition();
-  }
-
-  /**
    * Returns index of tile for the given x and y.
    */
   public getIndex(x: number, y: number): number {
@@ -105,7 +98,9 @@ export class Tilemap<
   public removeByIndex(index: number) {
     const child = this.children.get(index);
 
+    // pre-initiated child by the fill method
     if (child === undefined) return;
+
     this.values[index] = 0;
     this.children.delete(index);
     this.display.removeChild(child);

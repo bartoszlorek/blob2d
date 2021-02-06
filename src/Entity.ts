@@ -8,7 +8,7 @@ export class Entity<
   TTraits extends {},
   TEvents extends string
 > extends Element<TAddons, TEvents, ISprite> {
-  static EMPTY = new Entity(new NopSprite(), {});
+  public static EMPTY = new Entity(new NopSprite(), {});
 
   // general type of the element
   public readonly type = 'entity';

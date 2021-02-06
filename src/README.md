@@ -146,7 +146,7 @@ It is a `subclass` of [Element](#element).
 // public interface
 interface Entity extends Element
 {
-  static EMPTY = new Entity();
+  public static EMPTY = new Entity();
   public readonly type = 'entity';
 
   // controls whether physics affects the rigidbody
@@ -251,9 +251,6 @@ interface Tilemap extends Element
       y: number
     ) => ISprite
   ): void;
-
-  // updates position of the entire container
-  public setPosition(x: number, y: number): void;
 
   // returns index of tile for the given x and y
   public getIndex(x: number, y: number): number;
