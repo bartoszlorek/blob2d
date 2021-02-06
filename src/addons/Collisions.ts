@@ -328,7 +328,7 @@ export class Collisions<
   /**
    * Built-in response for a static collision.
    */
-  static staticResponse<TAddons, TTraits, TEvents extends string>(
+  public static staticResponse<TAddons, TTraits, TEvents extends string>(
     entity: Entity<TAddons, TTraits, TEvents>,
     tilemap: Tilemap<TAddons, TEvents>,
     separation: TSeparation<TVector2>
@@ -341,7 +341,12 @@ export class Collisions<
   /**
    * Built-in response for a dynamic collision.
    */
-  static dynamicResponse<TAddons, TTraitsA, TTraitsB, TEvents extends string>(
+  public static dynamicResponse<
+    TAddons,
+    TTraitsA,
+    TTraitsB,
+    TEvents extends string
+  >(
     entityA: Entity<TAddons, TTraitsA, TEvents>,
     entityB: Entity<TAddons, TTraitsB, TEvents>,
     separation: TSeparation<number>

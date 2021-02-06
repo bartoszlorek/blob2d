@@ -146,7 +146,7 @@ It is a `subclass` of [Element](#element).
 // public interface
 interface Entity extends Element
 {
-  static EMPTY = new Entity();
+  public static EMPTY = new Entity();
   public readonly type = 'entity';
 
   // controls whether physics affects the rigidbody
