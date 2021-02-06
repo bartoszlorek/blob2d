@@ -9,6 +9,10 @@ import {getEntitySeparation} from './CollisionsEntity';
 import {getTileSeparation} from './CollisionsTilemap';
 import {ICollisionGroup, TSeparation} from './CollisionsTypes';
 
+// pre-allocated data
+const _cloneA = new BoundingBox();
+const _cloneB = new BoundingBox();
+
 /**
  * Built-in addon for arcade collision detection.
  * Handles entity-entity and entity-tilemap collisions.
@@ -251,12 +255,10 @@ export class Collisions<
     deltaTime: number,
     callback: (entity: A, tilemap: B, separation: TSeparation) => boolean
   ) {
-    const _cloneA = new BoundingBox();
     _cloneA.copy(entityA);
     _cloneA.translateX(entityA.velocity[0] * deltaTime);
     _cloneA.translateY(entityA.velocity[1] * deltaTime);
 
-    const _cloneB = new BoundingBox();
     _cloneB.copy(entityB);
     _cloneB.translateX(entityB.velocity[0] * deltaTime);
     _cloneB.translateY(entityB.velocity[1] * deltaTime);
