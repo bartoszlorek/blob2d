@@ -149,7 +149,7 @@ interface Entity extends Element
   static EMPTY = new Entity();
   public readonly type = 'entity';
   public velocity: TVector2;
-  public trait: TTraits;
+  public traits: TTraits;
 
   // updates each trait and applies velocity
   public update(deltaTime: number): void;
@@ -191,7 +191,7 @@ Extends external [EventEmitter](#eventemitter) dependency and provides own event
 // public interface
 interface Scene extends EventEmitter
 {
-  public addon: TAddons;
+  public addons: TAddons;
   public graphics: IContainer;
 
   // should be called in the constructor before

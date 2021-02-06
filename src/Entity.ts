@@ -16,20 +16,20 @@ export class Entity<
   // controls whether physics affects the rigidbody
   public physics: 'dynamic' | 'kinematic' = 'dynamic';
   public velocity: TVector2;
-  public trait: TTraits;
+  public traits: TTraits;
 
-  private _traits: Trait<TAddons, TTraits, TEvents>[];
+  private _traitsList: Trait<TAddons, TTraits, TEvents>[];
 
   constructor(display: ISprite, traits: TTraits) {
     super(display);
 
     this.velocity = [0, 0];
-    this.trait = traits;
-    this._traits = Object.values(traits);
+    this.traits = traits;
+    this._traitsList = Object.values(traits);
 
     // assign this entity to traits
-    for (let i = 0; i < this._traits.length; i++) {
-      this._traits[i].entity = this;
+    for (let i = 0; i < this._traitsList.length; i++) {
+      this._traitsList[i].entity = this;
     }
   }
 
@@ -46,8 +46,8 @@ export class Entity<
 
     // call traits that may introduce changes to the entity
     // for next addons or renderer in next step
-    for (let i = 0; i < this._traits.length; i++) {
-      this._traits[i].update(deltaTime);
+    for (let i = 0; i < this._traitsList.length; i++) {
+      this._traitsList[i].update(deltaTime);
     }
   }
 
@@ -55,8 +55,8 @@ export class Entity<
    * Clears traits data.
    */
   public destroy() {
-    for (let i = 0; i < this._traits.length; i++) {
-      this._traits[i].destroy();
+    for (let i = 0; i < this._traitsList.length; i++) {
+      this._traitsList[i].destroy();
     }
     super.destroy();
   }
