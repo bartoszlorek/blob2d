@@ -242,10 +242,7 @@ export class Collisions<
 
     if (_cloneA.intersects(tilemap.actualBounds)) {
       const separation = getTileSeparation(tilemap, entity, deltaTime);
-
-      if (separation) {
-        response(entity, tilemap, separation);
-      }
+      if (separation) response(entity, tilemap, separation);
     }
   }
 
