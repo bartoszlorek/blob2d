@@ -71,7 +71,7 @@ type TSeparation = {
 }
 ```
 
-**Hint:** Pass a custom function that won't change velocity of colliding object when you want to just detect collision without actual responding to it.
+**Hint:** Pass a custom function that won't change the velocity of colliding objects if you just want to detect a collision without actually responding to it.
 
 ```ts
 // public interface
