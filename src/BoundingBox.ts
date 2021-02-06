@@ -35,7 +35,7 @@ export class BoundingBox {
    */
   set height(value: number) {
     this._height = Math.round(value);
-    this.max[1] = this.min[0] + this._height;
+    this.max[1] = this.min[1] + this._height;
   }
 
   get top(): number {
