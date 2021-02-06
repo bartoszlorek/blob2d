@@ -62,7 +62,7 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 
 ### Collision Response
 
-This is the callback function passed to the collision detection method that determines what should happen when two objects collide. The function takes three arguments: two colliders a separation object.
+The callback function passed to the collision detection method that determines what should happen when two objects collide. The function takes three arguments: two colliders a separation object.
 
 ```ts
 type TSeparation = {
@@ -95,7 +95,7 @@ interface Collisions
   public addStatic(
     entities: Entity | Entity[],
     tilemaps: Tilemap | Tilemap[],
-    callback: (
+    response: (
       entity: Entity,
       tilemap: Tilemap,
       separation: TSeparation<TVector2>
@@ -106,7 +106,7 @@ interface Collisions
   public addDynamic(
     entitiesA: Entity | Entity[],
     entitiesB: Entity | Entity[],
-    callback: (
+    response: (
       entityA: Entity,
       entityB: Entity,
       separation: TSeparation<number>
@@ -117,7 +117,7 @@ interface Collisions
   // each element should collide with each other
   public addSelfDynamic(
     entities: Entity[],
-    callback: (
+    response: (
       entityA: Entity,
       entityB: Entity,
       separation: TSeparation<number>

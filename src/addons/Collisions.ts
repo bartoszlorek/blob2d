@@ -41,14 +41,14 @@ export class Collisions<
   >(
     entities: A | A[],
     tilemaps: B | B[],
-    callback: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
+    response: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
   ) {
     this.groups.push(
       this.validateGroup({
         type: 'static',
         entities: refineArray(entities),
         tilemaps: refineArray(tilemaps),
-        callback,
+        response,
       })
     );
   }
@@ -62,14 +62,14 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    callback: (entityA: A, entityB: B, separation: TSeparation<number>) => void
+    response: (entityA: A, entityB: B, separation: TSeparation<number>) => void
   ) {
     this.groups.push(
       this.validateGroup({
         type: 'dynamic',
         entitiesA: refineArray(entitiesA),
         entitiesB: refineArray(entitiesB),
-        callback,
+        response,
       })
     );
   }
@@ -80,13 +80,13 @@ export class Collisions<
    */
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
-    callback: (entityA: A, entityB: A, separation: TSeparation<number>) => void
+    response: (entityA: A, entityB: A, separation: TSeparation<number>) => void
   ) {
     this.groups.push(
       this.validateGroup({
         type: 'self_dynamic',
         entities: refineArray(entities),
-        callback,
+        response,
       })
     );
   }
@@ -108,7 +108,7 @@ export class Collisions<
     // for each group type and call it directly
     switch (group.type) {
       case 'static': {
-        const {entities, tilemaps, callback} = group;
+        const {entities, tilemaps, response} = group;
 
         if (entities.length > 1) {
           for (let i = 0; i < entities.length; i++) {
@@ -117,10 +117,10 @@ export class Collisions<
             // bypass loop for one element
             if (tilemaps.length > 1) {
               for (let j = 0; j < tilemaps.length; j++) {
-                this.collideTile(entity, tilemaps[j], deltaTime, callback);
+                this.collideTile(entity, tilemaps[j], deltaTime, response);
               }
             } else {
-              this.collideTile(entity, tilemaps[0], deltaTime, callback);
+              this.collideTile(entity, tilemaps[0], deltaTime, response);
             }
           }
         } else {
@@ -130,10 +130,10 @@ export class Collisions<
           // bypass loop for one element
           if (tilemaps.length > 1) {
             for (let j = 0; j < tilemaps.length; j++) {
-              this.collideTile(entity, tilemaps[j], deltaTime, callback);
+              this.collideTile(entity, tilemaps[j], deltaTime, response);
             }
           } else {
-            this.collideTile(entity, tilemaps[0], deltaTime, callback);
+            this.collideTile(entity, tilemaps[0], deltaTime, response);
           }
         }
 
@@ -141,7 +141,7 @@ export class Collisions<
       }
 
       case 'dynamic': {
-        const {entitiesA, entitiesB, callback} = group;
+        const {entitiesA, entitiesB, response} = group;
 
         // it is optimized for the first subgroup,
         // which often has only one element
@@ -152,10 +152,10 @@ export class Collisions<
             // bypass loop for one element
             if (entitiesB.length > 1) {
               for (let j = 0; j < entitiesB.length; j++) {
-                this.collideEntity(entity, entitiesB[j], deltaTime, callback);
+                this.collideEntity(entity, entitiesB[j], deltaTime, response);
               }
             } else {
-              this.collideEntity(entity, entitiesB[0], deltaTime, callback);
+              this.collideEntity(entity, entitiesB[0], deltaTime, response);
             }
           }
         } else {
@@ -165,10 +165,10 @@ export class Collisions<
           // bypass loop for one element
           if (entitiesB.length > 1) {
             for (let j = 0; j < entitiesB.length; j++) {
-              this.collideEntity(entity, entitiesB[j], deltaTime, callback);
+              this.collideEntity(entity, entitiesB[j], deltaTime, response);
             }
           } else {
-            this.collideEntity(entity, entitiesB[0], deltaTime, callback);
+            this.collideEntity(entity, entitiesB[0], deltaTime, response);
           }
         }
 
@@ -176,11 +176,11 @@ export class Collisions<
       }
 
       case 'self_dynamic': {
-        const {entities, callback} = group;
+        const {entities, response} = group;
 
         for (let i = 0; i < entities.length; i++) {
           for (let j = i + 1; j < entities.length; j++) {
-            this.collideEntity(entities[i], entities[j], deltaTime, callback);
+            this.collideEntity(entities[i], entities[j], deltaTime, response);
           }
         }
 
@@ -234,7 +234,7 @@ export class Collisions<
     entity: A,
     tilemap: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
+    response: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
   ) {
     _cloneA.copy(entity);
     _cloneA.translateX(entity.velocity[0] * deltaTime);
@@ -244,7 +244,7 @@ export class Collisions<
       const separation = getTileSeparation(tilemap, entity, deltaTime);
 
       if (separation) {
-        callback(entity, tilemap, separation);
+        response(entity, tilemap, separation);
       }
     }
   }
@@ -256,7 +256,7 @@ export class Collisions<
     entityA: A,
     entityB: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TSeparation<number>) => void
+    response: (entity: A, tilemap: B, separation: TSeparation<number>) => void
   ) {
     _cloneA.copy(entityA);
     _cloneA.translateX(entityA.velocity[0] * deltaTime);
@@ -279,7 +279,7 @@ export class Collisions<
         separation = getEntitySeparation(entityA, entityB, deltaTime);
       }
 
-      callback(entityA, entityB, separation);
+      response(entityA, entityB, separation);
     }
   }
 
