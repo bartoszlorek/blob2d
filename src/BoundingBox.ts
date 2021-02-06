@@ -31,7 +31,7 @@ export class BoundingBox {
   }
 
   /**
-   * It rounds a width value to an integer number.
+   * It rounds a height value to an integer number.
    */
   set height(value: number) {
     this._height = Math.round(value);
