@@ -1,12 +1,13 @@
 import {IAddon, TVector2} from '../_types';
 import {refineArray, removeItem} from '../utils/array';
+import {BoundingBox} from '../BoundingBox';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
 import {Tilemap} from '../Tilemap';
 
 import {getEntitySeparation} from './CollisionsEntity';
 import {getTileSeparation} from './CollisionsTilemap';
-import {ICollisionGroup} from './CollisionsTypes';
+import {ICollisionGroup, TSeparation} from './CollisionsTypes';
 
 /**
  * Built-in addon for arcade collision detection.
@@ -57,7 +58,7 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    callback: (entityA: A, entityB: B, separation: TVector2) => boolean
+    callback: (entityA: A, entityB: B, separation: TSeparation) => boolean
   ) {
     this.groups.push(
       this.validateGroup({
@@ -75,7 +76,7 @@ export class Collisions<
    */
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
-    callback: (entityA: A, entityB: A, separation: TVector2) => boolean
+    callback: (entityA: A, entityB: A, separation: TSeparation) => boolean
   ) {
     this.groups.push(
       this.validateGroup({
@@ -99,7 +100,7 @@ export class Collisions<
     group: ICollisionGroup<TAddons, TTraits, TEvents>,
     deltaTime: number
   ) {
-    // optimization: create resolving method separately
+    // TODO: (optimization) create resolving method separately
     // for each group type and call it directly
     switch (group.type) {
       case 'static': {
@@ -248,17 +249,60 @@ export class Collisions<
     entityA: A,
     entityB: B,
     deltaTime: number,
-    callback: (entity: A, tilemap: B, separation: TVector2) => boolean
+    callback: (entity: A, tilemap: B, separation: TSeparation) => boolean
   ) {
-    if (entityA.intersects(entityB)) {
+    const _cloneA = new BoundingBox();
+    _cloneA.copy(entityA);
+    _cloneA.translateX(entityA.velocity[0] * deltaTime);
+    _cloneA.translateY(entityA.velocity[1] * deltaTime);
+
+    const _cloneB = new BoundingBox();
+    _cloneB.copy(entityB);
+    _cloneB.translateX(entityB.velocity[0] * deltaTime);
+    _cloneB.translateY(entityB.velocity[1] * deltaTime);
+
+    if (_cloneA.intersects(_cloneB)) {
+      // TODO: (optimization) create a collide method separately
+      // for each relationship type and call it directly
+
+      if (entityA.physics === 'dynamic' && entityB.physics === 'kinematic') {
+        const separation = getEntitySeparation(entityA, _cloneB, deltaTime);
+
+        if (callback(entityA, entityB, separation)) {
+          if (separation.normal[0] !== 0) {
+            entityA.velocity[0] = separation.normal[0] * separation.length;
+          } else {
+            entityA.velocity[1] = separation.normal[1] * separation.length;
+          }
+        }
+        return;
+      }
+
+      if (entityA.physics === 'kinematic' && entityB.physics === 'dynamic') {
+        const separation = getEntitySeparation(entityB, _cloneA, deltaTime);
+
+        if (callback(entityA, entityB, separation)) {
+          if (separation.normal[0] !== 0) {
+            entityB.velocity[0] = separation.normal[0] * separation.length;
+          } else {
+            entityB.velocity[1] = separation.normal[1] * separation.length;
+          }
+        }
+        return;
+      }
+
+      // other cases when both entites are dynamic or kinematic
       const separation = getEntitySeparation(entityA, entityB, deltaTime);
 
+      // TODO: distribute separation according to the entity's velocity
       if (callback(entityA, entityB, separation)) {
-        // todo: use velocity instead of position
-        entityA.translateX(separation[0] / 2);
-        entityA.translateY(separation[1] / 2);
-        entityB.translateX(-separation[0] / 2);
-        entityB.translateY(-separation[1] / 2);
+        if (separation.normal[0] !== 0) {
+          entityA.velocity[0] = (separation.normal[0] * separation.length) / 2;
+          entityB.velocity[0] = (-separation.normal[0] * separation.length) / 2;
+        } else {
+          entityA.velocity[1] = (separation.normal[1] * separation.length) / 2;
+          entityB.velocity[1] = (-separation.normal[1] * separation.length) / 2;
+        }
       }
     }
   }

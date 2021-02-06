@@ -49,6 +49,7 @@ function makePlatform(spritesheet: TiledSpriteSheet) {
     platform.width = 32;
     platform.height = 32;
     platform.name = 'platform';
+    platform.physics = 'kinematic';
     return platform;
   };
 }
