@@ -20,7 +20,7 @@ interface ICollisionDynamicGroup<A, T, E extends string> {
   callback(
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
-    separation: TVector2
+    separation: TSeparation
   ): boolean;
 }
 
@@ -30,7 +30,7 @@ interface ICollisionSelfDynamicGroup<A, T, E extends string> {
   callback(
     entityA: Entity<A, T, E>,
     entityB: Entity<A, T, E>,
-    separation: TVector2
+    separation: TSeparation
   ): boolean;
 }
 
@@ -38,3 +38,8 @@ export type ICollisionGroup<A, T, E extends string> =
   | ICollisionStaticGroup<A, T, E>
   | ICollisionDynamicGroup<A, T, E>
   | ICollisionSelfDynamicGroup<A, T, E>;
+
+export type TSeparation = {
+  length: number;
+  normal: TVector2;
+};
