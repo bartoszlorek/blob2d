@@ -4,8 +4,14 @@ export class BoundingBox {
   public readonly min: TVector2;
   public readonly max: TVector2;
 
+  /**
+   * Handler for processing transform changes in a subclass.
+   */
+  protected onTransformChange?: () => void;
+
   private _width: number = 0;
   private _height: number = 0;
+  private _transformId?: ReturnType<typeof setTimeout>;
 
   constructor(min: TVector2 = [0, 0], max: TVector2 = [0, 0]) {
     this.min = min;
@@ -24,6 +30,10 @@ export class BoundingBox {
   set width(value: number) {
     this._width = Math.round(value);
     this.max[0] = this.min[0] + this._width;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
   get height(): number {
@@ -36,33 +46,36 @@ export class BoundingBox {
   set height(value: number) {
     this._height = Math.round(value);
     this.max[1] = this.min[1] + this._height;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
-  get top(): number {
-    return this.min[1];
-  }
-
-  set top(value: number) {
-    this.min[1] = value;
-    this.max[1] = value + this._height;
-  }
-
-  get bottom(): number {
-    return this.max[1];
-  }
-
-  set bottom(value: number) {
-    this.min[1] = value - this._height;
-    this.max[1] = value;
-  }
-
-  get left(): number {
+  get x(): number {
     return this.min[0];
   }
 
-  set left(value: number) {
+  set x(value: number) {
     this.min[0] = value;
     this.max[0] = value + this._width;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
+  }
+
+  get y(): number {
+    return this.min[1];
+  }
+
+  set y(value: number) {
+    this.min[1] = value;
+    this.max[1] = value + this._height;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
   get right(): number {
@@ -72,22 +85,39 @@ export class BoundingBox {
   set right(value: number) {
     this.min[0] = value - this._width;
     this.max[0] = value;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
-  get x(): number {
-    return this.left;
+  get bottom(): number {
+    return this.max[1];
   }
 
-  set x(value: number) {
-    this.left = value;
+  set bottom(value: number) {
+    this.min[1] = value - this._height;
+    this.max[1] = value;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
-  get y(): number {
-    return this.top;
+  get left(): number {
+    return this.x;
   }
 
-  set y(value: number) {
-    this.top = value;
+  set left(value: number) {
+    this.x = value;
+  }
+
+  get top(): number {
+    return this.y;
+  }
+
+  set top(value: number) {
+    this.y = value;
   }
 
   /**
@@ -98,6 +128,10 @@ export class BoundingBox {
     this.min[1] += vector[1];
     this.max[0] += vector[0];
     this.max[1] += vector[1];
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
   /**
@@ -106,6 +140,10 @@ export class BoundingBox {
   public translateX(value: number) {
     this.min[0] += value;
     this.max[0] += value;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
   /**
@@ -114,6 +152,10 @@ export class BoundingBox {
   public translateY(value: number) {
     this.min[1] += value;
     this.max[1] += value;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
   }
 
   /**
@@ -158,5 +200,15 @@ export class BoundingBox {
   // an additional method to get Y position according to the tile system
   public getTileY(tilesize: number): number {
     return Math.floor((this.min[1] + this._height / 2) / tilesize);
+  }
+
+  private requestTransformChange() {
+    if (this.onTransformChange) {
+      if (this._transformId !== undefined) {
+        clearTimeout(this._transformId);
+      }
+      // should be called only once for each event loop
+      this._transformId = setTimeout(this.onTransformChange, 0);
+    }
   }
 }
