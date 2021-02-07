@@ -7,12 +7,12 @@ export class Tilemap<
   TAddons extends {},
   TEvents extends string
 > extends Element<TAddons, TEvents, IContainer> {
-  // general type of the element
   public readonly type = 'tilemap';
   public readonly values: number[];
-  public readonly tilesize: number;
   public readonly columns: number;
-  public readonly actualBounds: BoundingBox;
+
+  public readonly tileSize: number;
+  public readonly tileBounds: BoundingBox;
 
   protected children: Map<number, ISprite>;
   protected _closestArray: number[];
@@ -22,20 +22,20 @@ export class Tilemap<
     display: IContainer,
     values: number[],
     columns: number = 8,
-    tilesize: number = 32
+    tileSize: number = 32
   ) {
     super(
       display,
       // initial min position
       [0, 0],
       // initial max position
-      [columns * tilesize, Math.ceil(values.length / columns) * tilesize]
+      [columns * tileSize, Math.ceil(values.length / columns) * tileSize]
     );
 
     this.values = values;
-    this.tilesize = tilesize;
     this.columns = columns;
-    this.actualBounds = new BoundingBox();
+    this.tileSize = tileSize;
+    this.tileBounds = new BoundingBox();
     this.children = new Map();
 
     // pre-allocated data
@@ -44,17 +44,20 @@ export class Tilemap<
 
     // transform sensitive calculations
     this.onTransformChange = () => {
-      this.calculateActualBounds();
-      this.updateDisplayPosition();
+      this.calculateTileBounds();
+      this.updateDisplay();
     };
+
+    // initial calculations
+    this.calculateTileBounds();
   }
 
   /**
-   * Iterates over the grid of values
+   * Iterates over the linear array of values
    * and map them with returned sprite.
    */
-  public fill<T extends ISprite>(
-    iteratee: (value: number, x: number, y: number) => T
+  public assign<T extends ISprite>(
+    iteratee: (value: number, col: number, row: number) => T
   ) {
     this.children.clear();
     this.display.removeChildren();
@@ -63,11 +66,11 @@ export class Tilemap<
       const value = this.values[index];
 
       if (value > 0) {
-        const [x, y] = this.getPoint(index);
-        const child = iteratee(value, x, y);
+        const [col, row] = this.getPoint(index);
+        const child = iteratee(value, col, row);
+        child.x = col * this.tileSize;
+        child.y = row * this.tileSize;
 
-        child.x = x * this.tilesize;
-        child.y = y * this.tilesize;
         this.children.set(index, child);
         this.display.addChild(child);
       }
@@ -77,14 +80,16 @@ export class Tilemap<
   }
 
   /**
-   * Returns index of tile for the given x and y.
+   * Returns index of value from a linear array
+   * for the given column and row.
    */
-  public getIndex(x: number, y: number): number {
-    return x + this.columns * y;
+  public getIndex(col: number, row: number): number {
+    return col + this.columns * row;
   }
 
   /**
-   * Returns position of tile for the given index.
+   * Returns column and row tuple for the given
+   * index of value from a linear array.
    */
   public getPoint(index: number): TVector2 {
     this._point[0] = index % this.columns;
@@ -93,48 +98,43 @@ export class Tilemap<
   }
 
   /**
-   * Removes tile for the given index.
+   * Deletes value and assigned sprite for the given index.
    */
-  public removeByIndex(index: number) {
+  public delete(index: number) {
+    const value = this.values[index];
     const child = this.children.get(index);
 
-    // pre-initiated child by the fill method
-    if (child === undefined) return;
+    // removes from a linear array of values
+    if (value !== 0) {
+      this.values[index] = 0;
+      this.calculateTileBounds();
+    }
 
-    this.values[index] = 0;
-    this.children.delete(index);
-    this.display.removeChild(child);
-
-    // cleanup
-    this.calculateActualBounds();
-    this.updateCache();
+    // removes from a renderer
+    if (child !== undefined) {
+      this.children.delete(index);
+      this.display.removeChild(child);
+      this.updateCache();
+    }
   }
 
   /**
-   * Important! caching requires preloaded assets.
+   * Returns array of nearest values.
    */
-  public updateCache() {
-    this.display.cacheAsBitmap = false;
-    this.display.cacheAsBitmap = true;
-  }
-
-  /**
-   * Returns values of nearest tiles.
-   */
-  public closest(x: number, y: number): number[] {
+  public closest(col: number, row: number): number[] {
     const arr = this._closestArray;
 
-    const start0 = this.getIndex(x - 1, y - 1);
-    const start1 = this.getIndex(x - 1, y);
-    const start2 = this.getIndex(x - 1, y + 1);
+    const start0 = this.getIndex(col - 1, row - 1);
+    const start1 = this.getIndex(col - 1, row);
+    const start2 = this.getIndex(col - 1, row + 1);
 
-    const row0 = y - 1 >= 0;
-    const row1 = y >= 0;
-    const row2 = y + 1 >= 0;
+    const row0 = row - 1 >= 0;
+    const row1 = row >= 0;
+    const row2 = row + 1 >= 0;
 
-    const col0 = !(x - 1 < 0 || x - 1 >= this.columns);
-    const col1 = !(x < 0 || x >= this.columns);
-    const col2 = !(x + 1 < 0 || x + 1 >= this.columns);
+    const col0 = !(col - 1 < 0 || col - 1 >= this.columns);
+    const col1 = !(col < 0 || col >= this.columns);
+    const col2 = !(col + 1 < 0 || col + 1 >= this.columns);
 
     arr[0] = row0 && col0 ? this.values[start0] || 0 : 0;
     arr[1] = row0 && col1 ? this.values[start0 + 1] || 0 : 0;
@@ -158,23 +158,28 @@ export class Tilemap<
    *
    * based on Bresenham’s Line Generation Algorithm
    */
-  public raytrace(x0: number, y0: number, x1: number, y1: number): number {
-    const deltaX = Math.abs(x1 - x0);
-    const deltaY = Math.abs(y1 - y0);
-    const directionX = x0 < x1 ? 1 : -1;
-    const directionY = y0 < y1 ? 1 : -1;
+  public raytrace(
+    col0: number,
+    row0: number,
+    col1: number,
+    row1: number
+  ): number {
+    const deltaX = Math.abs(col1 - col0);
+    const deltaY = Math.abs(row1 - row0);
+    const directionX = col0 < col1 ? 1 : -1;
+    const directionY = row0 < row1 ? 1 : -1;
 
     let error = deltaX - deltaY;
     let length = 0;
-    let x = x0;
-    let y = y0;
+    let col = col0;
+    let row = row0;
 
     while (true) {
-      if (x === x1 && y === y1) {
+      if (col === col1 && row === row1) {
         return length;
       }
 
-      if (this.values[this.getIndex(x, y)] > 0) {
+      if (this.values[this.getIndex(col, row)] > 0) {
         return -length || 0;
       }
 
@@ -183,12 +188,12 @@ export class Tilemap<
 
       if (error2 > -deltaY) {
         error -= deltaY;
-        x += directionX;
+        col += directionX;
       }
 
       if (error2 < deltaX) {
         error += deltaX;
-        y += directionY;
+        row += directionY;
       }
     }
   }
@@ -197,10 +202,10 @@ export class Tilemap<
    * This method exists for optimization and should be
    * called whenever the Tilemap changes general position.
    */
-  protected calculateActualBounds() {
+  protected calculateTileBounds() {
     if (this.values.length === 0) {
-      this.actualBounds.width = 0;
-      this.actualBounds.height = 0;
+      this.tileBounds.width = 0;
+      this.tileBounds.height = 0;
       return;
     }
 
@@ -258,14 +263,23 @@ export class Tilemap<
       }
     }
 
-    this.actualBounds.min[0] = this.min[0] + left * this.tilesize;
-    this.actualBounds.min[1] = this.min[1] + top * this.tilesize;
-    this.actualBounds.width = (right - left + 1) * this.tilesize;
-    this.actualBounds.height = (bottom - top + 1) * this.tilesize;
+    this.tileBounds.min[0] = this.min[0] + left * this.tileSize;
+    this.tileBounds.min[1] = this.min[1] + top * this.tileSize;
+    this.tileBounds.width = (right - left + 1) * this.tileSize;
+    this.tileBounds.height = (bottom - top + 1) * this.tileSize;
   }
 
   /**
-   * Clears tiles data.
+   * Important! Caching requires preloaded assets.
+   */
+  protected updateCache() {
+    this.display.cacheAsBitmap = false;
+    this.display.cacheAsBitmap = true;
+  }
+
+  /**
+   * Clears all children and remove
+   * the element from a parent scene.
    */
   public destroy() {
     this.children.clear();

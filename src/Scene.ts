@@ -109,8 +109,8 @@ export class Scene<
   }
 
   /**
-   * Clears all added events and addons
-   * and removes elements from the renderer.
+   * Clears all added events and destroys addons
+   * and elements removing them from the renderer.
    */
   public destroy() {
     this.emit('scene/destroy');

@@ -27,7 +27,7 @@ const mapper = new TiledMapper(
 // public interface
 interface TiledMapper
 {
-  public readonly tilesize: number;
+  public readonly tileSize: number;
 
   // finds the first single tile (aka sprite) from
   // a layer with the given name and returns a value
@@ -84,7 +84,7 @@ const spritesheet = new TiledSpriteSheet(
 interface TiledSpriteSheet
 {
   // returns texture of a tile with the given GID
-  public getTextureByGID(tileGID: number): Texture;
+  public getTexture(tileGID: number): Texture;
 
   // clears cached data 
   public destroy(): void;

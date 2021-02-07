@@ -9,8 +9,6 @@ export class Entity<
   TEvents extends string
 > extends Element<TAddons, TEvents, ISprite> {
   public static EMPTY = new Entity(new NopSprite(), {});
-
-  // general type of the element
   public readonly type = 'entity';
 
   // controls whether physics affects the rigidbody
@@ -37,22 +35,22 @@ export class Entity<
    * Updates each trait and applies velocity.
    */
   public update(deltaTime: number) {
-    // render entity based on position from previous step
-    this.updateDisplayPosition();
+    // render an element based on the previous step
+    this.updateDisplay();
 
-    // update position for traits, addons or renderer in next step
+    // update the position for traits, addons or renderer in the next step
     this.translateX(this.velocity[0] * deltaTime);
     this.translateY(this.velocity[1] * deltaTime);
 
     // call traits that may introduce changes to the entity
-    // for next addons or renderer in next step
+    // for next addons or renderer in the next step
     for (let i = 0; i < this._traitsList.length; i++) {
       this._traitsList[i].update(deltaTime);
     }
   }
 
   /**
-   * Clears traits data.
+   * Destroys all traits and removes the element from a parent scene.
    */
   public destroy() {
     for (let i = 0; i < this._traitsList.length; i++) {

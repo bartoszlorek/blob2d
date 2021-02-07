@@ -198,16 +198,6 @@ export class BoundingBox {
     );
   }
 
-  // an additional method to get X position according to the tile system
-  public getTileX(tilesize: number): number {
-    return Math.floor((this.min[0] + this._width / 2) / tilesize);
-  }
-
-  // an additional method to get Y position according to the tile system
-  public getTileY(tilesize: number): number {
-    return Math.floor((this.min[1] + this._height / 2) / tilesize);
-  }
-
   private requestTransformChange() {
     if (this.onTransformChange) {
       if (this._transformId !== undefined) {

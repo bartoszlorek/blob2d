@@ -12,6 +12,6 @@ export interface ITrait {
 }
 
 export interface ISpriteSheet<Texture> {
-  getTextureByGID(gid: number): Texture | null;
+  getTexture(id: number): Texture | null;
   destroy(): void;
 }

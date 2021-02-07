@@ -2,44 +2,57 @@ import {NopContainer} from './_pixijs';
 import {Tilemap} from './Tilemap';
 
 describe('Tilemap()', () => {
-  describe('BoundingBox inheritance', () => {
-    it('calculates bounds', () => {
-      // prettier-ignore
-      const map = new Tilemap(new NopContainer(), [
-        0, 0, 1, 1,
-        1, 1, 1, 0,
-        0, 1, 1, 0
-      ], 4);
-
-      expect(map.min).toEqual([0, 0]);
-      expect(map.max).toEqual([128, 96]);
-    });
+  it('creates from array of values', () => {
+    const map = new Tilemap(new NopContainer(), [1, 0, 1], 3);
+    expect(map.values).toEqual([1, 0, 1]);
   });
 
-  describe('calculateActualBounds()', () => {
-    it('calculates actual bounds', () => {
-      // prettier-ignore
-      const map = new Tilemap(new NopContainer(), [
-        0, 0, 1, 1,
-        1, 1, 1, 0,
-        0, 1, 1, 0
-      ], 4);
+  it('returns index of value', () => {
+    const map = new Tilemap(new NopContainer(), [1, 0, 1, 1], 2);
+    expect(map.getIndex(1, 1)).toBe(3);
+  });
 
-      expect(map.actualBounds.min).toEqual([0, 0]);
-      expect(map.actualBounds.max).toEqual([128, 96]);
-    });
+  it('removes value by index', () => {
+    const map = new Tilemap(new NopContainer(), [1, 0, 1], 3);
 
-    it('excludes empty tiles on edges in the calculation', () => {
-      // prettier-ignore
-      const map = new Tilemap(new NopContainer(), [
-        0, 0, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 0
-      ], 4);
+    map.delete(2);
+    expect(map.values).toEqual([1, 0, 0]);
+  });
 
-      expect(map.actualBounds.min).toEqual([64, 32]);
-      expect(map.actualBounds.max).toEqual([96, 64]);
-    });
+  it('calculates bounds', () => {
+    // prettier-ignore
+    const map = new Tilemap(new NopContainer(), [
+      0, 0, 1, 1,
+      1, 1, 1, 0,
+      0, 1, 1, 0
+    ], 4);
+
+    expect(map.min).toEqual([0, 0]);
+    expect(map.max).toEqual([128, 96]);
+  });
+
+  it('calculates tile bounds', () => {
+    // prettier-ignore
+    const map = new Tilemap(new NopContainer(), [
+      0, 0, 1, 1,
+      1, 1, 1, 0,
+      0, 1, 1, 0
+    ], 4);
+
+    expect(map.tileBounds.min).toEqual([0, 0]);
+    expect(map.tileBounds.max).toEqual([128, 96]);
+  });
+
+  it('excludes empty tiles on edges in the calculation', () => {
+    // prettier-ignore
+    const map = new Tilemap(new NopContainer(), [
+      0, 0, 0, 0,
+      0, 0, 1, 0,
+      0, 0, 0, 0
+    ], 4);
+
+    expect(map.tileBounds.min).toEqual([64, 32]);
+    expect(map.tileBounds.max).toEqual([96, 64]);
   });
 
   describe('closest()', () => {
