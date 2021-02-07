@@ -45,7 +45,7 @@ export class Tilemap<
     // transform sensitive calculations
     this.onTransformChange = () => {
       this.calculateTileBounds();
-      this.updateDisplayPosition();
+      this.updateDisplay();
     };
 
     // initial calculations

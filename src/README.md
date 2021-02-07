@@ -122,9 +122,6 @@ interface Element extends BoundingBox
   public scene: Scene | null;
   public name: string | null;
 
-  // updates display object from bbox position
-  public updateDisplayPosition(): void;
-
   // removes this element from the parent scene
   public destroy(): void;
 }

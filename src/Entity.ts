@@ -10,7 +10,7 @@ export class Entity<
 > extends Element<TAddons, TEvents, ISprite> {
   public static EMPTY = new Entity(new NopSprite(), {});
 
-  // general type of the element
+  // general type of element
   public readonly type = 'entity';
 
   // controls whether physics affects the rigidbody
@@ -37,8 +37,8 @@ export class Entity<
    * Updates each trait and applies velocity.
    */
   public update(deltaTime: number) {
-    // render entity based on position from previous step
-    this.updateDisplayPosition();
+    // render element based on previous step
+    this.updateDisplay();
 
     // update position for traits, addons or renderer in next step
     this.translateX(this.velocity[0] * deltaTime);

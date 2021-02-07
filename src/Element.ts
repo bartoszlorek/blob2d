@@ -18,15 +18,13 @@ export class Element<
     this.display = display;
     this.scene = null;
     this.name = null;
-
-    // every element should update position at least once
-    this.updateDisplayPosition();
+    this.updateDisplay();
   }
 
   /**
-   * Updates display object from bbox position.
+   * Updates display based on the bounding box.
    */
-  public updateDisplayPosition() {
+  protected updateDisplay() {
     this.display.x = this.min[0];
     this.display.y = this.min[1];
   }
