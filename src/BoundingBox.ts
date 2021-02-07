@@ -25,7 +25,7 @@ export class BoundingBox {
   }
 
   /**
-   * It rounds a width value to an integer number.
+   * Rounds a width value to an integer number.
    */
   set width(value: number) {
     this._width = Math.round(value);
@@ -41,7 +41,7 @@ export class BoundingBox {
   }
 
   /**
-   * It rounds a height value to an integer number.
+   * Rounds a height value to an integer number.
    */
   set height(value: number) {
     this._height = Math.round(value);
@@ -159,6 +159,22 @@ export class BoundingBox {
   }
 
   /**
+   * Copies all fields from another bbox.
+   */
+  public copy(bbox: BoundingBox) {
+    this.min[0] = bbox.min[0];
+    this.min[1] = bbox.min[1];
+    this.max[0] = bbox.max[0];
+    this.max[1] = bbox.max[1];
+    this._width = bbox.width;
+    this._height = bbox.height;
+
+    if (this.onTransformChange) {
+      this.requestTransformChange();
+    }
+  }
+
+  /**
    * Returns true when given coordinates are inside bbox area.
    */
   public contains(x: number, y: number): boolean {
@@ -180,16 +196,6 @@ export class BoundingBox {
       this.max[0] < bbox.min[0] - margin ||
       this.max[1] < bbox.min[1] - margin
     );
-  }
-
-  /**
-   * Copies all fields from another bbox.
-   */
-  public copy(bbox: BoundingBox) {
-    this.min[0] = bbox.min[0];
-    this.min[1] = bbox.min[1];
-    this.width = bbox.width;
-    this.height = bbox.height;
   }
 
   // an additional method to get X position according to the tile system

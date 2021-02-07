@@ -77,14 +77,14 @@ type TSeparation = {
 // public interface
 interface Collisions
 {
-  // built-in response for a static collision.
+  // built-in response for a static collision
   public static staticResponse(
     entity: Entity,
     tilemap: Tilemap,
     separation: TSeparation<TVector2>
   ): void;
 
-  // built-in response for a dynamic collision.
+  // built-in response for a dynamic collision
   public static dynamicResponse(
     entityA: Entity,
     entityB: Entity,
