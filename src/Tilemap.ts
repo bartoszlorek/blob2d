@@ -275,7 +275,8 @@ export class Tilemap<
   }
 
   /**
-   * Clears all data.
+   * Clears all children and remove
+   * the element from a parent scene.
    */
   public destroy() {
     this.children.clear();

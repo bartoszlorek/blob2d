@@ -319,7 +319,7 @@ export class Collisions<
   }
 
   /**
-   * Clears all groups data.
+   * Clears groups data.
    */
   public destroy() {
     this.groups.length = 0;

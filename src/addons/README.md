@@ -127,7 +127,7 @@ interface Collisions
   // resolves collisions groups at each game tick
   public update(deltaTime: number): void;
 
-  // clears all data 
+  // clears groups data 
   public destroy(): void;
 }
 ```

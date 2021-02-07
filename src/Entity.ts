@@ -50,7 +50,7 @@ export class Entity<
   }
 
   /**
-   * Clears traits data.
+   * Destroys all traits and removes the element from a parent scene.
    */
   public destroy() {
     for (let i = 0; i < this._traitsList.length; i++) {

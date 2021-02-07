@@ -155,7 +155,8 @@ interface Entity extends Element
   // updates each trait and applies velocity
   public update(deltaTime: number): void;
 
-  // clears all data
+  // destroys all traits and removes
+  // the element from a parent scene
   public destroy(): void;
 }
 ```
@@ -209,8 +210,8 @@ interface Scene extends EventEmitter
   // removal of garbage collected elements
   public update(deltaTime: number): void;
 
-  // clears all added events and addons
-  // and removes elements from the renderer
+  // clears all added events and destroys addons
+  // and elements removing them from the renderer
   public destroy(): void;
 }
 ```
@@ -275,7 +276,8 @@ interface Tilemap extends Element
     row1: number
   ): number;
 
-  // clears all data
+  // clears all children and removes
+  // the element from a parent scene
   public destroy(): void;
 }
 ```
