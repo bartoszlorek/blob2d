@@ -35,15 +35,15 @@ export class Entity<
    * Updates each trait and applies velocity.
    */
   public update(deltaTime: number) {
-    // render element based on previous step
+    // render an element based on the previous step
     this.updateDisplay();
 
-    // update position for traits, addons or renderer in next step
+    // update the position for traits, addons or renderer in the next step
     this.translateX(this.velocity[0] * deltaTime);
     this.translateY(this.velocity[1] * deltaTime);
 
     // call traits that may introduce changes to the entity
-    // for next addons or renderer in next step
+    // for next addons or renderer in the next step
     for (let i = 0; i < this._traitsList.length; i++) {
       this._traitsList[i].update(deltaTime);
     }
