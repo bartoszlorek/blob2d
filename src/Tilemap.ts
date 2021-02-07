@@ -101,18 +101,21 @@ export class Tilemap<
    * Deletes value and assigned sprite for the given index.
    */
   public delete(index: number) {
+    const value = this.values[index];
     const child = this.children.get(index);
 
-    // pre-initiated child by the assign method
-    if (child === undefined) return;
+    // removes from a linear array of values
+    if (value !== 0) {
+      this.values[index] = 0;
+      this.calculateTileBounds();
+    }
 
-    this.values[index] = 0;
-    this.children.delete(index);
-    this.display.removeChild(child);
-
-    // cleanup
-    this.calculateTileBounds();
-    this.updateCache();
+    // removes from a renderer
+    if (child !== undefined) {
+      this.children.delete(index);
+      this.display.removeChild(child);
+      this.updateCache();
+    }
   }
 
   /**
