@@ -9,8 +9,6 @@ export class Entity<
   TEvents extends string
 > extends Element<TAddons, TEvents, ISprite> {
   public static EMPTY = new Entity(new NopSprite(), {});
-
-  // general type of element
   public readonly type = 'entity';
 
   // controls whether physics affects the rigidbody
