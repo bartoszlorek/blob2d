@@ -64,10 +64,16 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
     const {baseTexture, columns, tilesize, firstGID} = tileset;
 
     const index = tileGID - firstGID;
-    const x = index % columns;
-    const y = Math.floor(index / columns);
+    const col = index % columns;
+    const row = Math.floor(index / columns);
 
-    const rect = new Rectangle(x * tilesize, y * tilesize, tilesize, tilesize);
+    const rect = new Rectangle(
+      col * tilesize,
+      row * tilesize,
+      tilesize,
+      tilesize
+    );
+
     const texture = new Texture(baseTexture, rect);
     this.cachedTextures.set(tileGID, texture);
 

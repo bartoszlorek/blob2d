@@ -64,11 +64,11 @@ export class TiledMapper {
           const tileGID = chunk.data[index];
 
           if (tileGID > 0) {
-            const x = (index % chunk.width) + chunk.x;
-            const y = Math.floor(index / chunk.width) + chunk.y;
+            const col = (index % chunk.width) + chunk.x;
+            const row = Math.floor(index / chunk.width) + chunk.y;
 
             results.push(
-              iteratee(tileGID, x * this.tilesize, y * this.tilesize)
+              iteratee(tileGID, col * this.tilesize, row * this.tilesize)
             );
 
             if (first && results.length > 0) {
@@ -82,10 +82,12 @@ export class TiledMapper {
         const tileGID = layer.data[index];
 
         if (tileGID > 0) {
-          const x = (index % layer.width) + layer.x;
-          const y = Math.floor(index / layer.width) + layer.y;
+          const col = (index % layer.width) + layer.x;
+          const row = Math.floor(index / layer.width) + layer.y;
 
-          results.push(iteratee(tileGID, x * this.tilesize, y * this.tilesize));
+          results.push(
+            iteratee(tileGID, col * this.tilesize, row * this.tilesize)
+          );
 
           if (first && results.length > 0) {
             return results;
