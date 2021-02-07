@@ -109,7 +109,7 @@ export class Animation<
       const {firstGID, lastGID} = this.keyframes[name];
       const currentFrameGID = firstGID + spriteCachedFrames[name];
 
-      sprite.texture = this.spritesheet.getTextureByGID(currentFrameGID);
+      sprite.texture = this.spritesheet.getTexture(currentFrameGID);
 
       // advance frame for the next update
       spriteCachedFrames[name] += 1;

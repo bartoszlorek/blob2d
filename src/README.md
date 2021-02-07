@@ -158,7 +158,7 @@ interface Entity extends Element
   // updates each trait and applies velocity
   public update(deltaTime: number): void;
 
-  // clears traits data
+  // clears all data
   public destroy(): void;
 }
 ```
@@ -227,7 +227,7 @@ const tilemap = new Tilemap<TAddons, TEvents>(
   display, // IContainer,
   values,  // number[],
   columns, // [optional] number = 8,
-  tilesize // [optional] number = 32
+  tileSize // [optional] number = 32
 );
 ```
 
@@ -239,41 +239,46 @@ interface Tilemap extends Element
 {
   public readonly type = 'tilemap';
   public readonly values: number[];
-  public readonly tilesize: number;
   public readonly columns: number;
-  public readonly actualBounds: BoundingBox;
 
-  // iterates over the grid of values
+  public readonly tileSize: number;
+  public readonly tileBounds: BoundingBox;
+
+  // iterates over the linear array of values
   // and map them with returned sprite
-  public fill(
+  public assign(
     iteratee: (
       value: number,
-      x: number,
-      y: number
+      col: number,
+      row: number
     ) => ISprite
   ): void;
 
-  // returns index of tile for the given x and y
-  public getIndex(x: number, y: number): number;
+  // returns index of value from a linear
+  // array for the given column and row
+  public getIndex(col: number, row: number): number;
 
-  // returns position of tile for the given index
+  // returns column and row tuple for the given
+  // index of value from a linear array
   public getPoint(index: number): TVector2;
 
-  // removes tile for the given index
-  public removeByIndex(index: number): void;
+  // deletes value and assigned sprite for the given index
+  public delete(index: number): void;
 
-  // caches the entire container
-  public updateCache(): void;
-
-  // returns values of nearest tiles
-  public closest(x: number, y: number): number[];
+  // returns array of nearest values
+  public closest(col: number, row: number): number[];
 
   // returns distance between two points A and B;
   // returns a negative value as the distance to
   // the obstacle between A and B
-  public raytrace(x0: number, y0: number, x1: number, y1: number): number;
+  public raytrace(
+    col0: number,
+    row0: number,
+    col1: number,
+    row1: number
+  ): number;
 
-  // clears tiles data
+  // clears all data
   public destroy(): void;
 }
 ```

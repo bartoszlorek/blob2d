@@ -16,8 +16,8 @@ describe('Tilemap()', () => {
     });
   });
 
-  describe('calculateActualBounds()', () => {
-    it('calculates actual bounds', () => {
+  describe('calculateTileBounds()', () => {
+    it('calculates tile bounds', () => {
       // prettier-ignore
       const map = new Tilemap(new NopContainer(), [
         0, 0, 1, 1,
@@ -25,8 +25,8 @@ describe('Tilemap()', () => {
         0, 1, 1, 0
       ], 4);
 
-      expect(map.actualBounds.min).toEqual([0, 0]);
-      expect(map.actualBounds.max).toEqual([128, 96]);
+      expect(map.tileBounds.min).toEqual([0, 0]);
+      expect(map.tileBounds.max).toEqual([128, 96]);
     });
 
     it('excludes empty tiles on edges in the calculation', () => {
@@ -37,8 +37,8 @@ describe('Tilemap()', () => {
         0, 0, 0, 0
       ], 4);
 
-      expect(map.actualBounds.min).toEqual([64, 32]);
-      expect(map.actualBounds.max).toEqual([96, 64]);
+      expect(map.tileBounds.min).toEqual([64, 32]);
+      expect(map.tileBounds.max).toEqual([96, 64]);
     });
   });
 

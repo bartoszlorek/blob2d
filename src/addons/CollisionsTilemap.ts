@@ -67,24 +67,24 @@ function getSeparationComponent<TAddons extends {}, TEvents extends string>(
   tilemap: Tilemap<TAddons, TEvents>,
   bbox: BoundingBox
 ): number | null {
-  const {tilesize} = tilemap;
+  const {tileSize} = tilemap;
   const positive = mainAxisVelocity > 0;
   const dir = positive ? 1 : -1;
 
   // offsets align bbox and tilemap to [0,0] position to start indexing from 0
   const mainOffset = tilemap.min[mainAxis];
   const leadingEdge = bbox[positive ? 'max' : 'min'][mainAxis] - mainOffset;
-  const mainStart = Math.floor(leadingEdge / tilesize);
-  const mainEnd = Math.floor((leadingEdge + mainAxisVelocity) / tilesize) + dir;
+  const mainStart = Math.floor(leadingEdge / tileSize);
+  const mainEnd = Math.floor((leadingEdge + mainAxisVelocity) / tileSize) + dir;
 
   // other axis opposite to the main one
   const sideAxis = +!mainAxis;
   const sideOffset = tilemap.min[sideAxis];
-  const sideStart = Math.floor((bbox.min[sideAxis] - sideOffset) / tilesize);
-  const sideEnd = Math.ceil((bbox.max[sideAxis] - sideOffset) / tilesize);
+  const sideStart = Math.floor((bbox.min[sideAxis] - sideOffset) / tileSize);
+  const sideEnd = Math.ceil((bbox.max[sideAxis] - sideOffset) / tileSize);
 
-  const mainMax = (tilemap.max[mainAxis] - tilemap.min[mainAxis]) / tilesize;
-  const sideMax = (tilemap.max[sideAxis] - tilemap.min[sideAxis]) / tilesize;
+  const mainMax = (tilemap.max[mainAxis] - tilemap.min[mainAxis]) / tileSize;
+  const sideMax = (tilemap.max[sideAxis] - tilemap.min[sideAxis]) / tileSize;
 
   for (let i = mainStart; i !== mainEnd; i += dir) {
     if (i < 0 || i >= mainMax) continue;
@@ -99,7 +99,7 @@ function getSeparationComponent<TAddons extends {}, TEvents extends string>(
       const value = tilemap.values[index];
 
       if (value > 0) {
-        const tileEdge = (positive ? i : i + 1) * tilesize;
+        const tileEdge = (positive ? i : i + 1) * tileSize;
         return tileEdge - leadingEdge;
       }
     }
