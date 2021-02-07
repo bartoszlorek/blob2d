@@ -18,7 +18,7 @@ import {tilesets, demo01Map} from './assets';
 function makePlayer(spritesheet: TiledSpriteSheet) {
   return (tileGID: number, x: number, y: number) => {
     const player = new Entity<Addons, PlayerTraits, Events>(
-      new Sprite(spritesheet.getTextureByGID(tileGID)),
+      new Sprite(spritesheet.getTexture(tileGID)),
       {
         followMouse: new FollowMouse(10),
         borderLimit: new BorderLimit(),
@@ -38,7 +38,7 @@ function makePlayer(spritesheet: TiledSpriteSheet) {
 function makePlatform(spritesheet: TiledSpriteSheet) {
   return (tileGID: number, x: number, y: number) => {
     const platform = new Entity<Addons, PlatformTraits, Events>(
-      new Sprite(spritesheet.getTextureByGID(tileGID)),
+      new Sprite(spritesheet.getTexture(tileGID)),
       {
         waveMovement: new WaveMovement(y, 32),
       }
@@ -59,7 +59,7 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
   return (tileGIDs: number[], columns: number, x: number, y: number) => {
     const map = new Tilemap<Addons, Events>(new Container(), tileGIDs, columns);
 
-    map.fill(tileGID => new Sprite(spritesheet.getTextureByGID(tileGID)));
+    map.fill(tileGID => new Sprite(spritesheet.getTexture(tileGID)));
     map.x = x;
     map.y = y;
     return map;

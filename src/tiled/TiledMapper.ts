@@ -13,7 +13,7 @@ type TilesIteratee<T> = (
 ) => T;
 
 export class TiledMapper {
-  public readonly tilesize: number;
+  public readonly tileSize: number;
 
   protected layers: Map<
     string,
@@ -22,7 +22,7 @@ export class TiledMapper {
 
   constructor(map: ITiledMapJSON) {
     this.layers = new Map();
-    this.tilesize = map.tilewidth;
+    this.tileSize = map.tilewidth;
 
     for (let i = 0; i < map.layers.length; i++) {
       const layer = map.layers[i];
@@ -64,11 +64,11 @@ export class TiledMapper {
           const tileGID = chunk.data[index];
 
           if (tileGID > 0) {
-            const x = (index % chunk.width) + chunk.x;
-            const y = Math.floor(index / chunk.width) + chunk.y;
+            const col = (index % chunk.width) + chunk.x;
+            const row = Math.floor(index / chunk.width) + chunk.y;
 
             results.push(
-              iteratee(tileGID, x * this.tilesize, y * this.tilesize)
+              iteratee(tileGID, col * this.tileSize, row * this.tileSize)
             );
 
             if (first && results.length > 0) {
@@ -82,10 +82,12 @@ export class TiledMapper {
         const tileGID = layer.data[index];
 
         if (tileGID > 0) {
-          const x = (index % layer.width) + layer.x;
-          const y = Math.floor(index / layer.width) + layer.y;
+          const col = (index % layer.width) + layer.x;
+          const row = Math.floor(index / layer.width) + layer.y;
 
-          results.push(iteratee(tileGID, x * this.tilesize, y * this.tilesize));
+          results.push(
+            iteratee(tileGID, col * this.tileSize, row * this.tileSize)
+          );
 
           if (first && results.length > 0) {
             return results;
@@ -114,8 +116,8 @@ export class TiledMapper {
           iteratee(
             chunk.data,
             chunk.width,
-            chunk.x * this.tilesize,
-            chunk.y * this.tilesize
+            chunk.x * this.tileSize,
+            chunk.y * this.tileSize
           )
         );
       }
@@ -124,8 +126,8 @@ export class TiledMapper {
         iteratee(
           layer.data,
           layer.width,
-          layer.x * this.tilesize,
-          layer.y * this.tilesize
+          layer.x * this.tileSize,
+          layer.y * this.tileSize
         )
       );
     }
