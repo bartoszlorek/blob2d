@@ -14,6 +14,40 @@ import {Addons, Events, PlayerTraits, PlatformTraits, Keyframes} from './types';
 import {BorderLimit, FollowMouse, WaveMovement} from './traits';
 import {tilesets, demo01Map} from './assets';
 
+const keyframes: IKeyframesDictionary<Keyframes> = {
+  player_move: {firstGID: 1, lastGID: 4},
+};
+
+export class Level extends Scene<Addons, Events> {
+  constructor(resources: IResourceDictionary) {
+    super(Container);
+
+    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
+    this.registerAddons({
+      animation: new Animation(this, spritesheet, keyframes),
+      collisions: new Collisions(this),
+      entities: new Entities(this),
+    });
+
+    const mapper = new TiledMapper(demo01Map);
+    const player = mapper.querySprite('player', makePlayer(spritesheet));
+    const platform = mapper.querySprite('platform', makePlatform(spritesheet));
+    const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
+    const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
+    const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
+
+    // addons
+    const {entities, collisions, animation} = this.addons;
+    entities.addChild(player, platform);
+    collisions.addStatic(player, ground, Collisions.staticResponse);
+    collisions.addDynamic(player, platform, Collisions.dynamicResponse);
+    animation.play('player_move', player.display);
+
+    // renderer
+    this.addElement(...ground, ...boxes, player, ...front, platform);
+  }
+}
+
 // layers/makePlayer.ts
 function makePlayer(spritesheet: TiledSpriteSheet) {
   return (tileGID: number, x: number, y: number) => {
@@ -64,38 +98,4 @@ function makeSimpleTiles(spritesheet: TiledSpriteSheet) {
     map.y = y;
     return map;
   };
-}
-
-const keyframes: IKeyframesDictionary<Keyframes> = {
-  player_move: {firstGID: 1, lastGID: 4},
-};
-
-export class Level extends Scene<Addons, Events> {
-  constructor(resources: IResourceDictionary) {
-    super(Container);
-
-    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
-    this.registerAddons({
-      animation: new Animation(this, spritesheet, keyframes),
-      collisions: new Collisions(this),
-      entities: new Entities(this),
-    });
-
-    const mapper = new TiledMapper(demo01Map);
-    const player = mapper.querySprite('player', makePlayer(spritesheet));
-    const platform = mapper.querySprite('platform', makePlatform(spritesheet));
-    const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
-    const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
-    const front = mapper.queryAllTiles('front', makeSimpleTiles(spritesheet));
-
-    // addons
-    const {entities, collisions, animation} = this.addons;
-    entities.addChild(player, platform);
-    collisions.addStatic(player, ground, Collisions.staticResponse);
-    collisions.addDynamic(player, platform, Collisions.dynamicResponse);
-    animation.play('player_move', player.display);
-
-    // renderer
-    this.addElement(...ground, ...boxes, player, ...front, platform);
-  }
 }
