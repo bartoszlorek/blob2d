@@ -77,6 +77,8 @@ type TSeparation = {
 // public interface
 interface Collisions
 {
+  public readonly groups: ICollisionGroup[];
+
   // built-in response for a static collision
   public static staticResponse(
     entity: Entity,
@@ -146,6 +148,8 @@ const entities = new Entities<TAddons, TTraits, TEvents>(
 // public interface
 interface Entities
 {
+  public readonly children: Entity[];
+
   // adds one or many children
   public addChild(...elems: Entity[]): void;
 

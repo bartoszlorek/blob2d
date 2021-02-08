@@ -13,7 +13,7 @@ export class Docker<
   public scene: Scene<TAddons, TEvents> | null;
 
   private accumulatedTime: number;
-  private readonly app: IApplication;
+  private app: IApplication;
 
   constructor(app: IApplication) {
     super();

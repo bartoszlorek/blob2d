@@ -22,7 +22,7 @@ export class Collisions<
   TTraits extends {},
   TEvents extends string
 > implements IAddon {
-  protected groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
+  public readonly groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
 
   constructor(scene: Scene<TAddons, TEvents>) {
     scene.on('scene/removeElement', elem => {
@@ -319,13 +319,6 @@ export class Collisions<
   }
 
   /**
-   * Clears groups data.
-   */
-  public destroy() {
-    this.groups.length = 0;
-  }
-
-  /**
    * Built-in response for a static collision.
    */
   public static staticResponse<TAddons, TTraits, TEvents extends string>(
@@ -376,6 +369,13 @@ export class Collisions<
         entityB.velocity[1] = (magnitude / 2) * -normal[1];
       }
     }
+  }
+
+  /**
+   * Clears groups data.
+   */
+  public destroy() {
+    this.groups.length = 0;
   }
 }
 

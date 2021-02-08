@@ -10,13 +10,12 @@ export class Tilemap<
   public readonly type = 'tilemap';
   public readonly values: number[];
   public readonly columns: number;
-
   public readonly tileSize: number;
   public readonly tileBounds: BoundingBox;
 
-  protected readonly children: Map<number, ISprite>;
-  protected readonly _closestArray: number[];
-  protected readonly _point: TVector2;
+  protected children: Map<number, ISprite>;
+  protected _closestArray: number[];
+  protected _point: TVector2;
 
   constructor(
     display: IContainer,

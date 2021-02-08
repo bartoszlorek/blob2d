@@ -5,8 +5,8 @@ type TEventCallback = (pressed: boolean) => void;
 export class Keyboard<TKey extends string = string> {
   public destroy: () => void;
 
-  protected readonly states: Map<TKey, boolean>;
-  protected readonly events: Map<TKey, TEventCallback>;
+  protected states: Map<TKey, boolean>;
+  protected events: Map<TKey, TEventCallback>;
 
   constructor() {
     this.states = new Map();

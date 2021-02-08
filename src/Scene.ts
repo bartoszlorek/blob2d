@@ -15,11 +15,11 @@ export class Scene<
   public readonly addons: TAddons;
   public readonly graphics: IContainer;
 
-  protected readonly background: IContainer;
-  protected readonly foreground: IContainer;
+  protected background: IContainer;
+  protected foreground: IContainer;
 
-  private readonly _addonsList: IAddon[];
-  private readonly _removeStack: Element<TAddons, TEvents>[];
+  private _addonsList: IAddon[];
+  private _removeStack: Element<TAddons, TEvents>[];
   private _removeIndex: number;
 
   constructor(BaseContainer: IContainerConstructor) {

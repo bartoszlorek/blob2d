@@ -238,7 +238,6 @@ interface Tilemap extends Element
   public readonly type = 'tilemap';
   public readonly values: number[];
   public readonly columns: number;
-
   public readonly tileSize: number;
   public readonly tileBounds: BoundingBox;
 
