@@ -12,15 +12,15 @@ export class Docker<
 > extends EventEmitter<TEvents | TOwnEvents> {
   public scene: Scene<TAddons, TEvents> | null;
 
-  private app: IApplication;
   private accumulatedTime: number;
+  private readonly app: IApplication;
 
   constructor(app: IApplication) {
     super();
 
     this.scene = null;
-    this.app = app;
     this.accumulatedTime = 0;
+    this.app = app;
   }
 
   private tick(deltaFrame: number) {

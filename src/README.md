@@ -193,8 +193,8 @@ Extends external [EventEmitter](#eventemitter) dependency and provides own event
 // public interface
 interface Scene extends EventEmitter
 {
-  public addons: TAddons;
-  public graphics: IContainer;
+  public readonly addons: TAddons;
+  public readonly graphics: IContainer;
 
   // should be called in the constructor before
   // accessing any addons of the current scene

@@ -14,9 +14,9 @@ export class Tilemap<
   public readonly tileSize: number;
   public readonly tileBounds: BoundingBox;
 
-  protected children: Map<number, ISprite>;
-  protected _closestArray: number[];
-  protected _point: TVector2;
+  protected readonly children: Map<number, ISprite>;
+  protected readonly _closestArray: number[];
+  protected readonly _point: TVector2;
 
   constructor(
     display: IContainer,
