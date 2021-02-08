@@ -12,8 +12,8 @@ export class Scene<
   TAddons extends {},
   TEvents extends string
 > extends EventEmitter<TEvents | TOwnEvents> {
-  public addons: TAddons;
-  public graphics: IContainer;
+  public readonly addons: TAddons;
+  public readonly graphics: IContainer;
 
   protected background: IContainer;
   protected foreground: IContainer;
@@ -45,7 +45,10 @@ export class Scene<
    * accessing any addons of the current scene.
    */
   public registerAddons(addons: TAddons) {
+    // TODO: better way to initialize addons in constructor
+    // @ts-ignore
     this.addons = addons;
+    // @ts-ignore
     this._addonsList = Object.values(addons);
   }
 

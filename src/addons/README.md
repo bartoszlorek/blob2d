@@ -28,10 +28,10 @@ const animation = new Animation<TAddons, TEvents, TKeys>(
 // public interface
 interface Animation
 {
-  public readonly deltaTimePerFrame: number;
   public readonly playing: Map<ISprite, TKeys>;
-  public spritesheet: TiledSpriteSheet;
-  public keyframes: IKeyframesDictionary<TKeys>;
+  public readonly spritesheet: TiledSpriteSheet;
+  public readonly keyframes: IKeyframesDictionary<TKeys>;
+  public readonly deltaTimePerFrame: number;
 
   // automatically requests the next frame on every update
   public play(name: TKeys, sprite: ISprite): void;
@@ -77,6 +77,8 @@ type TSeparation = {
 // public interface
 interface Collisions
 {
+  public readonly groups: ICollisionGroup[];
+
   // built-in response for a static collision
   public static staticResponse(
     entity: Entity,
@@ -146,6 +148,8 @@ const entities = new Entities<TAddons, TTraits, TEvents>(
 // public interface
 interface Entities
 {
+  public readonly children: Entity[];
+
   // adds one or many children
   public addChild(...elems: Entity[]): void;
 

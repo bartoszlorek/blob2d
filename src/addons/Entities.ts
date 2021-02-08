@@ -11,7 +11,7 @@ export class Entities<
   TTraits extends {},
   TEvents extends string
 > implements IAddon {
-  protected readonly children: Entity<TAddons, TTraits, TEvents>[];
+  public readonly children: Entity<TAddons, TTraits, TEvents>[];
 
   constructor(scene: Scene<TAddons, TEvents>) {
     this.children = [];

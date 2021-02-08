@@ -4,7 +4,10 @@ import {
   ITiledInfiniteTileLayer,
 } from './TiledTypes';
 
+type ITiledLayer = ITiledFiniteTileLayer | ITiledInfiniteTileLayer;
+
 type SpritesIteratee<T> = (tileGID: number, x: number, y: number) => T;
+
 type TilesIteratee<T> = (
   tileGIDs: number[],
   columns: number,
@@ -15,10 +18,7 @@ type TilesIteratee<T> = (
 export class TiledMapper {
   public readonly tileSize: number;
 
-  protected layers: Map<
-    string,
-    ITiledFiniteTileLayer | ITiledInfiniteTileLayer
-  >;
+  protected layers: Map<string, ITiledLayer>;
 
   constructor(map: ITiledMapJSON) {
     this.layers = new Map();
