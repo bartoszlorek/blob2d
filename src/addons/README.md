@@ -28,10 +28,10 @@ const animation = new Animation<TAddons, TEvents, TKeys>(
 // public interface
 interface Animation
 {
-  public readonly deltaTimePerFrame: number;
   public readonly playing: Map<ISprite, TKeys>;
-  public spritesheet: TiledSpriteSheet;
-  public keyframes: IKeyframesDictionary<TKeys>;
+  public readonly spritesheet: TiledSpriteSheet;
+  public readonly keyframes: IKeyframesDictionary<TKeys>;
+  public readonly deltaTimePerFrame: number;
 
   // automatically requests the next frame on every update
   public play(name: TKeys, sprite: ISprite): void;

@@ -13,10 +13,10 @@ export class Animation<
   TEvents extends string,
   TKeys extends string
 > implements IAddon {
-  public readonly deltaTimePerFrame: number;
   public readonly playing: Map<ISprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
   public readonly keyframes: IKeyframesDictionary<TKeys>;
+  public readonly deltaTimePerFrame: number;
 
   private accumulatedTime: number;
   private _requests: Map<ISprite, TKeys>;
