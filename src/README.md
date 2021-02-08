@@ -52,14 +52,14 @@ interface BoundingBox
   // moves the y axis by the given value
   public translateY(value: number): void;
 
+  // copies all fields from another bbox
+  public copy(bbox: BoundingBox): void;
+
   // returns true when given coordinates are inside bbox area
   public contains(x: number, y: number): boolean;
 
   // returns true when given bbox intersects with another one
   public intersects(bbox: BoundingBox, margin?: number = 0): boolean;
-
-  // copies all fields from another bbox
-  public copy(bbox: BoundingBox): void;
 }
 ```
 
@@ -146,11 +146,11 @@ interface Entity extends Element
 {
   public static EMPTY = new Entity();
   public readonly type = 'entity';
+  public readonly velocity: TVector2;
+  public readonly traits: TTraits;
 
   // controls whether physics affects the rigidbody
   public physics: 'dynamic' | 'kinematic';
-  public velocity: TVector2;
-  public traits: TTraits;
 
   // updates each trait and applies velocity
   public update(deltaTime: number): void;

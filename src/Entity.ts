@@ -10,11 +10,11 @@ export class Entity<
 > extends Element<TAddons, TEvents, ISprite> {
   public static EMPTY = new Entity(new NopSprite(), {});
   public readonly type = 'entity';
+  public readonly velocity: TVector2;
+  public readonly traits: TTraits;
 
   // controls whether physics affects the rigidbody
-  public physics: 'dynamic' | 'kinematic' = 'dynamic';
-  public velocity: TVector2;
-  public traits: TTraits;
+  public physics: 'dynamic' | 'kinematic';
 
   private _traitsList: Trait<TAddons, TTraits, TEvents>[];
 
@@ -23,9 +23,10 @@ export class Entity<
 
     this.velocity = [0, 0];
     this.traits = traits;
-    this._traitsList = Object.values(traits);
+    this.physics = 'dynamic';
 
     // assign this entity to traits
+    this._traitsList = Object.values(traits);
     for (let i = 0; i < this._traitsList.length; i++) {
       this._traitsList[i].entity = this;
     }
