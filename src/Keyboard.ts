@@ -3,7 +3,7 @@ import {refineArray} from './utils/array';
 type TEventCallback = (pressed: boolean) => void;
 
 export class Keyboard<TKey extends string = string> {
-  public destroy: () => void;
+  public readonly destroy: () => void;
 
   protected states: Map<TKey, boolean>;
   protected events: Map<TKey, TEventCallback>;
