@@ -10,27 +10,27 @@ export class Docker<
   TAddons extends {},
   TEvents extends string
 > extends EventEmitter<TEvents | TOwnEvents> {
+  public readonly app: IApplication;
   public scene: Scene<TAddons, TEvents> | null;
 
-  private accumulatedTime: number;
-  private app: IApplication;
+  private _accumulatedTime: number;
 
   constructor(app: IApplication) {
     super();
 
-    this.scene = null;
-    this.accumulatedTime = 0;
     this.app = app;
+    this.scene = null;
+    this._accumulatedTime = 0;
   }
 
   private tick(deltaFrame: number) {
     if (this.scene === null) return;
 
     // framerate independent motion
-    this.accumulatedTime += DELTA_TIME * deltaFrame;
+    this._accumulatedTime += DELTA_TIME * deltaFrame;
 
-    while (this.accumulatedTime > DELTA_TIME) {
-      this.accumulatedTime -= DELTA_TIME;
+    while (this._accumulatedTime > DELTA_TIME) {
+      this._accumulatedTime -= DELTA_TIME;
       this.scene.update(DELTA_TIME);
     }
   }

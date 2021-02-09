@@ -31,7 +31,6 @@ interface Animation
   public readonly playing: Map<ISprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
   public readonly keyframes: IKeyframesDictionary<TKeys>;
-  public readonly deltaTimePerFrame: number;
 
   // automatically requests the next frame on every update
   public play(name: TKeys, sprite: ISprite): void;

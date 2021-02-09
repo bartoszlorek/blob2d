@@ -8,16 +8,16 @@ export class Element<
   TEvents extends string,
   TDisplay extends IDisplayObject = IDisplayObject
 > extends BoundingBox {
-  public readonly display: TDisplay;
-  public scene: Scene<TAddons, TEvents> | null;
   public name: string | null;
+  public scene: Scene<TAddons, TEvents> | null;
+  public readonly display: TDisplay;
 
   constructor(display: TDisplay, min?: TVector2, max?: TVector2) {
     super(min, max);
 
-    this.display = display;
-    this.scene = null;
     this.name = null;
+    this.scene = null;
+    this.display = display;
     this.updateDisplay();
   }
 

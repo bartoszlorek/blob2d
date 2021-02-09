@@ -9,22 +9,23 @@
  */
 export class Easing {
   protected duration: number;
-  private accumulatedTime: number;
+
+  private _accumulatedTime: number;
 
   constructor(duration: number) {
     this.duration = duration / 1000;
-    this.accumulatedTime = 0;
+    this._accumulatedTime = 0;
   }
 
   protected getTime(deltaTime: number) {
-    const time = this.accumulatedTime / this.duration;
+    const time = this._accumulatedTime / this.duration;
 
     if (time >= 1) {
-      this.accumulatedTime = 0;
+      this._accumulatedTime = 0;
       return 1;
     }
 
-    this.accumulatedTime += deltaTime;
+    this._accumulatedTime += deltaTime;
     return time;
   }
 

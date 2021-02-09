@@ -16,9 +16,9 @@ export class Animation<
   public readonly playing: Map<ISprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
   public readonly keyframes: IKeyframesDictionary<TKeys>;
-  public readonly deltaTimePerFrame: number;
 
-  private accumulatedTime: number;
+  private _deltaTimePerFrame: number;
+  private _accumulatedTime: number;
   private _requests: Map<ISprite, TKeys>;
   private _cachedFrames: Map<ISprite, TCachedFrames<TKeys>>;
 
@@ -33,8 +33,8 @@ export class Animation<
     this.playing = new Map();
 
     // animation may run at a different speed than app
-    this.deltaTimePerFrame = deltaTimePerFrame;
-    this.accumulatedTime = 0;
+    this._deltaTimePerFrame = deltaTimePerFrame;
+    this._accumulatedTime = 0;
 
     // processing data
     this._requests = new Map();
@@ -63,12 +63,12 @@ export class Animation<
    * Called on every game tick and limits animation FPS.
    */
   public update(deltaTime: number) {
-    this.accumulatedTime += deltaTime;
+    this._accumulatedTime += deltaTime;
 
-    if (this.accumulatedTime >= this.deltaTimePerFrame) {
+    if (this._accumulatedTime >= this._deltaTimePerFrame) {
       this.addPlayRequests();
       this.resolveRequests();
-      this.accumulatedTime = 0;
+      this._accumulatedTime = 0;
     }
   }
 
