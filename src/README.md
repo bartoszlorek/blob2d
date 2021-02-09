@@ -252,16 +252,16 @@ interface Tilemap extends Element
     ) => ISprite
   ): void;
 
-  // returns index of value from a linear
-  // array for the given column and row
-  public getIndex(col: number, row: number): number;
+  // deletes value and assigned sprite for the given index
+  public delete(index: number): void;
 
   // returns column and row tuple for the given
   // index of value from a linear array
   public getPoint(index: number): TVector2;
 
-  // deletes value and assigned sprite for the given index
-  public delete(index: number): void;
+  // returns index of value from a linear
+  // array for the given column and row
+  public getIndex(col: number, row: number): number;
 
   // returns array of nearest values
   public closest(col: number, row: number): number[];

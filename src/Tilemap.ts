@@ -79,24 +79,6 @@ export class Tilemap<
   }
 
   /**
-   * Returns index of value from a linear array
-   * for the given column and row.
-   */
-  public getIndex(col: number, row: number): number {
-    return col + this.columns * row;
-  }
-
-  /**
-   * Returns column and row tuple for the given
-   * index of value from a linear array.
-   */
-  public getPoint(index: number): TVector2 {
-    this._point[0] = index % this.columns;
-    this._point[1] = Math.floor(index / this.columns);
-    return this._point;
-  }
-
-  /**
    * Deletes value and assigned sprite for the given index.
    */
   public delete(index: number) {
@@ -115,6 +97,24 @@ export class Tilemap<
       this.display.removeChild(child);
       this.updateCache();
     }
+  }
+
+  /**
+   * Returns column and row tuple for the given
+   * index of value from a linear array.
+   */
+  public getPoint(index: number): TVector2 {
+    this._point[0] = index % this.columns;
+    this._point[1] = Math.floor(index / this.columns);
+    return this._point;
+  }
+
+  /**
+   * Returns index of value from a linear array
+   * for the given column and row.
+   */
+  public getIndex(col: number, row: number): number {
+    return col + this.columns * row;
   }
 
   /**
