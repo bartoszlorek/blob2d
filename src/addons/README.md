@@ -91,6 +91,8 @@ const dynamicResponse: TCollisionDynamicResponse = function (
 ) {...};
 ```
 
+### Public Interface
+
 ```ts
 // public interface
 interface Collisions
