@@ -1,4 +1,4 @@
-import {Trait, Camera} from '../../src';
+import {Trait, ICamera} from '../../src';
 import {Addons, Traits, Events} from '../types';
 
 export class FollowMouse extends Trait<Addons, Traits, Events> {
@@ -6,7 +6,7 @@ export class FollowMouse extends Trait<Addons, Traits, Events> {
   protected mouseX: number;
   protected mouseY: number;
 
-  constructor(speed: number = 5, camera: Camera<Addons, Events>) {
+  constructor(speed: number = 5, camera: ICamera) {
     super();
 
     this.speed = speed;

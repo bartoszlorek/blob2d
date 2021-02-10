@@ -21,3 +21,8 @@ export interface ISpriteSheet<Texture> {
   getTexture(id: number): Texture | null;
   destroy(): void;
 }
+
+export interface ICamera {
+  offsetX: number;
+  offsetY: number;
+}

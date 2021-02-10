@@ -9,10 +9,11 @@ import {
   TiledSpriteSheet,
   Tilemap,
   TKeyframesDictionary,
+  ICamera,
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {Addons, Events, PlayerTraits, PlatformTraits, Keyframes} from './types';
-import {BorderLimit, FollowMouse, WaveMovement} from './traits';
+import {FollowMouse, WaveMovement} from './traits';
 import {tilesets, demo01Map} from './assets';
 
 const keyframes: TKeyframesDictionary<Keyframes> = {
@@ -56,10 +57,7 @@ export class Level extends Scene<Addons, Events> {
 }
 
 // layers/makePlayer.ts
-function makePlayer(
-  spritesheet: TiledSpriteSheet,
-  camera: Camera<Addons, Events>
-) {
+function makePlayer(spritesheet: TiledSpriteSheet, camera: ICamera) {
   return (tileGID: number, x: number, y: number) => {
     const player = new Entity<Addons, PlayerTraits, Events>(
       new Sprite(spritesheet.getTexture(tileGID)),
