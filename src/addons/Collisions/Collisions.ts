@@ -1,15 +1,20 @@
-import {IAddon, TVector2} from '../_types';
-import {refineArray, removeItem} from '../utils/array';
-import {Entity} from '../Entity';
-import {Scene} from '../Scene';
-import {Tilemap} from '../Tilemap';
+import {IAddon} from '../../_types';
+import {refineArray, removeItem} from '../../utils/array';
+import {Entity} from '../../Entity';
+import {Scene} from '../../Scene';
+import {Tilemap} from '../../Tilemap';
 
-import {ICollisionGroup, TSeparation} from './CollisionsTypes';
+import {
+  ICollisionGroup,
+  TCollisionStaticResponse,
+  TCollisionDynamicResponse,
+} from './types';
 import {
   resolveStaticGroup,
   resolveDynamicGroup,
   resolveSelfDynamicGroup,
-} from './CollisionsResolvers';
+} from './GroupResolvers';
+import {staticResponse, dynamicResponse} from './GroupResponses';
 
 /**
  * Built-in addon for arcade collision detection.
@@ -39,7 +44,7 @@ export class Collisions<
   >(
     entities: A | A[],
     tilemaps: B | B[],
-    response: (entity: A, tilemap: B, separation: TSeparation<TVector2>) => void
+    response: TCollisionStaticResponse<A, B>
   ) {
     this.groups.push(
       this.validateGroup({
@@ -61,7 +66,7 @@ export class Collisions<
   >(
     entitiesA: A | A[],
     entitiesB: B | B[],
-    response: (entityA: A, entityB: B, separation: TSeparation<number>) => void
+    response: TCollisionDynamicResponse<A, B>
   ) {
     this.groups.push(
       this.validateGroup({
@@ -80,7 +85,7 @@ export class Collisions<
    */
   public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
     entities: A[],
-    response: (entityA: A, entityB: A, separation: TSeparation<number>) => void
+    response: TCollisionDynamicResponse<A, A>
   ) {
     this.groups.push(
       this.validateGroup({
@@ -97,6 +102,7 @@ export class Collisions<
    */
   public update(deltaTime: number) {
     for (let i = 0; i < this.groups.length; i++) {
+      // @ts-ignore we can assert the resolver will match own group type
       this.groups[i].resolver(this.groups[i], deltaTime);
     }
   }
@@ -194,46 +200,4 @@ export class Collisions<
 
 function assertNever(x: never): never {
   throw new Error('Unexpected object: ' + x);
-}
-
-function staticResponse<TAddons, TTraits, TEvents extends string>(
-  entity: Entity<TAddons, TTraits, TEvents>,
-  tilemap: Tilemap<TAddons, TEvents>,
-  separation: TSeparation<TVector2>
-) {
-  const {magnitude, normal} = separation;
-  if (normal[0] !== 0) entity.velocity[0] = magnitude[0] * normal[0];
-  if (normal[1] !== 0) entity.velocity[1] = magnitude[1] * normal[1];
-}
-
-function dynamicResponse<TAddons, TTraitsA, TTraitsB, TEvents extends string>(
-  entityA: Entity<TAddons, TTraitsA, TEvents>,
-  entityB: Entity<TAddons, TTraitsB, TEvents>,
-  separation: TSeparation<number>
-) {
-  const {magnitude, normal} = separation;
-  const isDynamicA = entityA.physics === 'dynamic';
-  const isDynamicB = entityB.physics === 'dynamic';
-
-  if (isDynamicA > isDynamicB) {
-    if (normal[0] !== 0) {
-      entityA.velocity[0] = magnitude * normal[0];
-    } else {
-      entityA.velocity[1] = magnitude * normal[1];
-    }
-  } else if (isDynamicA < isDynamicB) {
-    if (normal[0] !== 0) {
-      entityB.velocity[0] = magnitude * -normal[0];
-    } else {
-      entityB.velocity[1] = magnitude * -normal[1];
-    }
-  } else {
-    if (normal[0] !== 0) {
-      entityA.velocity[0] = (magnitude / 2) * normal[0];
-      entityB.velocity[0] = (magnitude / 2) * -normal[0];
-    } else {
-      entityA.velocity[1] = (magnitude / 2) * normal[1];
-      entityB.velocity[1] = (magnitude / 2) * -normal[1];
-    }
-  }
 }

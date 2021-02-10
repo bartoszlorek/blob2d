@@ -2,8 +2,9 @@ import {
   ICollisionStaticGroup,
   ICollisionDynamicGroup,
   ICollisionSelfDynamicGroup,
-} from './CollisionsTypes';
-import {collideEntity, collideTile} from './CollisionsColliders';
+} from './types';
+import {detectEntityCollision} from './EntityCollisions';
+import {detectTilemapCollision} from './TilemapCollisions';
 
 export function resolveStaticGroup<A, T, E extends string>(
   group: ICollisionStaticGroup<A, T, E>,
@@ -18,10 +19,10 @@ export function resolveStaticGroup<A, T, E extends string>(
       // bypass loop for one element
       if (tilemaps.length > 1) {
         for (let j = 0; j < tilemaps.length; j++) {
-          collideTile(entity, tilemaps[j], deltaTime, response);
+          detectTilemapCollision(entity, tilemaps[j], deltaTime, response);
         }
       } else {
-        collideTile(entity, tilemaps[0], deltaTime, response);
+        detectTilemapCollision(entity, tilemaps[0], deltaTime, response);
       }
     }
   } else {
@@ -31,10 +32,10 @@ export function resolveStaticGroup<A, T, E extends string>(
     // bypass loop for one element
     if (tilemaps.length > 1) {
       for (let j = 0; j < tilemaps.length; j++) {
-        collideTile(entity, tilemaps[j], deltaTime, response);
+        detectTilemapCollision(entity, tilemaps[j], deltaTime, response);
       }
     } else {
-      collideTile(entity, tilemaps[0], deltaTime, response);
+      detectTilemapCollision(entity, tilemaps[0], deltaTime, response);
     }
   }
 }
@@ -54,10 +55,10 @@ export function resolveDynamicGroup<A, T, E extends string>(
       // bypass loop for one element
       if (entitiesB.length > 1) {
         for (let j = 0; j < entitiesB.length; j++) {
-          collideEntity(entity, entitiesB[j], deltaTime, response);
+          detectEntityCollision(entity, entitiesB[j], deltaTime, response);
         }
       } else {
-        collideEntity(entity, entitiesB[0], deltaTime, response);
+        detectEntityCollision(entity, entitiesB[0], deltaTime, response);
       }
     }
   } else {
@@ -67,10 +68,10 @@ export function resolveDynamicGroup<A, T, E extends string>(
     // bypass loop for one element
     if (entitiesB.length > 1) {
       for (let j = 0; j < entitiesB.length; j++) {
-        collideEntity(entity, entitiesB[j], deltaTime, response);
+        detectEntityCollision(entity, entitiesB[j], deltaTime, response);
       }
     } else {
-      collideEntity(entity, entitiesB[0], deltaTime, response);
+      detectEntityCollision(entity, entitiesB[0], deltaTime, response);
     }
   }
 }
@@ -83,7 +84,7 @@ export function resolveSelfDynamicGroup<A, T, E extends string>(
 
   for (let i = 0; i < entities.length; i++) {
     for (let j = i + 1; j < entities.length; j++) {
-      collideEntity(entities[i], entities[j], deltaTime, response);
+      detectEntityCollision(entities[i], entities[j], deltaTime, response);
     }
   }
 }
