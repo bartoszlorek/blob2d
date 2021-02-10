@@ -73,24 +73,32 @@ interface ISeparation {
 **Hint:** Pass a custom function that won't change the velocity of colliding objects if you just want to detect a collision without actually responding to it.
 
 ```ts
+import {
+  TCollisionStaticResponse,
+  TCollisionDynamicResponse
+} from 'blob2d';
+
+const staticResponse: TCollisionStaticResponse = function (
+  entity,    // Entity
+  tilemap,   // Tilemap
+  separation // ISeparation<TVector2>
+) {...};
+
+const dynamicResponse: TCollisionDynamicResponse = function (
+  entity,    // Entity
+  entity,    // Entity
+  separation // ISeparation<number>
+) {...};
+```
+
+```ts
 // public interface
 interface Collisions
 {
+  // built-in responses to handle collision
+  public static staticResponse: TCollisionStaticResponse;
+  public static dynamicResponse: TCollisionDynamicResponse;
   public readonly groups: ICollisionGroup[];
-
-  // built-in response for a static collision
-  static staticResponse(
-    entity: Entity,
-    tilemap: Tilemap,
-    separation: ISeparation<TVector2>
-  ): void;
-
-  // built-in response for a dynamic collision
-  static dynamicResponse(
-    entityA: Entity,
-    entityB: Entity,
-    separation: ISeparation<number>
-  ): void;
 
   // handles an entity-tilemap collision group
   public addStatic(

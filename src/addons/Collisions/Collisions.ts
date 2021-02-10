@@ -25,6 +25,8 @@ export class Collisions<
   TTraits extends {},
   TEvents extends string
 > implements IAddon {
+  public static staticResponse = staticResponse;
+  public static dynamicResponse = dynamicResponse;
   public readonly groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
 
   constructor(scene: Scene<TAddons, TEvents>) {
@@ -179,16 +181,6 @@ export class Collisions<
       }
     }
   }
-
-  /**
-   * Built-in response for a static collision.
-   */
-  static staticResponse = staticResponse;
-
-  /**
-   * Built-in response for a dynamic collision.
-   */
-  static dynamicResponse = dynamicResponse;
 
   /**
    * Clears groups data.
