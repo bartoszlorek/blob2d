@@ -24,15 +24,20 @@ export class Level extends Scene<Addons, Events> {
     super(Container);
 
     const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
+    const camera = new Camera(this);
+
     this.registerAddons({
-      camera: new Camera(this),
+      camera,
       animation: new Animation(this, spritesheet, keyframes),
       collisions: new Collisions(this),
       entities: new Entities(this),
     });
 
     const mapper = new TiledMapper(demo01Map);
-    const player = mapper.querySprite('player', makePlayer(spritesheet));
+    const player = mapper.querySprite(
+      'player',
+      makePlayer(spritesheet, camera)
+    );
     const platform = mapper.querySprite('platform', makePlatform(spritesheet));
     const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
     const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
@@ -51,13 +56,15 @@ export class Level extends Scene<Addons, Events> {
 }
 
 // layers/makePlayer.ts
-function makePlayer(spritesheet: TiledSpriteSheet) {
+function makePlayer(
+  spritesheet: TiledSpriteSheet,
+  camera: Camera<Addons, Events>
+) {
   return (tileGID: number, x: number, y: number) => {
     const player = new Entity<Addons, PlayerTraits, Events>(
       new Sprite(spritesheet.getTexture(tileGID)),
       {
-        followMouse: new FollowMouse(10),
-        borderLimit: new BorderLimit(),
+        followMouse: new FollowMouse(10, camera),
       }
     );
 

@@ -1,5 +1,5 @@
 import {Animation, Camera, Collisions, Entities} from '../src';
-import {BorderLimit, FollowMouse, WaveMovement} from './traits';
+import {FollowMouse, WaveMovement} from './traits';
 
 export type Addons = {
   camera: Camera<Addons, Events>;
@@ -13,7 +13,6 @@ export type Events = 'player/score';
 export type Traits = PlayerTraits | PlatformTraits;
 
 export type PlayerTraits = {
-  borderLimit: BorderLimit;
   followMouse: FollowMouse;
 };
 
