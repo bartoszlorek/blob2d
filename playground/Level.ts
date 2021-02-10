@@ -1,5 +1,6 @@
 import {
   Animation,
+  Camera,
   Collisions,
   Entities,
   Entity,
@@ -24,6 +25,7 @@ export class Level extends Scene<Addons, Events> {
 
     const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
     this.registerAddons({
+      camera: new Camera(this),
       animation: new Animation(this, spritesheet, keyframes),
       collisions: new Collisions(this),
       entities: new Entities(this),

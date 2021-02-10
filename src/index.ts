@@ -2,7 +2,6 @@ export * from './_types';
 export * from './addons';
 export * from './tiled';
 export {BoundingBox} from './BoundingBox';
-export {Camera} from './Camera';
 export {Docker} from './Docker';
 export {Easing} from './Easing';
 export {Element} from './Element';
