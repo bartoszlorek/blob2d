@@ -79,14 +79,14 @@ interface Collisions
   public readonly groups: ICollisionGroup[];
 
   // built-in response for a static collision
-  public static staticResponse(
+  static staticResponse(
     entity: Entity,
     tilemap: Tilemap,
     separation: ISeparation<TVector2>
   ): void;
 
   // built-in response for a dynamic collision
-  public static dynamicResponse(
+  static dynamicResponse(
     entityA: Entity,
     entityB: Entity,
     separation: ISeparation<number>
@@ -96,33 +96,21 @@ interface Collisions
   public addStatic(
     entities: Entity | Entity[],
     tilemaps: Tilemap | Tilemap[],
-    response: (
-      entity: Entity,
-      tilemap: Tilemap,
-      separation: ISeparation<TVector2>
-    ) => void
+    response: TCollisionStaticResponse
   ): void;
 
   // handles an entity-entity collision group
   public addDynamic(
     entitiesA: Entity | Entity[],
     entitiesB: Entity | Entity[],
-    response: (
-      entityA: Entity,
-      entityB: Entity,
-      separation: ISeparation<number>
-    ) => void
+    response: TCollisionDynamicResponse
   ): void;
 
   // handles an entity-entity collision group where
   // each element should collide with each other
   public addSelfDynamic(
     entities: Entity[],
-    response: (
-      entityA: Entity,
-      entityB: Entity,
-      separation: ISeparation<number>
-    ) => void
+    response: TCollisionDynamicResponse
   ): void;
 
   // resolves collisions groups at each game tick
