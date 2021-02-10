@@ -11,7 +11,7 @@ Addons provide a way to extend `Scene` with additional functionality, like anima
 ## Animation
 
 ```ts
-const keyframes: IKeyframesDictionary<TKeys> = {
+const keyframes: TKeyframesDictionary<TKeys> = {
   player_jump: {firstGID: 1, lastGID: 4},
   player_move: {firstGID: 5, lastGID: 10},
 };
@@ -19,7 +19,7 @@ const keyframes: IKeyframesDictionary<TKeys> = {
 const animation = new Animation<TAddons, TEvents, TKeys>(
   scene,            // Scene<TAddons, TEvents>,
   spritesheet,      // TiledSpriteSheet,
-  keyframes,        // IKeyframesDictionary<TKeys>,
+  keyframes,        // TKeyframesDictionary<TKeys>,
   deltaTimePerFrame // [optional] number = 1/12
 );
 ```
@@ -30,7 +30,7 @@ interface Animation
 {
   public readonly playing: Map<ISprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
-  public readonly keyframes: IKeyframesDictionary<TKeys>;
+  public readonly keyframes: TKeyframesDictionary<TKeys>;
 
   // automatically requests the next frame on every update
   public play(name: TKeys, sprite: ISprite): void;

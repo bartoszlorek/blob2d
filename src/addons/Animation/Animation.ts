@@ -1,8 +1,8 @@
-import {ISprite} from '../_pixijs';
-import {IAddon} from '../_types';
-import {TiledSpriteSheet} from '../tiled';
-import {Scene} from '../Scene';
-import {IKeyframesDictionary} from './AnimationTypes';
+import {ISprite} from '../../_pixijs';
+import {IAddon} from '../../_types';
+import {TiledSpriteSheet} from '../../tiled';
+import {Scene} from '../../Scene';
+import {TKeyframesDictionary} from './types';
 
 type TCachedFrames<TKeys extends string> = {[K in TKeys]: number};
 
@@ -15,7 +15,7 @@ export class Animation<
 > implements IAddon {
   public readonly playing: Map<ISprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
-  public readonly keyframes: IKeyframesDictionary<TKeys>;
+  public readonly keyframes: TKeyframesDictionary<TKeys>;
 
   private _deltaTimePerFrame: number;
   private _accumulatedTime: number;
@@ -25,7 +25,7 @@ export class Animation<
   constructor(
     scene: Scene<TAddons, TEvents>,
     spritesheet: TiledSpriteSheet,
-    keyframes: IKeyframesDictionary<TKeys>,
+    keyframes: TKeyframesDictionary<TKeys>,
     deltaTimePerFrame: number = DELTA_TIME_PER_FRAME
   ) {
     this.spritesheet = spritesheet;
