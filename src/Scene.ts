@@ -14,9 +14,8 @@ export class Scene<
 > extends EventEmitter<TEvents | TOwnEvents> {
   public readonly addons: TAddons;
   public readonly graphics: IContainer;
-
-  protected background: IContainer;
-  protected foreground: IContainer;
+  public readonly foreground: IContainer;
+  public readonly background: IContainer;
 
   private _addonsList: IAddon[];
   private _removeStack: Element<TAddons, TEvents>[];
@@ -29,9 +28,8 @@ export class Scene<
     this._addonsList = [];
 
     // main layers
-    this.background = new BaseContainer();
     this.foreground = new BaseContainer();
-
+    this.background = new BaseContainer();
     this.graphics = new BaseContainer();
     this.graphics.addChild(this.background, this.foreground);
 

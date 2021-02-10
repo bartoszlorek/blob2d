@@ -16,6 +16,8 @@ export interface IDisplayObject {
 }
 
 export interface IContainer extends IDisplayObject {
+  width: number;
+  height: number;
   addChild(...children: IDisplayObject[]): IDisplayObject;
   removeChild(...children: IDisplayObject[]): IDisplayObject;
   removeChildren(beginIndex?: number, endIndex?: number): IDisplayObject[];
@@ -41,6 +43,8 @@ export interface IContainerConstructor {
 export class NopContainer implements IContainer {
   public x: number = 0;
   public y: number = 0;
+  public width: number = 0;
+  public height: number = 0;
   public cacheAsBitmap: boolean = false;
   public addChild(...children: IDisplayObject[]): IDisplayObject {
     return children[0];
@@ -57,6 +61,8 @@ export class NopContainer implements IContainer {
 export class NopSprite implements ISprite {
   public x: number = 0;
   public y: number = 0;
+  public width: number = 0;
+  public height: number = 0;
   public cacheAsBitmap: boolean = false;
   public texture: ITexture = {};
   public addChild(...children: IDisplayObject[]): IDisplayObject {

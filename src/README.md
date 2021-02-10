@@ -196,6 +196,8 @@ interface Scene extends EventEmitter
 {
   public readonly addons: TAddons;
   public readonly graphics: IContainer;
+  public readonly foreground: IContainer;
+  public readonly background: IContainer;
 
   // should be called in the constructor before
   // accessing any addons of the current scene
