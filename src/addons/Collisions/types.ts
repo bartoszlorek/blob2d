@@ -1,4 +1,4 @@
-import {TVector2} from '../../_types';
+import {TAnyEntity, TAnyTilemap, TVector2} from '../../_types';
 import {Entity} from '../../Entity';
 import {Tilemap} from '../../Tilemap';
 
@@ -33,13 +33,13 @@ export type ICollisionGroup<A, T, E extends string> =
 export type TCollisionResolver<T> = (group: T, deltaTime: number) => void;
 
 export type TCollisionStaticResponse<
-  A extends Entity<any, any, any>,
-  B extends Tilemap<any, any>
+  A extends TAnyEntity = TAnyEntity,
+  B extends TAnyTilemap = TAnyTilemap
 > = (entity: A, tilemap: B, separation: ISeparation<TVector2>) => void;
 
 export type TCollisionDynamicResponse<
-  A extends Entity<any, any, any>,
-  B extends Entity<any, any, any>
+  A extends TAnyEntity = TAnyEntity,
+  B extends TAnyEntity = TAnyEntity
 > = (entityA: A, entityB: B, separation: ISeparation<number>) => void;
 
 export interface ISeparation<T extends number | TVector2> {

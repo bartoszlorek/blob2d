@@ -1,7 +1,5 @@
-import {TVector2} from '../../_types';
+import {TAnyEntity, TAnyTilemap, TVector2} from '../../_types';
 import {BoundingBox} from '../../BoundingBox';
-import {Entity} from '../../Entity';
-import {Tilemap} from '../../Tilemap';
 
 import {ISeparation} from './types';
 
@@ -14,8 +12,8 @@ const _separation: ISeparation<TVector2> = {
 };
 
 export function getTilemapSeparation<A, T, E extends string>(
-  tilemap: Tilemap<A, E>,
-  entity: Entity<A, T, E>,
+  tilemap: TAnyTilemap,
+  entity: TAnyEntity,
   deltaTime: number
 ): ISeparation<TVector2> | null {
   _bbox.copy(entity);
@@ -61,7 +59,7 @@ export function getTilemapSeparation<A, T, E extends string>(
 function getSeparationComponent<A, E extends string>(
   mainAxis: number,
   mainAxisVelocity: number,
-  tilemap: Tilemap<A, E>,
+  tilemap: TAnyTilemap,
   bbox: BoundingBox
 ): number | null {
   const {tileSize} = tilemap;

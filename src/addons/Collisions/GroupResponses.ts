@@ -1,12 +1,10 @@
-import {Entity} from '../../Entity';
-import {Tilemap} from '../../Tilemap';
-
 import {TCollisionStaticResponse, TCollisionDynamicResponse} from './types';
 
-export const staticResponse: TCollisionStaticResponse<
-  Entity<any, any, any>,
-  Tilemap<any, any>
-> = (entity, tilemap, separation) => {
+export const staticResponse: TCollisionStaticResponse = function (
+  entity,
+  tilemap,
+  separation
+) {
   const {magnitude, normal} = separation;
 
   if (normal[0] !== 0) {
@@ -17,10 +15,11 @@ export const staticResponse: TCollisionStaticResponse<
   }
 };
 
-export const dynamicResponse: TCollisionDynamicResponse<
-  Entity<any, any, any>,
-  Entity<any, any, any>
-> = (entityA, entityB, separation) => {
+export const dynamicResponse: TCollisionDynamicResponse = function (
+  entityA,
+  entityB,
+  separation
+) {
   const {magnitude, normal} = separation;
   const isDynamicA = entityA.physics === 'dynamic';
   const isDynamicB = entityB.physics === 'dynamic';
