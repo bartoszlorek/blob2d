@@ -64,7 +64,7 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 The function passed to the collision detection method that determines what should happen when two objects collide. It takes three arguments: two colliders and separation object.
 
 ```ts
-type TSeparation = {
+interface ISeparation {
   magnitude: TVector2 | number;
   normal: TVector2;
 }
@@ -82,14 +82,14 @@ interface Collisions
   public static staticResponse(
     entity: Entity,
     tilemap: Tilemap,
-    separation: TSeparation<TVector2>
+    separation: ISeparation<TVector2>
   ): void;
 
   // built-in response for a dynamic collision
   public static dynamicResponse(
     entityA: Entity,
     entityB: Entity,
-    separation: TSeparation<number>
+    separation: ISeparation<number>
   ): void;
 
   // handles an entity-tilemap collision group
@@ -99,7 +99,7 @@ interface Collisions
     response: (
       entity: Entity,
       tilemap: Tilemap,
-      separation: TSeparation<TVector2>
+      separation: ISeparation<TVector2>
     ) => void
   ): void;
 
@@ -110,7 +110,7 @@ interface Collisions
     response: (
       entityA: Entity,
       entityB: Entity,
-      separation: TSeparation<number>
+      separation: ISeparation<number>
     ) => void
   ): void;
 
@@ -121,7 +121,7 @@ interface Collisions
     response: (
       entityA: Entity,
       entityB: Entity,
-      separation: TSeparation<number>
+      separation: ISeparation<number>
     ) => void
   ): void;
 
