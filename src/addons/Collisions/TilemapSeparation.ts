@@ -1,27 +1,22 @@
-import {TVector2} from '../_types';
-import {BoundingBox} from '../BoundingBox';
-import {Entity} from '../Entity';
-import {Tilemap} from '../Tilemap';
-import {TSeparation} from './CollisionsTypes';
+import {TAnyEntity, TAnyTilemap, TVector2} from '../../_types';
+import {BoundingBox} from '../../BoundingBox';
+
+import {ISeparation} from './types';
 
 // pre-allocated data
-const _clone = new BoundingBox();
+const _bbox = new BoundingBox();
 const _vector2: TVector2 = [0, 0];
-const _separation: TSeparation<TVector2> = {
+const _separation: ISeparation<TVector2> = {
   magnitude: [0, 0],
   normal: [0, 0],
 };
 
-export function getTileSeparation<
-  TAddons extends {},
-  TTraits extends {},
-  TEvents extends string
->(
-  tilemap: Tilemap<TAddons, TEvents>,
-  entity: Entity<TAddons, TTraits, TEvents>,
+export function getTilemapSeparation<A, T, E extends string>(
+  tilemap: TAnyTilemap,
+  entity: TAnyEntity,
   deltaTime: number
-): TSeparation<TVector2> | null {
-  _clone.copy(entity);
+): ISeparation<TVector2> | null {
+  _bbox.copy(entity);
 
   // position multiplied by deltaTime will give a shift in px
   const velocityX = entity.velocity[0] * deltaTime;
@@ -29,11 +24,11 @@ export function getTileSeparation<
 
   // to prevent "wall sliding" issue, collision detection requires
   // perform the x move and the y move as separate steps
-  const separationX = getSeparationComponent(0, velocityX, tilemap, _clone);
-  _clone.translateX(separationX ?? velocityX);
+  const separationX = getSeparationComponent(0, velocityX, tilemap, _bbox);
+  _bbox.translateX(separationX ?? velocityX);
 
   // correct position of cloned bbox is not needed after y step
-  const separationY = getSeparationComponent(1, velocityY, tilemap, _clone);
+  const separationY = getSeparationComponent(1, velocityY, tilemap, _bbox);
 
   // no collision detected on both axis
   if (separationX === null && separationY === null) {
@@ -61,10 +56,10 @@ export function getTileSeparation<
 
 // https://jonathanwhiting.com/tutorial/collision/
 // https://github.com/chrisdickinson/collide-2d-tilemap
-function getSeparationComponent<TAddons extends {}, TEvents extends string>(
+function getSeparationComponent<A, E extends string>(
   mainAxis: number,
   mainAxisVelocity: number,
-  tilemap: Tilemap<TAddons, TEvents>,
+  tilemap: TAnyTilemap,
   bbox: BoundingBox
 ): number | null {
   const {tileSize} = tilemap;

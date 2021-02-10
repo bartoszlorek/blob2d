@@ -11,7 +11,7 @@ Addons provide a way to extend `Scene` with additional functionality, like anima
 ## Animation
 
 ```ts
-const keyframes: IKeyframesDictionary<TKeys> = {
+const keyframes: TKeyframesDictionary<TKeys> = {
   player_jump: {firstGID: 1, lastGID: 4},
   player_move: {firstGID: 5, lastGID: 10},
 };
@@ -19,7 +19,7 @@ const keyframes: IKeyframesDictionary<TKeys> = {
 const animation = new Animation<TAddons, TEvents, TKeys>(
   scene,            // Scene<TAddons, TEvents>,
   spritesheet,      // TiledSpriteSheet,
-  keyframes,        // IKeyframesDictionary<TKeys>,
+  keyframes,        // TKeyframesDictionary<TKeys>,
   deltaTimePerFrame // [optional] number = 1/12
 );
 ```
@@ -30,7 +30,7 @@ interface Animation
 {
   public readonly playing: Map<ISprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
-  public readonly keyframes: IKeyframesDictionary<TKeys>;
+  public readonly keyframes: TKeyframesDictionary<TKeys>;
 
   // automatically requests the next frame on every update
   public play(name: TKeys, sprite: ISprite): void;
@@ -64,7 +64,7 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 The function passed to the collision detection method that determines what should happen when two objects collide. It takes three arguments: two colliders and separation object.
 
 ```ts
-type TSeparation = {
+interface ISeparation {
   magnitude: TVector2 | number;
   normal: TVector2;
 }
@@ -73,56 +73,52 @@ type TSeparation = {
 **Hint:** Pass a custom function that won't change the velocity of colliding objects if you just want to detect a collision without actually responding to it.
 
 ```ts
+import {
+  TCollisionStaticResponse,
+  TCollisionDynamicResponse
+} from 'blob2d';
+
+const staticResponse: TCollisionStaticResponse = function (
+  entity,    // Entity
+  tilemap,   // Tilemap
+  separation // ISeparation<TVector2>
+) {...};
+
+const dynamicResponse: TCollisionDynamicResponse = function (
+  entity,    // Entity
+  entity,    // Entity
+  separation // ISeparation<number>
+) {...};
+```
+
+```ts
 // public interface
 interface Collisions
 {
+  // built-in responses to handle collision
+  public static staticResponse: TCollisionStaticResponse;
+  public static dynamicResponse: TCollisionDynamicResponse;
   public readonly groups: ICollisionGroup[];
-
-  // built-in response for a static collision
-  public static staticResponse(
-    entity: Entity,
-    tilemap: Tilemap,
-    separation: TSeparation<TVector2>
-  ): void;
-
-  // built-in response for a dynamic collision
-  public static dynamicResponse(
-    entityA: Entity,
-    entityB: Entity,
-    separation: TSeparation<number>
-  ): void;
 
   // handles an entity-tilemap collision group
   public addStatic(
     entities: Entity | Entity[],
     tilemaps: Tilemap | Tilemap[],
-    response: (
-      entity: Entity,
-      tilemap: Tilemap,
-      separation: TSeparation<TVector2>
-    ) => void
+    response: TCollisionStaticResponse
   ): void;
 
   // handles an entity-entity collision group
   public addDynamic(
     entitiesA: Entity | Entity[],
     entitiesB: Entity | Entity[],
-    response: (
-      entityA: Entity,
-      entityB: Entity,
-      separation: TSeparation<number>
-    ) => void
+    response: TCollisionDynamicResponse
   ): void;
 
   // handles an entity-entity collision group where
   // each element should collide with each other
   public addSelfDynamic(
     entities: Entity[],
-    response: (
-      entityA: Entity,
-      entityB: Entity,
-      separation: TSeparation<number>
-    ) => void
+    response: TCollisionDynamicResponse
   ): void;
 
   // resolves collisions groups at each game tick

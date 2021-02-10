@@ -7,14 +7,14 @@ import {
   TiledMapper,
   TiledSpriteSheet,
   Tilemap,
-  IKeyframesDictionary,
+  TKeyframesDictionary,
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {Addons, Events, PlayerTraits, PlatformTraits, Keyframes} from './types';
 import {BorderLimit, FollowMouse, WaveMovement} from './traits';
 import {tilesets, demo01Map} from './assets';
 
-const keyframes: IKeyframesDictionary<Keyframes> = {
+const keyframes: TKeyframesDictionary<Keyframes> = {
   player_move: {firstGID: 1, lastGID: 4},
 };
 
