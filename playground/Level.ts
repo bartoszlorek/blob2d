@@ -1,5 +1,6 @@
 import {
   Animation,
+  BoundingBox,
   Camera,
   Collisions,
   Entities,
@@ -53,6 +54,11 @@ export class Level extends Scene<Addons, Events> {
 
     // renderer
     this.addElement(...ground, ...boxes, player, ...front, platform);
+
+    // merge all grounds into a single bbox to focus on
+    const bbox = new BoundingBox();
+    bbox.merge(...ground.map(tile => tile.tileBounds));
+    camera.focus(bbox);
   }
 }
 

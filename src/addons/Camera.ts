@@ -1,11 +1,12 @@
-import {IAddon} from '../_types';
+import {IAddon, ICamera} from '../_types';
+import {BoundingBox} from '../BoundingBox';
 import {Scene} from '../Scene';
 
 /**
  * Built-in addon positioning the scene on the screen.
  */
 export class Camera<TAddons extends {}, TEvents extends string>
-  implements IAddon {
+  implements IAddon, ICamera {
   public readonly scene: Scene<TAddons, TEvents>;
   public offsetX: number;
   public offsetY: number;
@@ -16,11 +17,18 @@ export class Camera<TAddons extends {}, TEvents extends string>
     this.offsetY = 0;
   }
 
-  update(deltaTime: number): void {
-    // throw new Error('Method not implemented.');
+  public focus(bbox: BoundingBox) {
+    this.offsetX += window.innerWidth / 2 - bbox.centerX;
+    this.offsetY += window.innerHeight / 2 - bbox.centerY;
   }
 
-  destroy(): void {
-    // throw new Error('Method not implemented.');
+  public follow() {}
+  public followFixed() {}
+
+  public update(deltaTime: number) {
+    this.scene.foreground.x = this.offsetX;
+    this.scene.foreground.y = this.offsetY;
   }
+
+  public destroy() {}
 }
