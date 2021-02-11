@@ -6,8 +6,6 @@ import {Element} from './Element';
 export type TOwnEvents =
   | 'scene/addElement'
   | 'scene/removeElement'
-  | 'scene/mount'
-  | 'scene/unmount'
   | 'scene/destroy';
 
 export class Scene<
@@ -69,8 +67,8 @@ export class Scene<
           const elemName = elem.name || elem.constructor.name;
           const sceneName = this.constructor.name;
 
-          throw new Error(
-            `the '${elemName}' is already part of the ${sceneName} scene`
+          return console.error(
+            `The "${elemName}" [Element] is already added to the "${sceneName}" [Scene].`
           );
         }
 

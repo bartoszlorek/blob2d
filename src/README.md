@@ -187,8 +187,6 @@ Extends external [EventEmitter](#eventemitter) dependency and provides own event
 ```ts
 'scene/addElement'
 'scene/removeElement'
-'scene/mount'
-'scene/unmount'
 'scene/destroy'
 ```
 
