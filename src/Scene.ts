@@ -4,9 +4,10 @@ import {EventEmitter} from 'eventemitter3';
 import {Element} from './Element';
 
 export type TOwnEvents =
-  | 'scene/addElement'
-  | 'scene/removeElement'
-  | 'scene/destroy';
+  | 'mount'
+  | 'unmount'
+  | 'elementAdded'
+  | 'elementRemoved';
 
 export class Scene<
   TAddons extends {},
@@ -77,7 +78,7 @@ export class Scene<
 
       elem.scene = this;
       this.foreground.addChild(elem.display);
-      this.emit('scene/addElement', elem);
+      this.emit('elementAdded', elem);
     }
   }
 
@@ -97,7 +98,7 @@ export class Scene<
 
   private unsafeRemoveElement<T extends Element<TAddons, TEvents>>(elem: T) {
     if (this.foreground.removeChild(elem.display)) {
-      this.emit('scene/removeElement', elem);
+      this.emit('elementRemoved', elem);
       elem.scene = null;
     }
   }
@@ -123,7 +124,6 @@ export class Scene<
    * and elements removing them from the renderer.
    */
   public destroy() {
-    this.emit('scene/destroy');
     this.removeAllListeners();
 
     for (let i = 0; i < this._addonsList.length; i++) {

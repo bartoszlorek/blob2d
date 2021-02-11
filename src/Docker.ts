@@ -1,25 +1,19 @@
 import {IApplication} from './_pixijs';
-import {EventEmitter} from 'eventemitter3';
 import {Scene} from './Scene';
 
 const DELTA_TIME = 1 / 60;
 
-export type TOwnEvents = 'docker/mount' | 'docker/unmount';
-
-export class Docker<
-  TAddons extends {},
-  TEvents extends string
-> extends EventEmitter<TEvents | TOwnEvents> {
+export class Docker<TAddons extends {}, TEvents extends string> {
   public readonly app: IApplication;
   public scene: Scene<TAddons, TEvents> | null;
 
   private _accumulatedTime: number;
 
   constructor(app: IApplication) {
-    super();
-
     this.app = app;
     this.scene = null;
+
+    // processing
     this._accumulatedTime = 0;
   }
 
@@ -46,7 +40,7 @@ export class Docker<
     this.app.ticker.add(this.tick, this);
     this.app.stage.addChild(scene.graphics);
 
-    this.emit('docker/mount');
+    scene.emit('mount', scene);
   }
 
   /**
@@ -54,7 +48,7 @@ export class Docker<
    */
   public unmount() {
     if (this.scene !== null) {
-      this.emit('docker/unmount');
+      this.scene.emit('unmount', this.scene);
 
       // stop rendering
       this.app.ticker.remove(this.tick, this);
@@ -66,10 +60,9 @@ export class Docker<
   }
 
   /**
-   * Removes all added events and unmounts the current scene.
+   * Unmounts the current scene.
    */
   public destroy() {
     this.unmount();
-    this.removeAllListeners();
   }
 }
