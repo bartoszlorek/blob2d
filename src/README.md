@@ -22,10 +22,7 @@
 The `parent class` for the [Element](#element).
 
 ```ts
-const bbox = new BoundingBox(
-  min, // [optional] TVector2 = [0, 0]
-  max  // [optional] TVector2 = [0, 0]
-);
+const bbox = new BoundingBox();
 ```
 
 ```ts
@@ -42,6 +39,8 @@ interface BoundingBox
   public bottom: number;
   public left: number;
   public right: number;
+  public centerX: number;
+  public centerY: number;
 
   // moves both min and max vectors by the given vector 
   public translate(vector: TVector2): void;
@@ -54,6 +53,9 @@ interface BoundingBox
 
   // copies all fields from another bbox
   public copy(bbox: BoundingBox): void;
+
+  // merges two or more other bboxes
+  public merge(bboxes: ...BoundingBox[]): void;
 
   // returns true when given coordinates are inside bbox area
   public contains(x: number, y: number): boolean;
@@ -110,8 +112,6 @@ It is a `subclass` of [BoundingBox](#boundingbox).
 ```ts
 const element = new Element<TAddons, TEvents, TDisplay>(
   display, // TDisplay, e.g. Sprite or Container
-  min,     // [optional] TVector2 = [0, 0]
-  max      // [optional] TVector2 = [0, 0]
 );
 ```
 
