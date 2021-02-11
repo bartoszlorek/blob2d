@@ -16,7 +16,7 @@ export class Entities<
   constructor(scene: Scene<TAddons, TEvents>) {
     this.children = [];
 
-    scene.on('scene/removeElement', elem => {
+    scene.on('elementRemoved', elem => {
       this.removeChild(elem);
     });
   }

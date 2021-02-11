@@ -17,15 +17,10 @@ const app = new Application({
 document.body.appendChild(app.view);
 
 loader.add('sprites', './assets/sprites.png').load(() => {
-  setupGui(); // example of implementation
+  setupGui(); // possible implementation
 
   const docker = new Docker<Addons, Events>(app);
   const level = new Level(loader.resources);
 
-  docker.on('docker/mount', () => {
-    console.log('crazy wacky cool!');
-  });
-
   docker.mount(level);
-  console.log(level);
 });

@@ -30,7 +30,7 @@ export class Collisions<
   public readonly groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
 
   constructor(scene: Scene<TAddons, TEvents>) {
-    scene.on('scene/removeElement', elem => {
+    scene.on('elementRemoved', elem => {
       this.removeGroupElement(elem);
     });
 
