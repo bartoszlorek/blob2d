@@ -120,6 +120,14 @@ export class BoundingBox {
     this.y = value;
   }
 
+  get centerX(): number {
+    return this.min[0] + this._width / 2;
+  }
+
+  get centerY(): number {
+    return this.min[1] + this._height / 2;
+  }
+
   /**
    * Moves both min and max vectors by the given vector.
    */
