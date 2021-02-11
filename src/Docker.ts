@@ -47,6 +47,7 @@ export class Docker<
     this.app.stage.addChild(scene.graphics);
 
     this.emit('docker/mount');
+    scene.emit('scene/mount');
   }
 
   /**
@@ -55,6 +56,7 @@ export class Docker<
   public unmount() {
     if (this.scene !== null) {
       this.emit('docker/unmount');
+      this.scene.emit('scene/unmount');
 
       // stop rendering
       this.app.ticker.remove(this.tick, this);

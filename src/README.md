@@ -79,8 +79,8 @@ const docker = new Docker<TAddons, TEvents>(
 Extends external [EventEmitter](#eventemitter) dependency and provides own events:
 
 ```ts
-'docker/mount';
-'docker/unmount';
+'docker/mount'
+'docker/unmount'
 ```
 
 ```ts
@@ -185,9 +185,11 @@ const scene = new Scene<TAddons, TEvents>(
 Extends external [EventEmitter](#eventemitter) dependency and provides own events:
 
 ```ts
-'scene/addElement';
-'scene/removeElement';
-'scene/destroy';
+'scene/addElement'
+'scene/removeElement'
+'scene/mount'
+'scene/unmount'
+'scene/destroy'
 ```
 
 ```ts

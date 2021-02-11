@@ -6,6 +6,8 @@ import {Element} from './Element';
 export type TOwnEvents =
   | 'scene/addElement'
   | 'scene/removeElement'
+  | 'scene/mount'
+  | 'scene/unmount'
   | 'scene/destroy';
 
 export class Scene<
