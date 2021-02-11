@@ -90,10 +90,6 @@ interface Docker
 
   // unmounts the current scene
   public unmount(): void;
-
-  // removes all added events
-  // and unmounts the current scene
-  public destroy(): void;
 }
 ```
 

@@ -17,18 +17,6 @@ export class Docker<TAddons extends {}, TEvents extends string> {
     this._accumulatedTime = 0;
   }
 
-  private tick(deltaFrame: number) {
-    if (this.scene === null) return;
-
-    // framerate independent motion
-    this._accumulatedTime += DELTA_TIME * deltaFrame;
-
-    while (this._accumulatedTime > DELTA_TIME) {
-      this._accumulatedTime -= DELTA_TIME;
-      this.scene.update(DELTA_TIME);
-    }
-  }
-
   /**
    * Unmounts the current scene and mounts the given one.
    */
@@ -60,9 +48,17 @@ export class Docker<TAddons extends {}, TEvents extends string> {
   }
 
   /**
-   * Unmounts the current scene.
+   * Updates the current scene and provides framerate independent motion.
    */
-  public destroy() {
-    this.unmount();
+  private tick(deltaFrame: number) {
+    // at this moment the scene should be always mounted
+    const scene = this.scene as Scene<TAddons, TEvents>;
+
+    this._accumulatedTime += DELTA_TIME * deltaFrame;
+
+    while (this._accumulatedTime > DELTA_TIME) {
+      this._accumulatedTime -= DELTA_TIME;
+      scene.update(DELTA_TIME);
+    }
   }
 }
