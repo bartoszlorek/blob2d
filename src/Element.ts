@@ -1,4 +1,3 @@
-import {TVector2} from './_types';
 import {IDisplayObject} from './_pixijs';
 import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
