@@ -13,10 +13,9 @@ export class Scene<
   TEvents extends string
 > extends EventEmitter<TEvents | TOwnEvents> {
   public readonly addons: TAddons;
+  public readonly foreground: IContainer;
+  public readonly background: IContainer;
   public readonly graphics: IContainer;
-
-  protected background: IContainer;
-  protected foreground: IContainer;
 
   private _addonsList: IAddon[];
   private _removeStack: Element<TAddons, TEvents>[];
@@ -26,16 +25,15 @@ export class Scene<
     super();
 
     this.addons = {} as TAddons;
-    this._addonsList = [];
 
-    // main layers
-    this.background = new BaseContainer();
+    // renderer layers
     this.foreground = new BaseContainer();
-
+    this.background = new BaseContainer();
     this.graphics = new BaseContainer();
     this.graphics.addChild(this.background, this.foreground);
 
     // processing
+    this._addonsList = [];
     this._removeStack = [];
     this._removeIndex = 0;
   }
@@ -65,6 +63,15 @@ export class Scene<
       const elem = elems[0];
 
       if (elem.scene) {
+        if (elem.scene === this) {
+          const elemName = elem.name || elem.constructor.name;
+          const sceneName = this.constructor.name;
+
+          return console.error(
+            `The "${elemName}" [Element] is already added to the "${sceneName}" [Scene].`
+          );
+        }
+
         elem.scene.removeElement(elem);
       }
 

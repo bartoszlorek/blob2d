@@ -1,5 +1,7 @@
 import {
   Animation,
+  BoundingBox,
+  Camera,
   Collisions,
   Entities,
   Entity,
@@ -8,10 +10,11 @@ import {
   TiledSpriteSheet,
   Tilemap,
   TKeyframesDictionary,
+  ICamera,
 } from '../src';
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {Addons, Events, PlayerTraits, PlatformTraits, Keyframes} from './types';
-import {BorderLimit, FollowMouse, WaveMovement} from './traits';
+import {FollowMouse, WaveMovement} from './traits';
 import {tilesets, demo01Map} from './assets';
 
 const keyframes: TKeyframesDictionary<Keyframes> = {
@@ -23,14 +26,20 @@ export class Level extends Scene<Addons, Events> {
     super(Container);
 
     const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
+    const camera = new Camera(this);
+
     this.registerAddons({
+      camera,
       animation: new Animation(this, spritesheet, keyframes),
       collisions: new Collisions(this),
       entities: new Entities(this),
     });
 
     const mapper = new TiledMapper(demo01Map);
-    const player = mapper.querySprite('player', makePlayer(spritesheet));
+    const player = mapper.querySprite(
+      'player',
+      makePlayer(spritesheet, camera)
+    );
     const platform = mapper.querySprite('platform', makePlatform(spritesheet));
     const ground = mapper.queryAllTiles('ground', makeSimpleTiles(spritesheet));
     const boxes = mapper.queryAllTiles('boxes', makeSimpleTiles(spritesheet));
@@ -45,17 +54,21 @@ export class Level extends Scene<Addons, Events> {
 
     // renderer
     this.addElement(...ground, ...boxes, player, ...front, platform);
+
+    // merge all grounds into a single bbox to focus on
+    const bbox = new BoundingBox();
+    bbox.merge(...ground.map(tile => tile.tileBounds));
+    camera.focus(bbox);
   }
 }
 
 // layers/makePlayer.ts
-function makePlayer(spritesheet: TiledSpriteSheet) {
+function makePlayer(spritesheet: TiledSpriteSheet, camera: ICamera) {
   return (tileGID: number, x: number, y: number) => {
     const player = new Entity<Addons, PlayerTraits, Events>(
       new Sprite(spritesheet.getTexture(tileGID)),
       {
-        followMouse: new FollowMouse(10),
-        borderLimit: new BorderLimit(),
+        followMouse: new FollowMouse(10, camera),
       }
     );
 

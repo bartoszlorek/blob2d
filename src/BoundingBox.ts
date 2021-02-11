@@ -9,30 +9,26 @@ export class BoundingBox {
    */
   protected onTransformChange?: () => void;
 
-  private _width: number = 0;
-  private _height: number = 0;
-  private _transformId?: ReturnType<typeof setTimeout>;
+  private _width: number;
+  private _height: number;
 
-  constructor(min: TVector2 = [0, 0], max: TVector2 = [0, 0]) {
-    this.min = min;
-    this.max = max;
-    this.width = max[0] - min[0];
-    this.height = max[1] - min[1];
+  constructor() {
+    this.min = [Infinity, Infinity];
+    this.max = [-Infinity, -Infinity];
+    this._width = 0;
+    this._height = 0;
   }
 
   get width(): number {
     return this._width;
   }
 
-  /**
-   * Rounds a width value to an integer number.
-   */
   set width(value: number) {
-    this._width = Math.round(value);
+    this._width = value;
     this.max[0] = this.min[0] + this._width;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -40,15 +36,12 @@ export class BoundingBox {
     return this._height;
   }
 
-  /**
-   * Rounds a height value to an integer number.
-   */
   set height(value: number) {
-    this._height = Math.round(value);
+    this._height = value;
     this.max[1] = this.min[1] + this._height;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -61,7 +54,7 @@ export class BoundingBox {
     this.max[0] = value + this._width;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -74,7 +67,7 @@ export class BoundingBox {
     this.max[1] = value + this._height;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -87,7 +80,7 @@ export class BoundingBox {
     this.max[0] = value;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -100,7 +93,7 @@ export class BoundingBox {
     this.max[1] = value;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -120,6 +113,14 @@ export class BoundingBox {
     this.y = value;
   }
 
+  get centerX(): number {
+    return this.min[0] + this._width / 2;
+  }
+
+  get centerY(): number {
+    return this.min[1] + this._height / 2;
+  }
+
   /**
    * Moves both min and max vectors by the given vector.
    */
@@ -130,7 +131,7 @@ export class BoundingBox {
     this.max[1] += vector[1];
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -142,7 +143,7 @@ export class BoundingBox {
     this.max[0] += value;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -154,7 +155,7 @@ export class BoundingBox {
     this.max[1] += value;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
     }
   }
 
@@ -170,7 +171,33 @@ export class BoundingBox {
     this._height = bbox.height;
 
     if (this.onTransformChange) {
-      this.requestTransformChange();
+      this.onTransformChange();
+    }
+  }
+
+  /**
+   * Merges two or more bboxes.
+   */
+  public merge<T extends BoundingBox[]>(...bboxes: T) {
+    // bypass loop for one element
+    if (bboxes.length > 1) {
+      for (let i = 0; i < bboxes.length; i++) {
+        this.merge(bboxes[i]);
+      }
+    } else {
+      const bbox = bboxes[0];
+
+      if (bbox.min[0] < this.min[0]) this.min[0] = bbox.min[0];
+      if (bbox.min[1] < this.min[1]) this.min[1] = bbox.min[1];
+      if (bbox.max[0] > this.max[0]) this.max[0] = bbox.max[0];
+      if (bbox.max[1] > this.max[1]) this.max[1] = bbox.max[1];
+
+      this._width = Math.round(this.max[0] - this.min[0]);
+      this._height = Math.round(this.max[1] - this.min[1]);
+
+      if (this.onTransformChange) {
+        this.onTransformChange();
+      }
     }
   }
 
@@ -196,15 +223,5 @@ export class BoundingBox {
       this.max[0] < bbox.min[0] - margin ||
       this.max[1] < bbox.min[1] - margin
     );
-  }
-
-  private requestTransformChange() {
-    if (this.onTransformChange) {
-      if (this._transformId !== undefined) {
-        clearTimeout(this._transformId);
-      }
-      // should be called only once for each event loop
-      this._transformId = setTimeout(this.onTransformChange, 0);
-    }
   }
 }

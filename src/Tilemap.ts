@@ -11,9 +11,10 @@ export class Tilemap<
   public readonly values: number[];
   public readonly columns: number;
   public readonly tileSize: number;
-  public readonly tileBounds: BoundingBox;
 
   protected children: Map<number, ISprite>;
+  protected _tileBounds: BoundingBox;
+  protected _tileBoundsDirty: boolean;
   protected _closestArray: number[];
   protected _point: TVector2;
 
@@ -23,32 +24,37 @@ export class Tilemap<
     columns: number = 8,
     tileSize: number = 32
   ) {
-    super(
-      display,
-      // initial min position
-      [0, 0],
-      // initial max position
-      [columns * tileSize, Math.ceil(values.length / columns) * tileSize]
-    );
+    super(display);
 
     this.values = values;
     this.columns = columns;
     this.tileSize = tileSize;
-    this.tileBounds = new BoundingBox();
     this.children = new Map();
+
+    this.width = columns * tileSize;
+    this.height = Math.ceil(values.length / columns) * tileSize;
+
+    this._tileBounds = new BoundingBox();
+    this._tileBoundsDirty = true;
 
     // pre-allocated data
     this._closestArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._point = [0, 0];
 
-    // transform sensitive calculations
+    // perform calculations after the change
     this.onTransformChange = () => {
-      this.calculateTileBounds();
+      this._tileBoundsDirty = true;
       this.updateDisplay();
     };
+  }
 
-    // initial calculations
-    this.calculateTileBounds();
+  get tileBounds() {
+    if (this._tileBoundsDirty) {
+      this.calculateTileBounds();
+      this._tileBoundsDirty = false;
+    }
+
+    return this._tileBounds;
   }
 
   /**
@@ -85,7 +91,7 @@ export class Tilemap<
     const value = this.values[index];
     const child = this.children.get(index);
 
-    // removes from a linear array of values
+    // removes from a linear array
     if (value !== 0) {
       this.values[index] = 0;
       this.calculateTileBounds();
@@ -203,8 +209,8 @@ export class Tilemap<
    */
   protected calculateTileBounds() {
     if (this.values.length === 0) {
-      this.tileBounds.width = 0;
-      this.tileBounds.height = 0;
+      this._tileBounds.width = 0;
+      this._tileBounds.height = 0;
       return;
     }
 
@@ -262,10 +268,10 @@ export class Tilemap<
       }
     }
 
-    this.tileBounds.min[0] = this.min[0] + left * this.tileSize;
-    this.tileBounds.min[1] = this.min[1] + top * this.tileSize;
-    this.tileBounds.width = (right - left + 1) * this.tileSize;
-    this.tileBounds.height = (bottom - top + 1) * this.tileSize;
+    this._tileBounds.min[0] = this.min[0] + left * this.tileSize;
+    this._tileBounds.min[1] = this.min[1] + top * this.tileSize;
+    this._tileBounds.width = (right - left + 1) * this.tileSize;
+    this._tileBounds.height = (bottom - top + 1) * this.tileSize;
   }
 
   /**

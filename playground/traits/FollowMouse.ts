@@ -1,4 +1,4 @@
-import {Trait} from '../../src';
+import {Trait, ICamera} from '../../src';
 import {Addons, Traits, Events} from '../types';
 
 export class FollowMouse extends Trait<Addons, Traits, Events> {
@@ -6,7 +6,7 @@ export class FollowMouse extends Trait<Addons, Traits, Events> {
   protected mouseX: number;
   protected mouseY: number;
 
-  constructor(speed: number = 5) {
+  constructor(speed: number = 5, camera: ICamera) {
     super();
 
     this.speed = speed;
@@ -14,8 +14,8 @@ export class FollowMouse extends Trait<Addons, Traits, Events> {
     this.mouseY = 0;
 
     const listener = (event: MouseEvent) => {
-      this.mouseX = event.clientX;
-      this.mouseY = event.clientY;
+      this.mouseX = event.clientX - camera.offsetX;
+      this.mouseY = event.clientY - camera.offsetY;
     };
 
     window.addEventListener('mousemove', listener);
