@@ -5,7 +5,6 @@
   - [Docker](#docker)
   - [Element](#element)
   - [Entity](#entity)
-  - [EventEmitter](#eventemitter)
   - [Scene](#scene)
   - [Tilemap](#tilemap)
   - [Trait](#trait)
@@ -78,16 +77,9 @@ const docker = new Docker<TAddons, TEvents>(
 );
 ```
 
-Extends external [EventEmitter](#eventemitter) dependency and provides own events:
-
-```ts
-'docker/mount'
-'docker/unmount'
-```
-
 ```ts
 // public interface
-interface Docker extends EventEmitter
+interface Docker
 {
   public readonly app: IApplication;
   public scene: Scene | null;
@@ -98,10 +90,6 @@ interface Docker extends EventEmitter
 
   // unmounts the current scene
   public unmount(): void;
-
-  // removes all added events
-  // and unmounts the current scene
-  public destroy(): void;
 }
 ```
 
@@ -162,14 +150,6 @@ interface Entity extends Element
 }
 ```
 
-## EventEmitter
-
-External dependency [EventEmitter3](https://www.npmjs.com/package/eventemitter3) and a `parent class` for [Docker](#docker) and [Scene](#scene). **Important:** both Docker and Scene remove all added listeners when destroyed.
-
-```ts
-const emitter = new EventEmitter<TEvents>();
-```
-
 ## Scene
 
 Basic component for levels or in-game cutscenes. Functionality of the scene can be extended by `addons`.
@@ -182,12 +162,13 @@ const scene = new Scene<TAddons, TEvents>(
 );
 ```
 
-Extends external [EventEmitter](#eventemitter) dependency and provides own events:
+Inherits from an external [EventEmitter3](https://www.npmjs.com/package/eventemitter3) dependency with the default set of events that can be extended with custom ones. **Important:** the Scene removes all added listeners when destroyed.
 
 ```ts
-'scene/addElement'
-'scene/removeElement'
-'scene/destroy'
+'mount'
+'unmount'
+'elementAdded'
+'elementRemoved'
 ```
 
 ```ts

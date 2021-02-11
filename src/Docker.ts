@@ -1,38 +1,20 @@
 import {IApplication} from './_pixijs';
-import {EventEmitter} from 'eventemitter3';
 import {Scene} from './Scene';
 
 const DELTA_TIME = 1 / 60;
 
-export type TOwnEvents = 'docker/mount' | 'docker/unmount';
-
-export class Docker<
-  TAddons extends {},
-  TEvents extends string
-> extends EventEmitter<TEvents | TOwnEvents> {
+export class Docker<TAddons extends {}, TEvents extends string> {
   public readonly app: IApplication;
   public scene: Scene<TAddons, TEvents> | null;
 
   private _accumulatedTime: number;
 
   constructor(app: IApplication) {
-    super();
-
     this.app = app;
     this.scene = null;
+
+    // processing
     this._accumulatedTime = 0;
-  }
-
-  private tick(deltaFrame: number) {
-    if (this.scene === null) return;
-
-    // framerate independent motion
-    this._accumulatedTime += DELTA_TIME * deltaFrame;
-
-    while (this._accumulatedTime > DELTA_TIME) {
-      this._accumulatedTime -= DELTA_TIME;
-      this.scene.update(DELTA_TIME);
-    }
   }
 
   /**
@@ -46,7 +28,7 @@ export class Docker<
     this.app.ticker.add(this.tick, this);
     this.app.stage.addChild(scene.graphics);
 
-    this.emit('docker/mount');
+    scene.emit('mount', scene);
   }
 
   /**
@@ -54,7 +36,7 @@ export class Docker<
    */
   public unmount() {
     if (this.scene !== null) {
-      this.emit('docker/unmount');
+      this.scene.emit('unmount', this.scene);
 
       // stop rendering
       this.app.ticker.remove(this.tick, this);
@@ -66,10 +48,17 @@ export class Docker<
   }
 
   /**
-   * Removes all added events and unmounts the current scene.
+   * Updates the current scene and provides framerate independent motion.
    */
-  public destroy() {
-    this.unmount();
-    this.removeAllListeners();
+  private tick(deltaFrame: number) {
+    // at this moment the scene should be always mounted
+    const scene = this.scene as Scene<TAddons, TEvents>;
+
+    this._accumulatedTime += DELTA_TIME * deltaFrame;
+
+    while (this._accumulatedTime > DELTA_TIME) {
+      this._accumulatedTime -= DELTA_TIME;
+      scene.update(DELTA_TIME);
+    }
   }
 }
