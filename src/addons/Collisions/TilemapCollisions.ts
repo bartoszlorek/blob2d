@@ -1,4 +1,4 @@
-import {TAnyEntity, TAnyTilemap} from '../../_types';
+import {TAnyEntity, TAnyTilemap} from '../../types';
 import {BoundingBox} from '../../BoundingBox';
 
 import {getTilemapSeparation} from './TilemapSeparation';

@@ -1,25 +1,25 @@
-import {TVector2} from './_types';
-import {IContainer, ISprite} from './_pixijs';
+import {Container, Sprite} from 'pixi.js';
+import {TVector2} from './types';
 import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
 
 export class Tilemap<
   TAddons extends {},
   TEvents extends string
-> extends Element<TAddons, TEvents, IContainer> {
+> extends Element<TAddons, TEvents, Container> {
   public readonly type = 'tilemap';
   public readonly values: number[];
   public readonly columns: number;
   public readonly tileSize: number;
 
-  protected children: Map<number, ISprite>;
+  protected children: Map<number, Sprite>;
   protected _tileBounds: BoundingBox;
   protected _tileBoundsDirty: boolean;
   protected _closestArray: number[];
   protected _point: TVector2;
 
   constructor(
-    display: IContainer,
+    display: Container,
     values: number[],
     columns: number = 8,
     tileSize: number = 32
@@ -61,7 +61,7 @@ export class Tilemap<
    * Iterates over the linear array of values
    * and map them with returned sprite.
    */
-  public assign<T extends ISprite>(
+  public assign<T extends Sprite>(
     iteratee: (value: number, col: number, row: number) => T
   ) {
     this.children.clear();

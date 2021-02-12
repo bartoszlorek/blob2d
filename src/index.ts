@@ -1,6 +1,6 @@
-export * from './_types';
 export * from './addons';
 export * from './tiled';
+export * from './types';
 export {BoundingBox} from './BoundingBox';
 export {Docker} from './Docker';
 export {Easing} from './Easing';

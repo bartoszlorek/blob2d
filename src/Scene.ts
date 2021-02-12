@@ -1,5 +1,5 @@
-import {IAddon} from './_types';
-import {IContainerConstructor, IContainer} from './_pixijs';
+import {Container} from 'pixi.js';
+import {IAddon, IContainerConstructor} from './types';
 import {EventEmitter} from 'eventemitter3';
 import {Element} from './Element';
 
@@ -14,9 +14,9 @@ export class Scene<
   TEvents extends string
 > extends EventEmitter<TEvents | TOwnEvents> {
   public readonly addons: TAddons;
-  public readonly foreground: IContainer;
-  public readonly background: IContainer;
-  public readonly graphics: IContainer;
+  public readonly foreground: Container;
+  public readonly background: Container;
+  public readonly graphics: Container;
 
   private _addonsList: IAddon[];
   private _removeStack: Element<TAddons, TEvents>[];

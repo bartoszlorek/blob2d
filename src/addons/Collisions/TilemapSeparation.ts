@@ -1,6 +1,5 @@
-import {TAnyEntity, TAnyTilemap, TVector2} from '../../_types';
+import {TAnyEntity, TAnyTilemap, TVector2} from '../../types';
 import {BoundingBox} from '../../BoundingBox';
-
 import {ISeparation} from './types';
 
 // pre-allocated data

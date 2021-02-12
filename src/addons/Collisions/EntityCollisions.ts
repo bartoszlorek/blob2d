@@ -1,4 +1,4 @@
-import {TAnyEntity} from '../../_types';
+import {TAnyEntity} from '../../types';
 import {BoundingBox} from '../../BoundingBox';
 
 import {getEntitySeparation} from './EntitySeparation';

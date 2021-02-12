@@ -1,4 +1,4 @@
-import {ISpriteSheet} from '../_types';
+import {ISpriteSheet} from '../types';
 import {BaseTexture, Texture, Rectangle, IResourceDictionary} from 'pixi.js';
 import {ITiledMapJSON, ITiledTilesetDictionary} from './TiledTypes';
 

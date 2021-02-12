@@ -1,7 +1,7 @@
-import {ISprite} from '../../_pixijs';
-import {IAddon} from '../../_types';
-import {TiledSpriteSheet} from '../../tiled';
+import {Sprite} from 'pixi.js';
+import {IAddon} from '../../types';
 import {Scene} from '../../Scene';
+import {TiledSpriteSheet} from '../../tiled';
 import {TKeyframesDictionary} from './types';
 
 type TCachedFrames<TKeys extends string> = {[K in TKeys]: number};
@@ -13,14 +13,14 @@ export class Animation<
   TEvents extends string,
   TKeys extends string
 > implements IAddon {
-  public readonly playing: Map<ISprite, TKeys>;
+  public readonly playing: Map<Sprite, TKeys>;
   public readonly spritesheet: TiledSpriteSheet;
   public readonly keyframes: TKeyframesDictionary<TKeys>;
 
   private _deltaTimePerFrame: number;
   private _accumulatedTime: number;
-  private _requests: Map<ISprite, TKeys>;
-  private _cachedFrames: Map<ISprite, TCachedFrames<TKeys>>;
+  private _requests: Map<Sprite, TKeys>;
+  private _cachedFrames: Map<Sprite, TCachedFrames<TKeys>>;
 
   constructor(
     scene: Scene<TAddons, TEvents>,
@@ -48,14 +48,14 @@ export class Animation<
   /**
    * Automatically requests the next frame on every update.
    */
-  public play(name: TKeys, sprite: ISprite) {
+  public play<T extends Sprite>(name: TKeys, sprite: T) {
     this.playing.set(sprite, name);
   }
 
   /**
    * Pauses requesting the next frame.
    */
-  public pause(sprite: ISprite) {
+  public pause<T extends Sprite>(sprite: T) {
     this.playing.delete(sprite);
   }
 
@@ -75,7 +75,7 @@ export class Animation<
   /**
    * Request only one more frame of animation.
    */
-  public requestFrame(name: TKeys, sprite: ISprite) {
+  public requestFrame<T extends Sprite>(name: TKeys, sprite: T) {
     this._requests.set(sprite, name);
 
     if (this._cachedFrames.has(sprite)) {
@@ -123,7 +123,7 @@ export class Animation<
     this._requests.clear();
   }
 
-  protected removeAnimatedSprite(sprite: ISprite) {
+  protected removeAnimatedSprite<T extends Sprite>(sprite: T) {
     this._requests.delete(sprite);
     this._cachedFrames.delete(sprite);
     this.playing.delete(sprite);

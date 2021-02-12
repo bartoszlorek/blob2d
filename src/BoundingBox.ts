@@ -1,4 +1,4 @@
-import {TVector2} from './_types';
+import {TVector2} from './types';
 
 export class BoundingBox {
   public readonly min: TVector2;

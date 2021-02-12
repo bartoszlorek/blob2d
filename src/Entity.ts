@@ -1,5 +1,5 @@
-import {TVector2} from './_types';
-import {ISprite, NopSprite} from './_pixijs';
+import {Sprite} from 'pixi.js';
+import {TVector2} from './types';
 import {Element} from './Element';
 import {Trait} from './Trait';
 
@@ -7,8 +7,8 @@ export class Entity<
   TAddons extends {},
   TTraits extends {},
   TEvents extends string
-> extends Element<TAddons, TEvents, ISprite> {
-  public static EMPTY = new Entity(new NopSprite(), {});
+> extends Element<TAddons, TEvents, Sprite> {
+  public static EMPTY = new Entity(new Sprite(), {});
   public readonly type = 'entity';
   public readonly velocity: TVector2;
   public readonly traits: TTraits;
@@ -18,7 +18,7 @@ export class Entity<
 
   private _traitsList: Trait<TAddons, TTraits, TEvents>[];
 
-  constructor(display: ISprite, traits: TTraits) {
+  constructor(display: Sprite, traits: TTraits) {
     super(display);
 
     this.velocity = [0, 0];
