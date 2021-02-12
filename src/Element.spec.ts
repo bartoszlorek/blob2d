@@ -2,7 +2,7 @@ import {DisplayObject, Container} from 'pixi.js';
 import {Element} from './Element';
 import {Scene} from './Scene';
 
-class ElementWrapper<A, E extends string> extends Element<A, E> {
+class TestElement<A, E extends string> extends Element<A, E> {
   testUpdateDisplay() {
     this.updateDisplay();
   }
@@ -13,7 +13,7 @@ describe('class Element', () => {
     jest.restoreAllMocks();
   });
 
-  it('renders with zero transform values', () => {
+  it('constructs with zero transform values', () => {
     const element = new Element(new DisplayObject());
 
     expect(element).toMatchObject({
@@ -26,7 +26,7 @@ describe('class Element', () => {
 
   it('updates position of display based on min values', () => {
     const display = new DisplayObject();
-    const element = new ElementWrapper(display);
+    const element = new TestElement(display);
 
     element.x = 12;
     element.y = 36;

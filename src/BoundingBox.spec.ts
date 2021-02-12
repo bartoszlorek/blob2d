@@ -1,6 +1,6 @@
 import {BoundingBox} from './BoundingBox';
 
-class BoundingBoxWrapper extends BoundingBox {
+class TestBoundingBox extends BoundingBox {
   constructor(callback: typeof jest.fn) {
     super();
     this.onTransformChange = callback;
@@ -62,7 +62,7 @@ describe('class BoundingBox', () => {
 
   it('invokes onTransformChange only once for each event loop', () => {
     const onTransformChange = jest.fn();
-    const bbox = new BoundingBoxWrapper(onTransformChange);
+    const bbox = new TestBoundingBox(onTransformChange);
 
     bbox.x = 8;
     bbox.y = 16;
