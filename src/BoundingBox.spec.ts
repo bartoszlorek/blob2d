@@ -8,6 +8,36 @@ class SubclassWrapper extends BoundingBox {
 }
 
 describe('class BoundingBox', () => {
+  it('changes min and max values when translateX', () => {
+    const bbox = new BoundingBox();
+
+    bbox.x = 8;
+    bbox.y = 8;
+    bbox.width = 10;
+    bbox.height = 10;
+    bbox.translateX(24);
+
+    expect(bbox).toMatchObject({
+      min: [32, 8],
+      max: [42, 18],
+    });
+  });
+
+  it('changes min and max values when translateY', () => {
+    const bbox = new BoundingBox();
+
+    bbox.x = 8;
+    bbox.y = 8;
+    bbox.width = 10;
+    bbox.height = 10;
+    bbox.translateY(24);
+
+    expect(bbox).toMatchObject({
+      min: [8, 32],
+      max: [18, 42],
+    });
+  });
+
   it('copies values from another BoundingBox', () => {
     const clone = new BoundingBox();
     const bbox = new BoundingBox();
@@ -22,12 +52,12 @@ describe('class BoundingBox', () => {
   it('updates max values when width or height has changed', () => {
     const bbox = new BoundingBox();
 
-    bbox.x = 49.9483005251519;
-    bbox.y = 65.72052564862729;
+    bbox.x = 32;
+    bbox.y = 42;
     bbox.width = 8;
     bbox.height = 8;
 
-    expect(bbox.max).toEqual([57.9483005251519, 73.72052564862729]);
+    expect(bbox.max).toEqual([40, 50]);
   });
 
   it('invokes onTransformChange only once for each event loop', () => {
