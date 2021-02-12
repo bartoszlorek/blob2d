@@ -5,6 +5,7 @@ Addons provide a way to extend `Scene` with additional functionality, like anima
 ## Table of Contents
 
 - [Animation](#animation)
+- [Camera](#camera)
 - [Collisions](#collisions)
 - [Entities](#entities)
 
@@ -45,6 +46,35 @@ interface Animation
   public requestFrame(name: TKeys, sprite: ISprite): void;
 
   // clears cached data
+  public destroy(): void;
+}
+```
+
+## Camera
+
+Built-in addon positioning the scene foreground on the screen.
+
+```ts
+const camera = new Camera<TAddons, TEvents>(
+  scene // Scene<TAddons, TEvents>
+);
+```
+
+```ts
+// public interface
+interface Camera
+{
+  public offsetX: number;
+  public offsetY: number;
+
+  // positions the given BoundingBox
+  // in the center of the screen
+  public focus(bbox: BoundingBox): void;
+
+  // applies offset to the foreground
+  public update(deltaTime: number): void;
+
+  // cleanup
   public destroy(): void;
 }
 ```
