@@ -7,9 +7,10 @@ import {Scene} from '../Scene';
  */
 export class Camera<TAddons extends {}, TEvents extends string>
   implements IAddon, ICamera {
-  public readonly scene: Scene<TAddons, TEvents>;
   public offsetX: number;
   public offsetY: number;
+
+  protected scene: Scene<TAddons, TEvents>;
 
   constructor(scene: Scene<TAddons, TEvents>) {
     this.scene = scene;
@@ -17,6 +18,9 @@ export class Camera<TAddons extends {}, TEvents extends string>
     this.offsetY = 0;
   }
 
+  /**
+   * Positions the given BoundingBox in the center of the screen.
+   */
   public focus(bbox: BoundingBox) {
     this.offsetX += window.innerWidth / 2 - bbox.centerX;
     this.offsetY += window.innerHeight / 2 - bbox.centerY;
