@@ -1,6 +1,12 @@
 import {Sprite, Container} from 'pixi.js';
+import {ITrait} from './types';
 import {Scene} from './Scene';
 import {Entity} from './Entity';
+
+const mockTrait = (): ITrait => ({
+  update: jest.fn(),
+  destroy: jest.fn(),
+});
 
 describe('class Entity', () => {
   beforeEach(() => {
@@ -34,8 +40,8 @@ describe('class Entity', () => {
 
   it('updates traits on own update', () => {
     const traits = {
-      move: {update: jest.fn()},
-      jump: {update: jest.fn()},
+      move: mockTrait(),
+      jump: mockTrait(),
     };
 
     const entity = new Entity(new Sprite(), traits);
@@ -47,8 +53,8 @@ describe('class Entity', () => {
 
   it('destroys traits when destroyed', () => {
     const traits = {
-      move: {destroy: jest.fn()},
-      jump: {destroy: jest.fn()},
+      move: mockTrait(),
+      jump: mockTrait(),
     };
 
     const entity = new Entity(new Sprite(), traits);
