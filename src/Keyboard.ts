@@ -54,9 +54,7 @@ export class Keyboard<TKey extends string = string> {
 
     if (this.states.get(key) !== pressed) {
       this.states.set(key, pressed);
-
-      const callback = this.events.get(key);
-      if (callback) callback(pressed);
+      this.events.get(key)?.(pressed);
     }
   }
 }

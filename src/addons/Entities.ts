@@ -1,4 +1,4 @@
-import {IAddon} from '../_types';
+import {IAddon} from '../types';
 import {removeItem} from '../utils/array';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';

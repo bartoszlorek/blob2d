@@ -1,4 +1,4 @@
-import {TAnyEntity, TAnyTilemap, TVector2} from '../../_types';
+import {TAnyEntity, TAnyTilemap, TVector2} from '../../types';
 import {Entity} from '../../Entity';
 import {Tilemap} from '../../Tilemap';
 

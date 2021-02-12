@@ -1,3 +1,4 @@
+import {Container} from 'pixi.js';
 import {Entity} from './Entity';
 import {Tilemap} from './Tilemap';
 
@@ -25,4 +26,8 @@ export interface ISpriteSheet<Texture> {
 export interface ICamera {
   offsetX: number;
   offsetY: number;
+}
+
+export interface IContainerConstructor {
+  new (): Container;
 }

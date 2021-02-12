@@ -1,4 +1,4 @@
-import {ITrait} from './_types';
+import {ITrait} from './types';
 import {Entity} from './Entity';
 
 export abstract class Trait<

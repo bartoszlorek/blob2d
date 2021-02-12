@@ -1,4 +1,4 @@
-import {IAddon, ICamera} from '../_types';
+import {IAddon, ICamera} from '../types';
 import {BoundingBox} from '../BoundingBox';
 import {Scene} from '../Scene';
 

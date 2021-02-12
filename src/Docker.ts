@@ -1,15 +1,15 @@
-import {IApplication} from './_pixijs';
+import {Application} from 'pixi.js';
 import {Scene} from './Scene';
 
 const DELTA_TIME = 1 / 60;
 
 export class Docker<TAddons extends {}, TEvents extends string> {
-  public readonly app: IApplication;
+  public readonly app: Application;
   public scene: Scene<TAddons, TEvents> | null;
 
   private _accumulatedTime: number;
 
-  constructor(app: IApplication) {
+  constructor(app: Application) {
     this.app = app;
     this.scene = null;
 

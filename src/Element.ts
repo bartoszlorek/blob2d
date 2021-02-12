@@ -1,12 +1,11 @@
-import {TVector2} from './_types';
-import {IDisplayObject} from './_pixijs';
+import {DisplayObject} from 'pixi.js';
 import {BoundingBox} from './BoundingBox';
 import {Scene} from './Scene';
 
 export class Element<
   TAddons extends {},
   TEvents extends string,
-  TDisplay extends IDisplayObject = IDisplayObject
+  TDisplay extends DisplayObject = DisplayObject
 > extends BoundingBox {
   public name: string | null;
   public scene: Scene<TAddons, TEvents> | null;
