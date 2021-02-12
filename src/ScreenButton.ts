@@ -68,7 +68,7 @@ export class ScreenButton<TKey extends string = string> {
       key: this.key,
     });
 
-    // simulate the click of a physical keyboard
+    // simulate pressing a physical key
     window.dispatchEvent(event);
 
     if (type === 'keydown') {
