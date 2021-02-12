@@ -7,11 +7,7 @@ class SubclassWrapper extends BoundingBox {
   }
 }
 
-describe('BoundingBox()', () => {
-  beforeEach(() => {
-    jest.useFakeTimers();
-  });
-
+describe('class BoundingBox', () => {
   it('copies values from another BoundingBox', () => {
     const clone = new BoundingBox();
     const bbox = new BoundingBox();
