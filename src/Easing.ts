@@ -8,8 +8,7 @@
  * @link https://matthewlein.com/tools/ceaser
  */
 export class Easing {
-  protected duration: number;
-
+  public readonly duration: number;
   private _accumulatedTime: number;
 
   constructor(duration: number) {
