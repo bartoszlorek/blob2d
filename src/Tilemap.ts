@@ -13,10 +13,12 @@ export class Tilemap<
   public readonly tileSize: number;
 
   protected children: Map<number, Sprite>;
-  protected _tileBounds: BoundingBox;
-  protected _tileBoundsDirty: boolean;
-  protected _closestArray: number[];
-  protected _point: TVector2;
+
+  // processing
+  private _tileBounds: BoundingBox;
+  private _tileBoundsDirty: boolean = true;
+  private _closestArray: number[];
+  private _point: TVector2;
 
   constructor(
     display: Container,
@@ -34,10 +36,8 @@ export class Tilemap<
     this.width = columns * tileSize;
     this.height = Math.ceil(values.length / columns) * tileSize;
 
-    this._tileBounds = new BoundingBox();
-    this._tileBoundsDirty = true;
-
     // pre-allocated data
+    this._tileBounds = new BoundingBox();
     this._closestArray = [0, 0, 0, 0, 0, 0, 0, 0, 0];
     this._point = [0, 0];
 

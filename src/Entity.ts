@@ -13,17 +13,20 @@ export class Entity<
   public readonly velocity: TVector2;
   public readonly traits: TTraits;
 
-  // controls whether physics affects the rigidbody
-  public physics: 'dynamic' | 'kinematic';
+  /**
+   * Controls whether physics affects the rigidbody.
+   * - `dynamic` responds to collisions resolved by the physics engine.
+   * - `kinematic` processes collisions with others without reaction.
+   */
+  public physics: 'dynamic' | 'kinematic' = 'dynamic';
 
+  // processing
   private _traitsList: Trait<TAddons, TTraits, TEvents>[];
 
   constructor(display: Sprite, traits: TTraits) {
     super(display);
-
     this.velocity = [0, 0];
     this.traits = traits;
-    this.physics = 'dynamic';
 
     // assign this entity to traits
     this._traitsList = Object.values(traits);

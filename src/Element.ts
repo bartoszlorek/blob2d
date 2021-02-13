@@ -7,18 +7,14 @@ export class Element<
   TEvents extends string,
   TDisplay extends DisplayObject = DisplayObject
 > extends BoundingBox {
-  public name: string | null;
-  public scene: Scene<TAddons, TEvents> | null;
+  public name: string | null = null;
+  public scene: Scene<TAddons, TEvents> | null = null;
   public readonly display: TDisplay;
 
   constructor(display: TDisplay) {
     super();
-
-    this.name = null;
-    this.scene = null;
     this.x = 0;
     this.y = 0;
-
     this.display = display;
     this.updateDisplay();
   }

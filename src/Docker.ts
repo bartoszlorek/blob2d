@@ -5,16 +5,13 @@ const DELTA_TIME = 1 / 60;
 
 export class Docker<TAddons extends {}, TEvents extends string> {
   public readonly app: Application;
-  public scene: Scene<TAddons, TEvents> | null;
+  public scene: Scene<TAddons, TEvents> | null = null;
 
-  private _accumulatedTime: number;
+  // processing
+  private _accumulatedTime: number = 0;
 
   constructor(app: Application) {
     this.app = app;
-    this.scene = null;
-
-    // processing
-    this._accumulatedTime = 0;
   }
 
   /**

@@ -18,13 +18,13 @@ export class Scene<
   public readonly background: Container;
   public readonly graphics: Container;
 
-  private _addonsList: IAddon[];
-  private _removeStack: Element<TAddons, TEvents>[];
-  private _removeIndex: number;
+  // processing
+  private _addonsList: IAddon[] = [];
+  private _removeStack: Element<TAddons, TEvents>[] = [];
+  private _removeIndex: number = 0;
 
   constructor(BaseContainer: IContainerConstructor) {
     super();
-
     this.addons = {} as TAddons;
 
     // renderer layers
@@ -32,11 +32,6 @@ export class Scene<
     this.background = new BaseContainer();
     this.graphics = new BaseContainer();
     this.graphics.addChild(this.background, this.foreground);
-
-    // processing
-    this._addonsList = [];
-    this._removeStack = [];
-    this._removeIndex = 0;
   }
 
   /**

@@ -9,14 +9,13 @@ export class BoundingBox {
    */
   protected onTransformChange?: () => void;
 
-  private _width: number;
-  private _height: number;
+  // cached size
+  private _width: number = 0;
+  private _height: number = 0;
 
   constructor() {
     this.min = [Infinity, Infinity];
     this.max = [-Infinity, -Infinity];
-    this._width = 0;
-    this._height = 0;
   }
 
   get width(): number {

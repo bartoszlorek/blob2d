@@ -9,11 +9,10 @@
  */
 export class Easing {
   public readonly duration: number;
-  private _accumulatedTime: number;
+  private _accumulatedTime: number = 0;
 
   constructor(duration: number) {
     this.duration = duration / 1000;
-    this._accumulatedTime = 0;
   }
 
   protected getTime(deltaTime: number) {
