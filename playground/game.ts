@@ -1,13 +1,15 @@
-import PIXI, {Application, Loader} from 'pixi.js';
+import PIXI, {Application} from 'pixi.js';
 import {Docker} from '../src';
+
+import {maps} from './assets';
+import {loader} from './loader';
+import {Level} from './scenes';
 import {Addons, Events} from './types';
 import {setupGui} from './gui';
-import {Level} from './Level';
 
 // disable interpolation when scaling, will make texture be pixelated
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-const loader = new Loader();
 const app = new Application({
   backgroundColor: 0x68aed4,
   antialias: false,
@@ -16,11 +18,10 @@ const app = new Application({
 
 document.body.appendChild(app.view);
 
-loader.add('sprites', './assets/sprites.png').load(() => {
+loader.load(() => {
   setupGui(); // possible implementation
 
   const docker = new Docker<Addons, Events>(app);
-  const level = new Level(loader.resources);
-
+  const level = new Level(maps.demo_01, loader.resources);
   docker.mount(level);
 });
