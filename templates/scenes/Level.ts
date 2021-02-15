@@ -6,17 +6,13 @@ import {
   ITiledMapJSON,
   TiledMapper,
   TiledSpriteSheet,
-  TKeyframesDictionary,
 } from 'blob2d';
 
 import {CustomAddon} from '../addons';
 import {tilesets} from '../assets';
-import {Addons, Events, Keyframes} from '../types';
+import {keyframes} from '../keyframes';
+import {Addons, Events} from '../types';
 import {makePlayer} from '../layers';
-
-const keyframes: TKeyframesDictionary<Keyframes> = {
-  // ...
-};
 
 export class Level extends Scene<Addons, Events> {
   constructor(map: ITiledMapJSON, resources: IResourceDictionary) {
