@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'development',
-  entry: './playground/index.ts',
+  entry: './playground/game.ts',
   output: {
     filename: 'scripts.js',
     path: path.join(__dirname, 'playground'),
