@@ -6,6 +6,9 @@
     "start": "webpack serve",
     "build": "webpack --mode production"
   },
+  "bin": {
+    "blob2d": "./bin/blob2d.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bartoszlorek/blob2d.git"
