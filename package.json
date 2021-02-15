@@ -6,6 +6,9 @@
     "start": "webpack serve",
     "build": "webpack --mode production"
   },
+  "bin": {
+    "blob2d": "./bin/blob2d.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bartoszlorek/blob2d.git"
@@ -27,6 +30,11 @@
     "collision-detection",
     "physics"
   ],
+  "files": [
+    "bin/",
+    "src/",
+    "templates/"
+  ],
   "dependencies": {
     "eventemitter3": "^4.0.7",
     "pixi.js": "^5.3.7"
@@ -41,6 +49,8 @@
     "@types/jest": "^26.0.20",
     "babel-jest": "^26.6.3",
     "babel-loader": "^8.2.2",
+    "chalk": "^4.1.0",
+    "fs-extra": "^9.1.0",
     "jest": "^26.6.3",
     "jest-canvas-mock": "^2.3.1",
     "pixi.js-legacy": "^5.3.7",
