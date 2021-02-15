@@ -3,8 +3,8 @@ import {CustomAddon} from './addons';
 import {CustomTrait} from './traits';
 
 export type Addons = {
-  animation: Animation;
-  entities: Entities;
+  animation: Animation<Addons, Events, Keyframes>;
+  entities: Entities<Addons, Traits, Events>;
   customAddon: CustomAddon;
 };
 
