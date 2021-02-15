@@ -15,7 +15,7 @@ import {
 import {Sprite, IResourceDictionary, Container} from 'pixi.js';
 import {Addons, Events, PlayerTraits, PlatformTraits, Keyframes} from './types';
 import {FollowMouse, WaveMovement} from './traits';
-import {tilesets, demo01Map} from './assets';
+import {tilesets, maps} from './assets';
 
 const keyframes: TKeyframesDictionary<Keyframes> = {
   player_move: {firstGID: 1, lastGID: 4},
@@ -25,7 +25,7 @@ export class Level extends Scene<Addons, Events> {
   constructor(resources: IResourceDictionary) {
     super(Container);
 
-    const spritesheet = new TiledSpriteSheet(demo01Map, tilesets, resources);
+    const spritesheet = new TiledSpriteSheet(maps.demo_01, tilesets, resources);
     const camera = new Camera(this);
 
     this.registerAddons({
@@ -35,7 +35,7 @@ export class Level extends Scene<Addons, Events> {
       entities: new Entities(this),
     });
 
-    const mapper = new TiledMapper(demo01Map);
+    const mapper = new TiledMapper(maps.demo_01);
     const player = mapper.querySprite(
       'player',
       makePlayer(spritesheet, camera)

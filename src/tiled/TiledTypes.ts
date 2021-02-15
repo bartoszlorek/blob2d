@@ -112,6 +112,10 @@ export interface ITiledTilesetJSON {
   version: number;
 }
 
+export interface ITiledMapDictionary {
+  [name: string]: ITiledMapJSON;
+}
+
 export interface ITiledTilesetDictionary {
   [name: string]: ITiledTilesetJSON;
 }
