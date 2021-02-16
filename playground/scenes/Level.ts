@@ -1,15 +1,15 @@
-import {Container, IResourceDictionary} from 'pixi.js';
 import {
   Animation,
   BoundingBox,
   Camera,
   Collisions,
   Entities,
-  Scene,
   ITiledMapJSON,
+  Scene,
   TiledMapper,
   TiledSpriteSheet,
-} from '../../src';
+} from 'blob2d';
+import {Container, IResourceDictionary} from 'pixi.js';
 import {tilesets} from '../assets';
 import {keyframes} from '../keyframes';
 import {makePlatform, makePlayer, makeTiles} from '../layers';

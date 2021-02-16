@@ -1,6 +1,5 @@
-import PIXI, {Application} from 'pixi.js';
 import {Docker} from 'blob2d';
-
+import PIXI, {Application} from 'pixi.js';
 import {maps} from './assets';
 import {loader} from './loader';
 import {Level} from './scenes';
@@ -19,6 +18,5 @@ document.body.appendChild(app.view);
 loader.load(() => {
   const docker = new Docker<Addons, Events>(app);
   const level = new Level(maps.demo_01, loader.resources);
-
   docker.mount(level);
 });

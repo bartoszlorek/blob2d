@@ -1,4 +1,4 @@
-import {refineArray, concatArray, removeItem} from './array';
+import {concatArray, refineArray, removeItem} from './array';
 
 describe('refineArray()', () => {
   it('returns array of a single element', () => {

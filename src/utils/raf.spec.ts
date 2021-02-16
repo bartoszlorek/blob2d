@@ -1,4 +1,4 @@
-import {setFrameTimeout, setFrameInterval, clearFrameRequest} from './raf';
+import {clearFrameRequest, setFrameInterval, setFrameTimeout} from './raf';
 
 let timestamp = 0;
 const now = jest.spyOn(window.performance, 'now');

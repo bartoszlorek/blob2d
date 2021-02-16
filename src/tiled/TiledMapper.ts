@@ -1,8 +1,8 @@
 import {
-  ITiledMapJSON,
   ITiledFiniteTileLayer,
   ITiledInfiniteTileLayer,
-} from './TiledTypes';
+  ITiledMapJSON,
+} from './types';
 
 type ITiledLayer = ITiledFiniteTileLayer | ITiledInfiniteTileLayer;
 

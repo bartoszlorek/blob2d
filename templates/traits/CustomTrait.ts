@@ -1,5 +1,5 @@
 import {Trait} from 'blob2d';
-import {Addons, Traits, Events} from '../types';
+import {Addons, Events, Traits} from '../types';
 
 export class CustomTrait extends Trait<Addons, Traits, Events> {
   update(deltaTime: number) {

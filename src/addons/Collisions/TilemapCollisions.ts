@@ -1,6 +1,5 @@
-import {TAnyEntity, TAnyTilemap} from '../../types';
 import {BoundingBox} from '../../BoundingBox';
-
+import {TAnyEntity, TAnyTilemap} from '../../types';
 import {getTilemapSeparation} from './TilemapSeparation';
 import {TCollisionStaticResponse} from './types';
 

@@ -1,4 +1,4 @@
-import {DisplayObject, Container} from 'pixi.js';
+import {Container, DisplayObject} from 'pixi.js';
 import {Element} from './Element';
 import {Scene} from './Scene';
 

@@ -1,7 +1,7 @@
 import {Sprite} from 'pixi.js';
-import {IAddon} from '../../types';
 import {Scene} from '../../Scene';
 import {TiledSpriteSheet} from '../../tiled';
+import {IAddon} from '../../types';
 import {TKeyframesDictionary} from './types';
 
 type TCachedFrames<TKeys extends string> = {[K in TKeys]: number};

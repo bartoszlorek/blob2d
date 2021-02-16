@@ -1,7 +1,7 @@
 import {Container} from 'pixi.js';
+import {Element} from './Element';
 import {Scene} from './Scene';
 import {IAddon} from './types';
-import {Element} from './Element';
 
 console.error = jest.fn();
 

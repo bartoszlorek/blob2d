@@ -1,5 +1,5 @@
-import {Trait} from '../../src';
-import {Addons, Traits, Events} from '../types';
+import {Trait} from 'blob2d';
+import {Addons, Events, Traits} from '../types';
 
 export class WaveMovement extends Trait<Addons, Traits, Events> {
   protected readonly center: number;

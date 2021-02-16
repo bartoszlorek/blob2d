@@ -23,6 +23,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
+    alias: {
+      blob2d: path.resolve(__dirname, 'src/index.ts'),
+    },
   },
   externals: {
     'pixi.js': 'PIXI',

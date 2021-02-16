@@ -1,7 +1,7 @@
 import {Container, Sprite} from 'pixi.js';
-import {TVector2} from './types';
 import {BoundingBox} from './BoundingBox';
 import {Element} from './Element';
+import {TVector2} from './types';
 
 export class Tilemap<
   TAddons extends {},

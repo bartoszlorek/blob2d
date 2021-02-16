@@ -1,7 +1,7 @@
+import {Entity, ICamera, TiledSpriteSheet} from 'blob2d';
 import {Sprite} from 'pixi.js';
-import {Entity, ICamera, TiledSpriteSheet} from '../../src';
-import {Addons, PlayerTraits, Events} from '../types';
 import {FollowMouse} from '../traits';
+import {Addons, Events, PlayerTraits} from '../types';
 
 export function makePlayer(spritesheet: TiledSpriteSheet, camera: ICamera) {
   return (tileGID: number, x: number, y: number) => {

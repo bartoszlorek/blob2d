@@ -1,11 +1,10 @@
+import {Docker} from 'blob2d';
 import PIXI, {Application} from 'pixi.js';
-import {Docker} from '../src';
-
 import {maps} from './assets';
+import {setupGui} from './gui';
 import {loader} from './loader';
 import {Level} from './scenes';
 import {Addons, Events} from './types';
-import {setupGui} from './gui';
 
 // disable interpolation when scaling, will make texture be pixelated
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
