@@ -38,6 +38,14 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 - 🤷‍♂️ General physics
 - ❌ Sound
 
+## Creating a New Project ✨
+
+First, install `pixi.js` and `blob2d` as dependencies for your project, then you should run the command creating boilerplate. It populates the current directory with a file structure and demonstration components.
+
+```
+blob2d create
+```
+
 ## Documentation 📑
 
 [Avaible here](src/README.md)
