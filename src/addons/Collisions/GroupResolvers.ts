@@ -1,10 +1,10 @@
-import {
-  ICollisionStaticGroup,
-  ICollisionDynamicGroup,
-  ICollisionSelfDynamicGroup,
-} from './types';
 import {detectEntityCollision} from './EntityCollisions';
 import {detectTilemapCollision} from './TilemapCollisions';
+import {
+  ICollisionDynamicGroup,
+  ICollisionSelfDynamicGroup,
+  ICollisionStaticGroup,
+} from './types';
 
 export function resolveStaticGroup<A, T, E extends string>(
   group: ICollisionStaticGroup<A, T, E>,

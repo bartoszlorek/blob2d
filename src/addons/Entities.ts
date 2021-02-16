@@ -1,7 +1,7 @@
-import {IAddon} from '../types';
-import {removeItem} from '../utils/array';
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
+import {IAddon} from '../types';
+import {removeItem} from '../utils/array';
 
 /**
  * Built-in addon updating traits of each entity.

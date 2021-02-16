@@ -1,4 +1,4 @@
-import {TCollisionStaticResponse, TCollisionDynamicResponse} from './types';
+import {TCollisionDynamicResponse, TCollisionStaticResponse} from './types';
 
 export const staticResponse: TCollisionStaticResponse = function (
   entity,

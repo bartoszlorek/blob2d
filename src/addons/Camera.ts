@@ -1,6 +1,6 @@
-import {IAddon, ICamera} from '../types';
 import {BoundingBox} from '../BoundingBox';
 import {Scene} from '../Scene';
+import {IAddon, ICamera} from '../types';
 
 /**
  * Built-in addon positioning the scene on the screen.

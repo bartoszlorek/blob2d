@@ -1,6 +1,5 @@
-import {TAnyEntity} from '../../types';
 import {BoundingBox} from '../../BoundingBox';
-
+import {TAnyEntity} from '../../types';
 import {getEntitySeparation} from './EntitySeparation';
 import {TCollisionDynamicResponse} from './types';
 

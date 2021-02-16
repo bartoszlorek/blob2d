@@ -1,5 +1,5 @@
-import {ITrait} from './types';
 import {Entity} from './Entity';
+import {ITrait} from './types';
 
 export abstract class Trait<
   TAddons extends {},

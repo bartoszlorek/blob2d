@@ -1,7 +1,7 @@
-import {Container} from 'pixi.js';
-import {IAddon, IContainerConstructor} from './types';
 import {EventEmitter} from 'eventemitter3';
+import {Container} from 'pixi.js';
 import {Element} from './Element';
+import {IAddon, IContainerConstructor} from './types';
 
 export type TOwnEvents =
   | 'mount'

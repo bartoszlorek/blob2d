@@ -1,7 +1,7 @@
 import {Sprite} from 'pixi.js';
-import {TVector2} from './types';
 import {Element} from './Element';
 import {Trait} from './Trait';
+import {TVector2} from './types';
 
 export class Entity<
   TAddons extends {},

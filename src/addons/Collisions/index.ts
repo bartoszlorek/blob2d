@@ -1,5 +1,5 @@
 export {Collisions} from './Collisions';
 export type {
-  TCollisionStaticResponse,
   TCollisionDynamicResponse,
+  TCollisionStaticResponse,
 } from './types';

@@ -1,6 +1,6 @@
+import {BaseTexture, IResourceDictionary, Rectangle, Texture} from 'pixi.js';
 import {ISpriteSheet} from '../types';
-import {BaseTexture, Texture, Rectangle, IResourceDictionary} from 'pixi.js';
-import {ITiledMapJSON, ITiledTilesetDictionary} from './TiledTypes';
+import {ITiledMapJSON, ITiledTilesetDictionary} from './types';
 
 interface SourceTileset {
   readonly baseTexture: BaseTexture;

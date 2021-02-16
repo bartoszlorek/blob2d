@@ -1,7 +1,7 @@
-import {Sprite, Container} from 'pixi.js';
-import {ITrait} from './types';
-import {Scene} from './Scene';
+import {Container, Sprite} from 'pixi.js';
 import {Entity} from './Entity';
+import {Scene} from './Scene';
+import {ITrait} from './types';
 
 const mockTrait = (): ITrait => ({
   update: jest.fn(),

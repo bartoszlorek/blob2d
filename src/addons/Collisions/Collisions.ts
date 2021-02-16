@@ -1,20 +1,19 @@
-import {IAddon} from '../../types';
-import {refineArray, removeItem} from '../../utils/array';
 import {Entity} from '../../Entity';
 import {Scene} from '../../Scene';
 import {Tilemap} from '../../Tilemap';
-
+import {IAddon} from '../../types';
+import {refineArray, removeItem} from '../../utils/array';
 import {
-  ICollisionGroup,
-  TCollisionStaticResponse,
-  TCollisionDynamicResponse,
-} from './types';
-import {
-  resolveStaticGroup,
   resolveDynamicGroup,
   resolveSelfDynamicGroup,
+  resolveStaticGroup,
 } from './GroupResolvers';
-import {staticResponse, dynamicResponse} from './GroupResponses';
+import {dynamicResponse, staticResponse} from './GroupResponses';
+import {
+  ICollisionGroup,
+  TCollisionDynamicResponse,
+  TCollisionStaticResponse,
+} from './types';
 
 /**
  * Built-in addon for arcade collision detection.

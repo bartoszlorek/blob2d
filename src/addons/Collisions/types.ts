@@ -1,6 +1,6 @@
-import {TAnyEntity, TAnyTilemap, TVector2} from '../../types';
 import {Entity} from '../../Entity';
 import {Tilemap} from '../../Tilemap';
+import {TAnyEntity, TAnyTilemap, TVector2} from '../../types';
 
 export interface ICollisionStaticGroup<A, T, E extends string> {
   readonly type: 'static';

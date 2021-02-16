@@ -1,10 +1,10 @@
 // @flow strict
 
 import {
-  IAnimationFrameRequest,
-  setFrameTimeout,
-  setFrameInterval,
   clearFrameRequest,
+  IAnimationFrameRequest,
+  setFrameInterval,
+  setFrameTimeout,
 } from './utils/raf';
 
 const INITIAL_DELAY = 500;
