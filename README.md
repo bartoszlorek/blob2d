@@ -38,6 +38,14 @@ Package 📦 for new games here https://www.npmjs.com/package/blob2d
 - 🤷‍♂️ General physics
 - ❌ Sound
 
+## Creating a New Project ✨
+
+First, install `pixi.js` and `blob2d` as dependencies for your project, then you should run the command creating boilerplate. It populates the current directory with a file structure and demonstration components.
+
+```
+blob2d create
+```
+
 ## Documentation 📑
 
 [Avaible here](src/README.md)
@@ -49,10 +57,13 @@ First, create basic types for the core component of the engine.
 ```ts
 // types.ts
 
-export type Addons = {entities: Entities};
-export type Traits = {followMouse: FollowMouse};
+import {CustomAddon} from './addons';
+import {CustomTrait} from './traits';
+
+export type Addons = {customAddon: CustomAddon};
+export type Traits = {customTrait: CustomTrait};
 export type Events = 'player/score' | 'player/die';
-export type Keyframes = 'player_jump' | 'player_run';
+export type Keyframes = 'player/jump' | 'player/run';
 ```
 
 Then create an Application and pass it to the `Docker`. From now on, you can mount and unmount different subclasses of `Scene` like a playable level or cutscene.
@@ -60,53 +71,49 @@ Then create an Application and pass it to the `Docker`. From now on, you can mou
 ```ts
 // game.ts
 
-import {Application, Loader} from 'pixi.js';
 import {Docker} from 'blob2d';
+import {Application} from 'pixi.js';
 import {Level} from './Level';
-...
 
 const app = new Application();
-const loader = new Loader();
 
-loader.add('sprites', './assets/sprites.png');
 loader.load(() => {
   const docker = new Docker<Addons, Events>(app);
-  const level = new Level(loader.resources);
+  const level = new Level();
   docker.mount(level);
 });
-
-document.body.appendChild(app.view);
 ```
 
-The `Scene` is a ground where you can combine all parts of your game like addons, entities, tilemaps, etc. into a cohesive product. You can create multiple scenes with different functionality of the game.
+The `Scene` is a place where you can combine all parts of your game like addons, entities, tilemaps, etc. You can create multiple scenes with different functions of the game.
 
 ```ts
 // Level.ts
 
-import {Sprite, Container} from 'pixi.js';
 import {Entities, Entity, Scene} from 'blob2d';
-import {FollowMouse} from './traits';
-...
+import {Sprite, Container} from 'pixi.js';
+import {CustomAddon} from './addons';
+import {CustomTrait} from './traits';
 
 export class Level extends Scene<Addons, Events> {
   constructor() {
     super(Container);
 
-    // should be called before accessing any addon
+    // addons should be registered before
+    // calling them later in the code
     this.registerAddons({
-      entities: new Entities(this),
+      customAddon: new CustomAddon(this),
     });
 
-    // create a player entity with FollowMouse trait
+    // create a player with traits
     const player = new Entity<Addons, Traits, Events>(
-      new Sprite(texture), {followMouse: new FollowMouse()}
+      new Sprite(texture), {customTrait: new CustomTrait()}
     );
 
-    // add a player entity to the scene
+    // add a player to the scene
     this.addElement(player);
 
-    // addon updating traits of each entity
-    this.addons.entities.addChild(player);
+    // add a player to the addon
+    this.addons.customAddon.addChild(player);
   }
 }
 ```
