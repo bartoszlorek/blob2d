@@ -1,4 +1,4 @@
-import {ITiledTilesetDictionary, ITiledMapDictionary} from 'blob2d';
+import {ITiledMapDictionary, ITiledTilesetDictionary} from 'blob2d';
 
 export const tilesets: ITiledTilesetDictionary = {
   sprites: require('./sprites.json'),

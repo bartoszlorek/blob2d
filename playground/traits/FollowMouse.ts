@@ -1,5 +1,5 @@
-import {Trait, ICamera} from 'blob2d';
-import {Addons, Traits, Events} from '../types';
+import {ICamera, Trait} from 'blob2d';
+import {Addons, Events, Traits} from '../types';
 
 export class FollowMouse extends Trait<Addons, Traits, Events> {
   protected speed: number;

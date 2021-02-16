@@ -1,7 +1,7 @@
-import {Sprite} from 'pixi.js';
 import {Entity, TiledSpriteSheet} from 'blob2d';
-import {Addons, PlatformTraits, Events} from '../types';
+import {Sprite} from 'pixi.js';
 import {WaveMovement} from '../traits';
+import {Addons, Events, PlatformTraits} from '../types';
 
 export function makePlatform(spritesheet: TiledSpriteSheet) {
   return (tileGID: number, x: number, y: number) => {
