@@ -9,8 +9,12 @@
     "isolatedModules": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "blob2d": ["src/index.ts"]
+    }
   },
-  "include": ["src/**/*", "playground/**/*"],
+  "include": ["src/**/*", "playground/**/*", "templates/**/*"],
   "exclude": ["node_modules", "**/*.spec.ts"]
 }
