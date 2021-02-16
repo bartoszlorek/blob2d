@@ -1,18 +1,17 @@
-import {Container, IResourceDictionary} from 'pixi.js';
 import {
   Animation,
   Entities,
-  Scene,
   ITiledMapJSON,
+  Scene,
   TiledMapper,
   TiledSpriteSheet,
 } from 'blob2d';
-
+import {Container, IResourceDictionary} from 'pixi.js';
 import {CustomAddon} from '../addons';
 import {tilesets} from '../assets';
 import {keyframes} from '../keyframes';
-import {Addons, Events} from '../types';
 import {makePlayer} from '../layers';
+import {Addons, Events} from '../types';
 
 export class Level extends Scene<Addons, Events> {
   constructor(map: ITiledMapJSON, resources: IResourceDictionary) {

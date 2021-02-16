@@ -1,8 +1,7 @@
-import {Sprite} from 'pixi.js';
 import {Entity, TiledSpriteSheet} from 'blob2d';
-
+import {Sprite} from 'pixi.js';
 import {CustomTrait} from '../traits';
-import {Addons, PlayerTraits, Events} from '../types';
+import {Addons, Events, PlayerTraits} from '../types';
 
 export function makePlayer(spritesheet: TiledSpriteSheet) {
   return (tileGID: number, x: number, y: number) => {

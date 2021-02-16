@@ -1,4 +1,4 @@
-import {ITiledTilesetDictionary, ITiledMapDictionary} from 'blob2d';
+import {ITiledMapDictionary, ITiledTilesetDictionary} from 'blob2d';
 
 // tilesets data created via Tiled Map Editor
 export const tilesets: ITiledTilesetDictionary = {
