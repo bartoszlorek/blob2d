@@ -9,7 +9,8 @@ import {
   ITiledMapJSON,
   TiledMapper,
   TiledSpriteSheet,
-} from '../../src';
+} from 'blob2d';
+
 import {tilesets} from '../assets';
 import {keyframes} from '../keyframes';
 import {makePlatform, makePlayer, makeTiles} from '../layers';

@@ -1,5 +1,5 @@
 import {Sprite} from 'pixi.js';
-import {Entity, TiledSpriteSheet} from '../../src';
+import {Entity, TiledSpriteSheet} from 'blob2d';
 import {Addons, PlatformTraits, Events} from '../types';
 import {WaveMovement} from '../traits';
 

@@ -1,5 +1,5 @@
 import {Container, Sprite} from 'pixi.js';
-import {Tilemap, TiledSpriteSheet} from '../../src';
+import {Tilemap, TiledSpriteSheet} from 'blob2d';
 import {Addons, Events} from '../types';
 
 export function makeTiles(spritesheet: TiledSpriteSheet) {

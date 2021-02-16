@@ -1,4 +1,4 @@
-import {Trait, ICamera} from '../../src';
+import {Trait, ICamera} from 'blob2d';
 import {Addons, Traits, Events} from '../types';
 
 export class FollowMouse extends Trait<Addons, Traits, Events> {

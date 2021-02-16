@@ -1,5 +1,5 @@
 import PIXI, {Application} from 'pixi.js';
-import {Docker} from '../src';
+import {Docker} from 'blob2d';
 
 import {maps} from './assets';
 import {loader} from './loader';

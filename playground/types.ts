@@ -1,4 +1,4 @@
-import {Animation, Camera, Collisions, Entities} from '../src';
+import {Animation, Camera, Collisions, Entities} from 'blob2d';
 import {FollowMouse, WaveMovement} from './traits';
 
 export type Addons = {

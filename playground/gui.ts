@@ -1,4 +1,4 @@
-import {ScreenButton, Keyboard} from '../src';
+import {ScreenButton, Keyboard} from 'blob2d';
 
 export function setupGui() {
   const $button = document.querySelector<HTMLElement>('.button');

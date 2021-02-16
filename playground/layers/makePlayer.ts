@@ -1,5 +1,5 @@
 import {Sprite} from 'pixi.js';
-import {Entity, ICamera, TiledSpriteSheet} from '../../src';
+import {Entity, ICamera, TiledSpriteSheet} from 'blob2d';
 import {Addons, PlayerTraits, Events} from '../types';
 import {FollowMouse} from '../traits';
 

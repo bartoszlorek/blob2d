@@ -1,4 +1,4 @@
-import {Trait} from '../../src';
+import {Trait} from 'blob2d';
 import {Addons, Traits, Events} from '../types';
 
 export class WaveMovement extends Trait<Addons, Traits, Events> {
