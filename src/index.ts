@@ -4,7 +4,6 @@ export * from './tiled';
 export * from './types';
 export {BoundingBox} from './BoundingBox';
 export {Docker} from './Docker';
-export {Easing} from './Easing';
 export {Element} from './Element';
 export {Entity} from './Entity';
 export {Scene} from './Scene';
