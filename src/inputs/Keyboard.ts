@@ -1,4 +1,4 @@
-import {refineArray} from './utils/array';
+import {refineArray} from '../utils/array';
 
 type TEventCallback = (pressed: boolean) => void;
 

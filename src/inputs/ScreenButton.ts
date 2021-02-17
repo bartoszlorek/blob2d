@@ -1,11 +1,9 @@
-// @flow strict
-
 import {
   clearFrameRequest,
   IAnimationFrameRequest,
   setFrameInterval,
   setFrameTimeout,
-} from './utils/raf';
+} from '../utils/raf';
 
 const INITIAL_DELAY = 500;
 const REPEATS_DELAY = 80;
