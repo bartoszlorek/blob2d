@@ -35,15 +35,15 @@ describe.each([
   [easeOutElastic, -0, -0.0026528758940480273, 1],
   [easeInOutElastic, 0, 0.5, 1],
 ])('%p', (fn, a, b, c) => {
-  test(`returns ${a} for value 0`, () => {
+  it(`returns ${a} for value 0`, () => {
     expect(fn(0)).toBe(a);
   });
 
-  test(`returns ${b} for value 0.5`, () => {
+  it(`returns ${b} for value 0.5`, () => {
     expect(fn(0.5)).toBe(b);
   });
 
-  test(`returns ${c} for value 1`, () => {
+  it(`returns ${c} for value 1`, () => {
     expect(fn(1)).toBe(c);
   });
 });
