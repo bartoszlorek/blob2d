@@ -10,9 +10,7 @@
   - [Trait](#trait)
 - [Built-in Addons](addons/README.md)
 - [Tiled Map Editor](tiled/README.md)
-- User Inputs
-  - [Keyboard](#keyboard)
-  - [ScreenButton](#screenbutton)
+- [User Inputs](inputs/README.md)
 - Motion Helpers
   - [Easing](#easing)
 
@@ -286,37 +284,6 @@ interface Trait
   // invoked by a parent entity when destroyed
   public destroy(): void;
 }
-```
-
-## Keyboard
-
-Proxy of keyboard events handling both `keyup` and `keydown` state.
-
-```ts
-const keyboard = new Keyboard<TKey>();
-
-keyboard.on('ArrowRight', (pressed: boolean) => {
-  if (pressed) player.moveRight();
-});
-
-keyboard.off('ArrowRight');
-keyboard.destroy(); // for a cleanup
-```
-
-## ScreenButton
-
-Simulates clicking a physical keyboard.
-
-```ts
-const $node = document.querySelector<HTMLElement>('.button');
-const button = new ScreenButton<TKey>('ArrowLeft', $node);
-
-// optional: extends button behavior
-button.onKeydown = node => node.classList.add('clicked');
-button.onKeyup = node => node.classList.remove('clicked');
-
-// listens to the standard key event
-keyboard.on('ArrowLeft', callback);
 ```
 
 ## Easing

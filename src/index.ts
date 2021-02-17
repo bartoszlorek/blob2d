@@ -1,4 +1,5 @@
 export * from './addons';
+export * from './inputs';
 export * from './tiled';
 export * from './types';
 export {BoundingBox} from './BoundingBox';
@@ -6,8 +7,6 @@ export {Docker} from './Docker';
 export {Easing} from './Easing';
 export {Element} from './Element';
 export {Entity} from './Entity';
-export {Keyboard} from './Keyboard';
 export {Scene} from './Scene';
-export {ScreenButton} from './ScreenButton';
 export {Tilemap} from './Tilemap';
 export {Trait} from './Trait';
