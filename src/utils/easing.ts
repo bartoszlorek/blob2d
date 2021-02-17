@@ -69,7 +69,7 @@ export function easeOutQuart(t: number) {
  * acceleration until halfway, then deceleration
  */
 export function easeInOutQuart(t: number) {
-  t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
+  return t < 0.5 ? 8 * t * t * t * t : 1 - 8 * --t * t * t * t;
 }
 
 /**
@@ -97,13 +97,15 @@ export function easeInOutQuint(t: number) {
  * elastic bounce effect at the beginning
  */
 export function easeInElastic(t: number) {
-  return (0.04 - 0.04 / t) * Math.sin(25 * t) + 1 || 0;
+  if (t === 0) return 0;
+  return (0.04 - 0.04 / t) * Math.sin(25 * t) + 1;
 }
 
 /**
  * elastic bounce effect at the end
  */
 export function easeOutElastic(t: number) {
+  if (t === 1) return 1;
   return ((0.04 * t) / --t) * Math.sin(25 * t);
 }
 
@@ -111,6 +113,7 @@ export function easeOutElastic(t: number) {
  * elastic bounce effect at the beginning and end
  */
 export function easeInOutElastic(t: number) {
+  if (t === 0.5) return 0.5;
   return (t -= 0.5) < 0
     ? (0.02 + 0.01 / t) * Math.sin(50 * t)
     : (0.02 - 0.01 / t) * Math.sin(50 * t) + 1;
