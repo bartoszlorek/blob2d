@@ -2,7 +2,7 @@ import {Entity} from '../../Entity';
 import {Scene} from '../../Scene';
 import {Tilemap} from '../../Tilemap';
 import {IAddon} from '../../types';
-import {refineArray, removeItem} from '../../utils/array';
+import {refineArray, arrayRemove} from '../../utils/array';
 import {
   resolveDynamicGroup,
   resolveSelfDynamicGroup,
@@ -154,18 +154,18 @@ export class Collisions<
       if (element.type === 'entity') {
         if (group.type === 'dynamic') {
           if (
-            removeItem(group.entitiesA, element) ||
-            removeItem(group.entitiesB, element)
+            arrayRemove(group.entitiesA, element) ||
+            arrayRemove(group.entitiesB, element)
           ) {
             removed = true;
           }
         } else {
-          if (removeItem(group.entities, element)) {
+          if (arrayRemove(group.entities, element)) {
             removed = true;
           }
         }
       } else if (group.type === 'static') {
-        if (removeItem(group.tilemaps, element)) {
+        if (arrayRemove(group.tilemaps, element)) {
           removed = true;
         }
       }
@@ -175,7 +175,7 @@ export class Collisions<
           // check if the group can run without the removed element
           this.validateGroup(group);
         } catch {
-          removeItem(this.groups, group);
+          arrayRemove(this.groups, group);
         }
       }
     }

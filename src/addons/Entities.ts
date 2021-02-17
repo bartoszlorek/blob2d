@@ -1,7 +1,7 @@
 import {Entity} from '../Entity';
 import {Scene} from '../Scene';
 import {IAddon} from '../types';
-import {removeItem} from '../utils/array';
+import {arrayRemove} from '../utils/array';
 
 /**
  * Built-in addon updating traits of each entity.
@@ -36,10 +36,10 @@ export class Entities<
   ) {
     if (elems.length > 1) {
       for (let i = 0; i < elems.length; i++) {
-        removeItem(this.children, elems[i]);
+        arrayRemove(this.children, elems[i]);
       }
     } else {
-      removeItem(this.children, elems[0]);
+      arrayRemove(this.children, elems[0]);
     }
   }
 

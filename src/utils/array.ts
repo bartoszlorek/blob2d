@@ -10,7 +10,7 @@ export function concatArray<T>(arr1: T[], arr2: T[]): T[] {
   return [...arr1, ...arr2];
 }
 
-export function removeItem<T>(arr: T[], item: T): boolean {
+export function arrayRemove<T>(arr: T[], item: T): boolean {
   const index = arr.indexOf(item);
 
   if (index === -1) {
