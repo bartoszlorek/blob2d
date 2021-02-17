@@ -2,6 +2,7 @@ export * from './addons';
 export * from './inputs';
 export * from './tiled';
 export * from './types';
+export * as utils from './utils';
 export {BoundingBox} from './BoundingBox';
 export {Docker} from './Docker';
 export {Element} from './Element';
