@@ -11,8 +11,7 @@
 - [Built-in Addons](addons/README.md)
 - [Tiled Map Editor](tiled/README.md)
 - [User Inputs](inputs/README.md)
-- Motion Helpers
-  - [Easing](#easing)
+- [Common Utilities](utils/README.md)
 
 ## BoundingBox
 
@@ -284,16 +283,4 @@ interface Trait
   // invoked by a parent entity when destroyed
   public destroy(): void;
 }
-```
-
-## Easing
-
-Match the best easing type for your animation. https://matthewlein.com/tools/ceaser
-
-```ts
-const value = Easing.easeInQuad(time);
-
-// or create an instance
-const easing = new Easing(250); // milliseconds
-const value = easing.easeInQuad(deltaTime);
 ```

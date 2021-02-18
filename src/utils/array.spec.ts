@@ -1,4 +1,4 @@
-import {concatArray, refineArray, removeItem} from './array';
+import {concatArray, refineArray, arrayRemove} from './array';
 
 describe('refineArray()', () => {
   it('returns array of a single element', () => {
@@ -16,18 +16,18 @@ describe('concatArray()', () => {
   });
 });
 
-describe('removeItem()', () => {
+describe('arrayRemove()', () => {
   it('mutates array by removing an element from it', () => {
     const array = ['foo', 'bar'];
-    removeItem(array, 'foo');
+    arrayRemove(array, 'foo');
     expect(array).toEqual(['bar']);
   });
 
   it('returns true when an existing item is removed', () => {
-    expect(removeItem(['foo', 'bar'], 'foo')).toBe(true);
+    expect(arrayRemove(['foo', 'bar'], 'foo')).toBe(true);
   });
 
   it('returns false when the element does not exist', () => {
-    expect(removeItem(['bar'], 'foo')).toBe(false);
+    expect(arrayRemove(['bar'], 'foo')).toBe(false);
   });
 });
