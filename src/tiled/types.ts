@@ -56,7 +56,7 @@ export interface ITiledMapJSON {
       height: number;
       width: number;
     };
-    export: {
+    export?: {
       format?: 'json';
       target?: string;
     };
