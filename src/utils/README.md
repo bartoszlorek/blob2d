@@ -2,11 +2,11 @@
 
 ## Table of Contents
 
-- [Array](#🗄-Array)
-- [Device](#🖥-device)
-- [Easing](#🎢-easing)
-- [Math](#📐-math)
-- [RAF](#🎬-raf)
+- [Array](#-array)
+- [Device](#-device)
+- [Easing](#-easing)
+- [Math](#-math)
+- [RAF](#-raf)
 
 ## 🗄 Array
 
