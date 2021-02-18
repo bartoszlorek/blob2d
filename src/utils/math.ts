@@ -1,10 +1,10 @@
 /**
- * Linearly interpolates between two values.
+ * Linear interpolation between two values.
  *
  * @param start returned when bias = 0
  * @param end returned when bias = 1
  * @param bias [0-1] interpolation between start and end
- * @param error rounds smaller bias to the start or end
+ * @param error snaps bias to the start or end
  */
 export function lerp(
   start: number,
