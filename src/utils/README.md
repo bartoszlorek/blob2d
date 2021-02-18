@@ -129,10 +129,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/window/requestAnimationFrame
 It's similar to the native `setTimeout` function in JavaScript.
 
 ```ts
-function setFrameTimeout(
-  callback: () => void,
-  delay: number = 0
-): IAnimationFrameRequest;
+function setFrameTimeout(callback: () => void, delay: number = 0): IAnimationFrameRequest;
 ```
 
 ### **setFrameInterval**
@@ -140,10 +137,7 @@ function setFrameTimeout(
 It's similar to the native `setInterval` function in JavaScript.
 
 ```ts
-function setFrameInterval(
-  callback: () => void,
-  delay: number = 0
-): IAnimationFrameRequest;
+function setFrameInterval(callback: () => void, delay: number = 0): IAnimationFrameRequest;
 ```
 
 ### **clearFrameRequest**
@@ -151,7 +145,5 @@ function setFrameInterval(
 Clears both `setFrameTimeout` and `setFrameInterval` methods.
 
 ```ts
-function clearFrameRequest(
-  request: IAnimationFrameRequest | void
-): void;
+function clearFrameRequest(request: IAnimationFrameRequest | void): void;
 ```
