@@ -11,6 +11,7 @@
 - [Built-in Addons](addons/README.md)
 - [Tiled Map Editor](tiled/README.md)
 - [User Inputs](inputs/README.md)
+- [Common Utilities](utils/README.md)
 
 ## BoundingBox
 
