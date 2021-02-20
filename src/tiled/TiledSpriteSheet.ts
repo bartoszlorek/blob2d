@@ -1,5 +1,5 @@
-import {BaseTexture, IResourceDictionary, Rectangle, Texture} from 'pixi.js';
-import {ISpriteSheet} from '../types';
+import {BaseTexture, Rectangle, Texture} from 'pixi.js';
+import {ISpriteSheet, IResourceDictionary} from '../types';
 import {ITiledMapJSON, ITiledTilesetDictionary} from './types';
 
 interface SourceTileset {
@@ -10,14 +10,15 @@ interface SourceTileset {
   readonly lastGID: number;
 }
 
-export class TiledSpriteSheet implements ISpriteSheet<Texture> {
+export class TiledSpriteSheet<TResources extends IResourceDictionary<Texture>>
+  implements ISpriteSheet<Texture> {
   protected cachedTextures: Map<number, Texture>;
   protected sourceTilesets: SourceTileset[];
 
   constructor(
     map: ITiledMapJSON,
     tilesets: ITiledTilesetDictionary,
-    resources: IResourceDictionary
+    resources: TResources
   ) {
     this.cachedTextures = new Map();
 
