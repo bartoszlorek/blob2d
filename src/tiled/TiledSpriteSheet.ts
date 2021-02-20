@@ -23,24 +23,23 @@ export class TiledSpriteSheet<TResources extends IResourceDictionary<Texture>>
     this.cachedTextures = new Map();
 
     // format all tilesets of the given map to sources
-    this.sourceTilesets = map.tilesets.map((tileset, index, mapTilesets) => {
-      const name = tileset.source.replace('.json', '');
-      const nextTileset = mapTilesets[index + 1];
+    this.sourceTilesets = map.tilesets.map(mapTileset => {
+      const name = mapTileset.source.replace('.json', '');
 
       if (tilesets[name] === undefined) {
-        throw new Error(`"${name}" is not defined tileset.`);
+        throw new Error(`The "${name}" is not defined tileset.`);
       }
 
       if (resources[name] === undefined) {
-        throw new Error(`"${name}" is not defined asset of tileset.`);
+        throw new Error(`The "${name}" is not loaded resource.`);
       }
 
       return {
         baseTexture: resources[name].texture.baseTexture,
         columns: tilesets[name].columns,
         tileSize: tilesets[name].tilewidth,
-        firstGID: tileset.firstgid,
-        lastGID: nextTileset ? nextTileset.firstgid - 1 : Infinity,
+        firstGID: mapTileset.firstgid,
+        lastGID: mapTileset.firstgid + tilesets[name].tilecount - 1,
       };
     });
   }
@@ -58,7 +57,7 @@ export class TiledSpriteSheet<TResources extends IResourceDictionary<Texture>>
       }
     }
 
-    throw new Error(`missing texture with GID:${tileGID}`);
+    throw new Error(`missing texture with tileGID:${tileGID}`);
   }
 
   protected getTextureFromTileset(

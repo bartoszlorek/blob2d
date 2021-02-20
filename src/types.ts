@@ -22,7 +22,7 @@ export interface ITrait {
 }
 
 export interface ISpriteSheet<Texture> {
-  getTexture(id: number): Texture | null;
+  getTexture(id: number): Texture;
   destroy(): void;
 }
 
