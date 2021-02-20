@@ -1,4 +1,3 @@
-import {Container} from 'pixi.js';
 import {Entity} from './Entity';
 import {Tilemap} from './Tilemap';
 
@@ -7,6 +6,10 @@ export type TAnyTilemap = Tilemap<any, any>;
 
 export type TVector2 = [number, number];
 export type TVector3 = [number, number, number];
+
+export interface IConstructor<T> {
+  new (): T;
+}
 
 export interface IAddon {
   update(deltaTime: number): void;
@@ -19,15 +22,15 @@ export interface ITrait {
 }
 
 export interface ISpriteSheet<Texture> {
-  getTexture(id: number): Texture | null;
+  getTexture(id: number): Texture;
   destroy(): void;
+}
+
+export interface IResourceDictionary<Texture> {
+  [index: string]: {texture: Texture};
 }
 
 export interface ICamera {
   offsetX: number;
   offsetY: number;
-}
-
-export interface IContainerConstructor {
-  new (): Container;
 }

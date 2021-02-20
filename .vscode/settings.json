@@ -1,9 +1,5 @@
 {
-  "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "typescript.validate.enable": true,
-  "javascript.validate.enable": true,
-  "[markdown]": {
-    "editor.formatOnSave": false
-  }
+  "javascript.validate.enable": true
 }

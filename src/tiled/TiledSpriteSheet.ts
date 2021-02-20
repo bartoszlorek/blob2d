@@ -1,5 +1,5 @@
-import {BaseTexture, IResourceDictionary, Rectangle, Texture} from 'pixi.js';
-import {ISpriteSheet} from '../types';
+import {BaseTexture, Rectangle, Texture} from 'pixi.js';
+import {ISpriteSheet, IResourceDictionary} from '../types';
 import {ITiledMapJSON, ITiledTilesetDictionary} from './types';
 
 interface SourceTileset {
@@ -10,36 +10,36 @@ interface SourceTileset {
   readonly lastGID: number;
 }
 
-export class TiledSpriteSheet implements ISpriteSheet<Texture> {
+export class TiledSpriteSheet<TResources extends IResourceDictionary<Texture>>
+  implements ISpriteSheet<Texture> {
   protected cachedTextures: Map<number, Texture>;
   protected sourceTilesets: SourceTileset[];
 
   constructor(
     map: ITiledMapJSON,
     tilesets: ITiledTilesetDictionary,
-    resources: IResourceDictionary
+    resources: TResources
   ) {
     this.cachedTextures = new Map();
 
     // format all tilesets of the given map to sources
-    this.sourceTilesets = map.tilesets.map((tileset, index, mapTilesets) => {
-      const name = tileset.source.replace('.json', '');
-      const nextTileset = mapTilesets[index + 1];
+    this.sourceTilesets = map.tilesets.map(mapTileset => {
+      const name = mapTileset.source.replace('.json', '');
 
       if (tilesets[name] === undefined) {
-        throw new Error(`"${name}" is not defined tileset.`);
+        throw new Error(`The "${name}" is not defined tileset.`);
       }
 
       if (resources[name] === undefined) {
-        throw new Error(`"${name}" is not defined asset of tileset.`);
+        throw new Error(`The "${name}" is not loaded resource.`);
       }
 
       return {
         baseTexture: resources[name].texture.baseTexture,
         columns: tilesets[name].columns,
         tileSize: tilesets[name].tilewidth,
-        firstGID: tileset.firstgid,
-        lastGID: nextTileset ? nextTileset.firstgid - 1 : Infinity,
+        firstGID: mapTileset.firstgid,
+        lastGID: mapTileset.firstgid + tilesets[name].tilecount - 1,
       };
     });
   }
@@ -57,7 +57,7 @@ export class TiledSpriteSheet implements ISpriteSheet<Texture> {
       }
     }
 
-    throw new Error(`missing texture with GID:${tileGID}`);
+    throw new Error(`missing texture with tileGID:${tileGID}`);
   }
 
   protected getTextureFromTileset(

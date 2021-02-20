@@ -4,9 +4,7 @@ interface ITiledProperty {
   value: number | string | boolean;
 }
 
-export interface ITiledFiniteTileLayer {
-  chunks?: void; // to discriminating unions
-  data: number[];
+interface ITiledCommonTileLayer {
   height: number;
   id: number;
   name: string;
@@ -19,8 +17,11 @@ export interface ITiledFiniteTileLayer {
   y: number;
 }
 
-export interface ITiledInfiniteTileLayer {
-  data?: void; // to discriminating unions
+export interface ITiledFiniteTileLayer extends ITiledCommonTileLayer {
+  data: number[];
+}
+
+export interface ITiledInfiniteTileLayer extends ITiledCommonTileLayer {
   chunks: {
     data: number[];
     height: number;
@@ -28,18 +29,8 @@ export interface ITiledInfiniteTileLayer {
     x: number;
     y: number;
   }[];
-  height: number;
-  id: number;
-  name: string;
-  opacity: number;
-  properties?: ITiledProperty[];
   startx: number;
   starty: number;
-  type: 'tilelayer';
-  visible: boolean;
-  width: number;
-  x: number;
-  y: number;
 }
 
 // unsupported layer
@@ -65,7 +56,7 @@ export interface ITiledMapJSON {
       height: number;
       width: number;
     };
-    export: {
+    export?: {
       format?: 'json';
       target?: string;
     };

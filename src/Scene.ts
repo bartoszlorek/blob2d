@@ -1,7 +1,7 @@
 import {EventEmitter} from 'eventemitter3';
 import {Container} from 'pixi.js';
 import {Element} from './Element';
-import {IAddon, IContainerConstructor} from './types';
+import {IAddon, IConstructor} from './types';
 
 export type TOwnEvents =
   | 'mount'
@@ -23,7 +23,7 @@ export class Scene<
   private _removeStack: Element<TAddons, TEvents>[] = [];
   private _removeIndex: number = 0;
 
-  constructor(BaseContainer: IContainerConstructor) {
+  constructor(BaseContainer: IConstructor<Container>) {
     super();
     this.addons = {} as TAddons;
 

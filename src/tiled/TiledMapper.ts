@@ -39,7 +39,6 @@ export class TiledMapper {
     if (result === undefined) {
       throw new Error(`No sprite named "${name}" was found.`);
     }
-
     return result;
   }
 
@@ -51,12 +50,13 @@ export class TiledMapper {
     const layer = this.layers.get(name);
     const results: T[] = [];
 
+    // skip processing wrong layer
     if (layer === undefined) {
       return results;
     }
 
-    // infinite map
-    if (layer.chunks !== undefined) {
+    // process infinite tilelayer
+    if ('chunks' in layer) {
       for (let j = 0; j < layer.chunks.length; j++) {
         const chunk = layer.chunks[j];
 
@@ -77,7 +77,8 @@ export class TiledMapper {
           }
         }
       }
-    } else if (layer.data !== undefined) {
+    } else {
+      // process finite tilelayer
       for (let index = 0; index < layer.data.length; index++) {
         const tileGID = layer.data[index];
 
@@ -103,12 +104,13 @@ export class TiledMapper {
     const layer = this.layers.get(name);
     const results: T[] = [];
 
+    // skip processing wrong layer
     if (layer === undefined) {
       return results;
     }
 
-    // infinite map
-    if (layer.chunks !== undefined) {
+    // process infinite tilelayer
+    if ('chunks' in layer) {
       for (let j = 0; j < layer.chunks.length; j++) {
         const chunk = layer.chunks[j];
 
@@ -121,7 +123,8 @@ export class TiledMapper {
           )
         );
       }
-    } else if (layer.data !== undefined) {
+    } else {
+      // process finite tilelayer
       results.push(
         iteratee(
           layer.data,
