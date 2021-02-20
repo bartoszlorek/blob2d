@@ -5,5 +5,5 @@ export const tilesets: ITiledTilesetDictionary = {
 };
 
 export const maps: ITiledMapDictionary = {
-  demo_01: require('./demo-01.json'),
+  demo_01: require('./demo_01.json'),
 };

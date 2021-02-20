@@ -10,8 +10,8 @@ class TestTiledMapper extends TiledMapper {
 }
 
 describe.each([
-  ['finite', maps.finite],
-  ['infinite', maps.infinite],
+  ['finite', maps.finite_map],
+  ['infinite', maps.infinite_map],
 ])('class TiledMapper ██████████ %s tilelayer', (mapName, mapJson) => {
   it('reads size of tile from the json file', () => {
     const mapper = new TiledMapper(mapJson);
@@ -72,7 +72,7 @@ describe.each([
       const iteratee = jest.fn(identity);
 
       mapper.queryAllSprites('boxes', iteratee);
-      expect(iteratee).toHaveBeenCalledTimes(3);
+      expect(iteratee).toHaveBeenCalledTimes(7);
     });
 
     it('calls iteratee passing gid and sprite position', () => {
@@ -97,7 +97,15 @@ describe.each([
       const iteratee = jest.fn(identity);
 
       const boxes = mapper.queryAllSprites('boxes', iteratee);
-      expect(boxes).toEqual(['gid:12', 'gid:11', 'gid:11']);
+      expect(boxes).toEqual([
+        'gid:12',
+        'gid:11',
+        'gid:11',
+        'gid:27',
+        'gid:28',
+        'gid:27',
+        'gid:27',
+      ]);
     });
   });
 
