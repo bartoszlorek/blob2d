@@ -1,16 +1,19 @@
 import {BoundingBox} from '../../BoundingBox';
 import {TAnyEntity, TAnyTilemap} from '../../types';
-import {getTilemapSeparation} from './TilemapSeparation';
+import {getTilemapSeparation} from './tilemapSeparation';
 import {TCollisionStaticResponse} from './types';
 
 // pre-allocated data
 const _clone = new BoundingBox();
 
-export function detectTilemapCollision(
-  entity: TAnyEntity,
-  tilemap: TAnyTilemap,
+export function detectTilemapCollision<
+  A extends TAnyEntity,
+  B extends TAnyTilemap
+>(
+  entity: A,
+  tilemap: B,
   deltaTime: number,
-  response: TCollisionStaticResponse
+  response: TCollisionStaticResponse<A, B>
 ) {
   _clone.copy(entity);
   _clone.translateX(entity.velocity[0] * deltaTime);

@@ -3,6 +3,8 @@ import {
   BoundingBox,
   Camera,
   Collisions,
+  CollisionsDynamicGroup,
+  CollisionsStaticGroup,
   Entities,
   ITiledMapJSON,
   Scene,
@@ -40,11 +42,22 @@ export class Level extends Scene<Addons, Events> {
     const front = mapper.queryAllTiles('front', makeTiles(spritesheet));
 
     // addons
-    const {entities, collisions, animation} = this.addons;
-    entities.addChild(player, platform);
-    collisions.addStatic(player, ground, Collisions.staticResponse);
-    collisions.addDynamic(player, platform, Collisions.dynamicResponse);
+    const {animation, collisions, entities} = this.addons;
     animation.play('player_move', player.display);
+    entities.addChild(player, platform);
+
+    // prettier-ignore
+    const playerGroundGroup = new CollisionsStaticGroup(
+      [player], ground, Collisions.staticResponse
+    );
+
+    // prettier-ignore
+    const playerPlatformGroup = new CollisionsDynamicGroup(
+      [player], [platform], Collisions.dynamicResponse
+    );
+
+    collisions.addGroup(playerGroundGroup);
+    collisions.addGroup(playerPlatformGroup);
 
     // renderer
     this.addElement(...ground, ...boxes, player, ...front, platform);

@@ -1,17 +1,20 @@
 import {BoundingBox} from '../../BoundingBox';
 import {TAnyEntity} from '../../types';
-import {getEntitySeparation} from './EntitySeparation';
+import {getEntitySeparation} from './entitySeparation';
 import {TCollisionDynamicResponse} from './types';
 
 // pre-allocated data
 const _cloneA = new BoundingBox();
 const _cloneB = new BoundingBox();
 
-export function detectEntityCollision(
-  entityA: TAnyEntity,
-  entityB: TAnyEntity,
+export function detectEntityCollision<
+  A extends TAnyEntity,
+  B extends TAnyEntity
+>(
+  entityA: A,
+  entityB: B,
   deltaTime: number,
-  response: TCollisionDynamicResponse
+  response: TCollisionDynamicResponse<A, B>
 ) {
   _cloneA.copy(entityA);
   _cloneA.translateX(entityA.velocity[0] * deltaTime);
