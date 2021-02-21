@@ -3,7 +3,7 @@ import {Scene} from '../../Scene';
 import {Tilemap} from '../../Tilemap';
 import {IAddon} from '../../types';
 import {arrayRemove} from '../../utils/array';
-import {dynamicResponse, staticResponse} from './GroupResponses';
+import {dynamicResponse, staticResponse} from './responses';
 import {ICollisionsGroup} from './types';
 
 /**

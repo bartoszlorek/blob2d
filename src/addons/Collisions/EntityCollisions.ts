@@ -1,6 +1,6 @@
 import {BoundingBox} from '../../BoundingBox';
 import {TAnyEntity} from '../../types';
-import {getEntitySeparation} from './EntitySeparation';
+import {getEntitySeparation} from './entitySeparation';
 import {TCollisionDynamicResponse} from './types';
 
 // pre-allocated data

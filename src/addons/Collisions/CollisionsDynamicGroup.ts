@@ -1,6 +1,6 @@
 import {TAnyEntity} from '../../types';
 import {arrayRemove} from '../../utils/array';
-import {detectEntityCollision} from './EntityCollisions';
+import {detectEntityCollision} from './entityCollisions';
 import {ICollisionsGroup, TCollisionDynamicResponse} from './types';
 
 export class CollisionsDynamicGroup<A extends TAnyEntity, B extends TAnyEntity>

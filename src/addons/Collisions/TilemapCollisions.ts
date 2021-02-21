@@ -1,6 +1,6 @@
 import {BoundingBox} from '../../BoundingBox';
 import {TAnyEntity, TAnyTilemap} from '../../types';
-import {getTilemapSeparation} from './TilemapSeparation';
+import {getTilemapSeparation} from './tilemapSeparation';
 import {TCollisionStaticResponse} from './types';
 
 // pre-allocated data

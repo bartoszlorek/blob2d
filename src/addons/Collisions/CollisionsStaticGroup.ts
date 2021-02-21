@@ -1,6 +1,6 @@
 import {TAnyEntity, TAnyTilemap} from '../../types';
 import {arrayRemove} from '../../utils/array';
-import {detectTilemapCollision} from './TilemapCollisions';
+import {detectTilemapCollision} from './tilemapCollisions';
 import {ICollisionsGroup, TCollisionStaticResponse} from './types';
 
 export class CollisionsStaticGroup<A extends TAnyEntity, B extends TAnyTilemap>
