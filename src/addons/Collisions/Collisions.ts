@@ -17,15 +17,13 @@ export class Collisions<
 > implements IAddon {
   public static staticResponse = staticResponse;
   public static dynamicResponse = dynamicResponse;
-  public readonly groups: Required<
-    ICollisionsGroup<
-      Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
-    >
+  public readonly groups: ICollisionsGroup<
+    Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
   >[] = [];
 
   constructor(scene: Scene<TAddons, TEvents>) {
-    scene.on('elementRemoved', elem => {
-      this.removeElementFromAllGroups(elem);
+    scene.on('elementRemoved', child => {
+      this.removeChildFromEveryGroup(child);
     });
   }
 
@@ -56,14 +54,12 @@ export class Collisions<
     }
   }
 
-  protected removeElementFromAllGroups(
-    elem: Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
+  protected removeChildFromEveryGroup(
+    child: Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
   ) {
     for (let i = 0; i < this.groups.length; i++) {
       const group = this.groups[i];
-
-      // check if the group can run without the removed element
-      if (group.removeChild(elem)) {
+      if (group.removeChild(child)) {
         try {
           group.validate();
         } catch {
