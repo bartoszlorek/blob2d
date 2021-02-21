@@ -77,6 +77,9 @@ export class Collisions<
    * Clears groups data.
    */
   public destroy() {
+    for (let i = 0; i < this.groups.length; i++) {
+      this.groups[i].destroy();
+    }
     this.groups.length = 0;
   }
 }
