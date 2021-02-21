@@ -89,7 +89,47 @@ const collisions = new Collisions<TAddons, TTraits, TEvents>(
 );
 ```
 
-### Collision Response
+```ts
+// public interface
+interface Collisions
+{
+  // built-in responses to handle collision
+  public static staticResponse: TCollisionStaticResponse;
+  public static dynamicResponse: TCollisionDynamicResponse;
+  public readonly groups: ICollisionGroup[];
+
+  // adds entity-tilemap or entity-entity collisions group
+  public addGroup(group: ICollisionGroup): ICollisionGroup;
+
+  // resolves collisions groups at each game tick
+  public update(deltaTime: number): void;
+
+  // clears groups data 
+  public destroy(): void;
+}
+```
+
+### **Collisions Group**
+
+Describes the relationships between the elements it contains and provides a way to resolve their collisions.
+
+```ts
+CollisionsDynamicGroup,
+CollisionsSelfDynamicGroup,
+CollisionsStaticGroup,
+```
+
+**Hint:** you can add a newly created element to an existing group, pushing it to the subgroup.
+```ts
+import {CollisionsDynamicGroup} from 'blob2d';
+
+const group = new CollisionsDynamicGroup([player], [], response);
+const bullet = new Entity();
+
+group.entitiesB.push(bullet);
+```
+
+### **Collision Response**
 
 The function passed to the collision detection method that determines what should happen when two objects collide. It takes three arguments: two colliders and separation object.
 
@@ -119,46 +159,6 @@ const dynamicResponse: TCollisionDynamicResponse = function (
   entity,    // Entity
   separation // ISeparation<number>
 ) {...};
-```
-
-### Public Interface
-
-```ts
-// public interface
-interface Collisions
-{
-  // built-in responses to handle collision
-  public static staticResponse: TCollisionStaticResponse;
-  public static dynamicResponse: TCollisionDynamicResponse;
-  public readonly groups: ICollisionGroup[];
-
-  // handles an entity-tilemap collision group
-  public addStatic(
-    entities: Entity | Entity[],
-    tilemaps: Tilemap | Tilemap[],
-    response: TCollisionStaticResponse
-  ): void;
-
-  // handles an entity-entity collision group
-  public addDynamic(
-    entitiesA: Entity | Entity[],
-    entitiesB: Entity | Entity[],
-    response: TCollisionDynamicResponse
-  ): void;
-
-  // handles an entity-entity collision group where
-  // each element should collide with each other
-  public addSelfDynamic(
-    entities: Entity[],
-    response: TCollisionDynamicResponse
-  ): void;
-
-  // resolves collisions groups at each game tick
-  public update(deltaTime: number): void;
-
-  // clears groups data 
-  public destroy(): void;
-}
 ```
 
 ## Entities
