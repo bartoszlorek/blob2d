@@ -1,7 +1,7 @@
-export {CollisionDynamicGroup} from './CollisionDynamicGroup';
 export {Collisions} from './Collisions';
-export {CollisionSelfDynamicGroup} from './CollisionSelfDynamicGroup';
-export {CollisionStaticGroup} from './CollisionStaticGroup';
+export {CollisionsDynamicGroup} from './CollisionsDynamicGroup';
+export {CollisionsSelfDynamicGroup} from './CollisionsSelfDynamicGroup';
+export {CollisionsStaticGroup} from './CollisionsStaticGroup';
 export type {
   TCollisionDynamicResponse,
   TCollisionStaticResponse,

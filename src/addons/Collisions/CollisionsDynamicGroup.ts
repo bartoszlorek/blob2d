@@ -1,10 +1,10 @@
 import {TAnyEntity} from '../../types';
 import {arrayRemove} from '../../utils/array';
 import {detectEntityCollision} from './EntityCollisions';
-import {ICollisionGroup, TCollisionDynamicResponse} from './types';
+import {ICollisionsGroup, TCollisionDynamicResponse} from './types';
 
-export class CollisionDynamicGroup<A extends TAnyEntity, B extends TAnyEntity>
-  implements ICollisionGroup<A | B> {
+export class CollisionsDynamicGroup<A extends TAnyEntity, B extends TAnyEntity>
+  implements ICollisionsGroup<A | B> {
   public readonly type = 'dynamic';
   public readonly entitiesA: A[];
   public readonly entitiesB: B[];
@@ -63,7 +63,7 @@ export class CollisionDynamicGroup<A extends TAnyEntity, B extends TAnyEntity>
   validate(): void {
     if (this.entitiesA.length < 1 || this.entitiesB.length < 1) {
       throw new Error(
-        'A dynamic collision group requires at least one entity from each sub-group.'
+        'A dynamic collisions group requires at least one entity from each sub-group.'
       );
     }
   }

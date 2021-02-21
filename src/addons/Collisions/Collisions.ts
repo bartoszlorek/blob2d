@@ -4,7 +4,7 @@ import {Tilemap} from '../../Tilemap';
 import {IAddon} from '../../types';
 import {arrayRemove} from '../../utils/array';
 import {dynamicResponse, staticResponse} from './GroupResponses';
-import {ICollisionGroup} from './types';
+import {ICollisionsGroup} from './types';
 
 /**
  * Built-in addon for arcade collision detection.
@@ -18,7 +18,7 @@ export class Collisions<
   public static staticResponse = staticResponse;
   public static dynamicResponse = dynamicResponse;
   public readonly groups: Required<
-    ICollisionGroup<
+    ICollisionsGroup<
       Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
     >
   >[] = [];
@@ -30,7 +30,7 @@ export class Collisions<
   }
 
   /**
-   * Adds entity-tilemap or entity-entity collision group.
+   * Adds entity-tilemap or entity-entity collisions group.
    *
    * @example
    * type: 'static'       // entity-tilemap
@@ -38,7 +38,7 @@ export class Collisions<
    * type: 'self_dynamic' // entity-entity
    */
   public addGroup<
-    T extends ICollisionGroup<
+    T extends ICollisionsGroup<
       Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
     >
   >(group: T): T {

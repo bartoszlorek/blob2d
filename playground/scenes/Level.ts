@@ -3,8 +3,8 @@ import {
   BoundingBox,
   Camera,
   Collisions,
-  CollisionStaticGroup,
-  CollisionDynamicGroup,
+  CollisionsDynamicGroup,
+  CollisionsStaticGroup,
   Entities,
   ITiledMapJSON,
   Scene,
@@ -47,12 +47,12 @@ export class Level extends Scene<Addons, Events> {
     entities.addChild(player, platform);
 
     // prettier-ignore
-    const playerGroundGroup = new CollisionStaticGroup(
+    const playerGroundGroup = new CollisionsStaticGroup(
       [player], ground, Collisions.staticResponse
     );
 
     // prettier-ignore
-    const playerPlatformGroup = new CollisionDynamicGroup(
+    const playerPlatformGroup = new CollisionsDynamicGroup(
       [player], [platform], Collisions.dynamicResponse
     );
 

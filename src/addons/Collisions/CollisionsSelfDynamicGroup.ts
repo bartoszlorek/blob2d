@@ -1,10 +1,10 @@
 import {TAnyEntity} from '../../types';
 import {arrayRemove} from '../../utils/array';
 import {detectEntityCollision} from './EntityCollisions';
-import {ICollisionGroup, TCollisionDynamicResponse} from './types';
+import {ICollisionsGroup, TCollisionDynamicResponse} from './types';
 
-export class CollisionSelfDynamicGroup<A extends TAnyEntity>
-  implements ICollisionGroup<A> {
+export class CollisionsSelfDynamicGroup<A extends TAnyEntity>
+  implements ICollisionsGroup<A> {
   public readonly type = 'self_dynamic';
   public readonly entities: A[];
 
@@ -35,7 +35,7 @@ export class CollisionSelfDynamicGroup<A extends TAnyEntity>
   validate(): void {
     if (this.entities.length < 2) {
       throw new Error(
-        'A self dynamic collision group requires at least two entities.'
+        'A self dynamic collisions group requires at least two entities.'
       );
     }
   }

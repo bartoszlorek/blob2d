@@ -1,10 +1,10 @@
 import {TAnyEntity, TAnyTilemap} from '../../types';
 import {arrayRemove} from '../../utils/array';
 import {detectTilemapCollision} from './TilemapCollisions';
-import {ICollisionGroup, TCollisionStaticResponse} from './types';
+import {ICollisionsGroup, TCollisionStaticResponse} from './types';
 
-export class CollisionStaticGroup<A extends TAnyEntity, B extends TAnyTilemap>
-  implements ICollisionGroup<A | B> {
+export class CollisionsStaticGroup<A extends TAnyEntity, B extends TAnyTilemap>
+  implements ICollisionsGroup<A | B> {
   public readonly type = 'static';
   public readonly entities: A[];
   public readonly tilemaps: B[];
@@ -60,7 +60,7 @@ export class CollisionStaticGroup<A extends TAnyEntity, B extends TAnyTilemap>
   validate(): void {
     if (this.entities.length < 1 || this.tilemaps.length < 1) {
       throw new Error(
-        'A static collision group requires at least one entity and tilemap.'
+        'A static collisions group requires at least one entity and tilemap.'
       );
     }
   }
