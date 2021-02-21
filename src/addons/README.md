@@ -96,10 +96,10 @@ interface Collisions
   // built-in responses to handle collision
   public static staticResponse: TCollisionStaticResponse;
   public static dynamicResponse: TCollisionDynamicResponse;
-  public readonly groups: ICollisionGroup[];
+  public readonly groups: ICollisionsGroup[];
 
   // adds entity-tilemap or entity-entity collisions group
-  public addGroup(group: ICollisionGroup): ICollisionGroup;
+  public addGroup(group: ICollisionsGroup): ICollisionsGroup;
 
   // resolves collisions groups at each game tick
   public update(deltaTime: number): void;
