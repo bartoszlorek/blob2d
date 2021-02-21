@@ -2,18 +2,9 @@ import {Entity} from '../../Entity';
 import {Scene} from '../../Scene';
 import {Tilemap} from '../../Tilemap';
 import {IAddon} from '../../types';
-import {refineArray, arrayRemove} from '../../utils/array';
-import {
-  resolveDynamicGroup,
-  resolveSelfDynamicGroup,
-  resolveStaticGroup,
-} from './GroupResolvers';
+import {arrayRemove} from '../../utils/array';
 import {dynamicResponse, staticResponse} from './GroupResponses';
-import {
-  ICollisionGroup,
-  TCollisionDynamicResponse,
-  TCollisionStaticResponse,
-} from './types';
+import {ICollisionGroup} from './types';
 
 /**
  * Built-in addon for arcade collision detection.
@@ -26,76 +17,34 @@ export class Collisions<
 > implements IAddon {
   public static staticResponse = staticResponse;
   public static dynamicResponse = dynamicResponse;
-  public readonly groups: ICollisionGroup<TAddons, TTraits, TEvents>[];
+  public readonly groups: Required<
+    ICollisionGroup<
+      Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
+    >
+  >[] = [];
 
   constructor(scene: Scene<TAddons, TEvents>) {
     scene.on('elementRemoved', elem => {
-      this.removeGroupElement(elem);
+      this.removeElementFromAllGroups(elem);
     });
-
-    this.groups = [];
   }
 
   /**
-   * Handles an entity-tilemap collision group.
+   * Adds entity-tilemap or entity-entity collision group.
+   *
+   * @example
+   * type: 'static'       // entity-tilemap
+   * type: 'dynamic'      // entity-entity
+   * type: 'self_dynamic' // entity-entity
    */
-  public addStatic<
-    A extends Entity<TAddons, TTraits, TEvents>,
-    B extends Tilemap<TAddons, TEvents>
-  >(
-    entities: A | A[],
-    tilemaps: B | B[],
-    response: TCollisionStaticResponse<A, B>
-  ) {
-    this.groups.push(
-      this.validateGroup({
-        type: 'static',
-        entities: refineArray(entities),
-        tilemaps: refineArray(tilemaps),
-        resolver: resolveStaticGroup,
-        response,
-      })
-    );
-  }
-
-  /**
-   * Handles an entity-entity collision group.
-   */
-  public addDynamic<
-    A extends Entity<TAddons, TTraits, TEvents>,
-    B extends Entity<TAddons, TTraits, TEvents>
-  >(
-    entitiesA: A | A[],
-    entitiesB: B | B[],
-    response: TCollisionDynamicResponse<A, B>
-  ) {
-    this.groups.push(
-      this.validateGroup({
-        type: 'dynamic',
-        entitiesA: refineArray(entitiesA),
-        entitiesB: refineArray(entitiesB),
-        resolver: resolveDynamicGroup,
-        response,
-      })
-    );
-  }
-
-  /**
-   * Handles an entity-entity collision group where
-   * each element should collide with each other.
-   */
-  public addSelfDynamic<A extends Entity<TAddons, TTraits, TEvents>>(
-    entities: A[],
-    response: TCollisionDynamicResponse<A, A>
-  ) {
-    this.groups.push(
-      this.validateGroup({
-        type: 'self_dynamic',
-        entities: refineArray(entities),
-        resolver: resolveSelfDynamicGroup,
-        response,
-      })
-    );
+  public addGroup<
+    T extends ICollisionGroup<
+      Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
+    >
+  >(group: T): T {
+    group.validate();
+    this.groups.push(group);
+    return group;
   }
 
   /**
@@ -103,77 +52,20 @@ export class Collisions<
    */
   public update(deltaTime: number) {
     for (let i = 0; i < this.groups.length; i++) {
-      // @ts-ignore we can assert the resolver will match own group type
-      this.groups[i].resolver(this.groups[i], deltaTime);
+      this.groups[i].resolve(deltaTime);
     }
   }
 
-  protected validateGroup(
-    group: ICollisionGroup<TAddons, TTraits, TEvents>
-  ): ICollisionGroup<TAddons, TTraits, TEvents> {
-    switch (group.type) {
-      case 'static':
-        if (group.entities.length < 1 || group.tilemaps.length < 1) {
-          throw new Error(
-            'A static collision group requires at least one entity and tilemap.'
-          );
-        }
-        break;
-
-      case 'dynamic':
-        if (group.entitiesA.length < 1 || group.entitiesB.length < 1) {
-          throw new Error(
-            'A dynamic collision group requires at least one entity from each sub-group.'
-          );
-        }
-        break;
-
-      case 'self_dynamic':
-        if (group.entities.length < 2) {
-          throw new Error(
-            'A self dynamic collision group requires at least two entities.'
-          );
-        }
-        break;
-
-      default:
-        assertNever(group);
-    }
-
-    return group;
-  }
-
-  protected removeGroupElement<
-    A extends Entity<TAddons, TTraits, TEvents>,
-    B extends Tilemap<TAddons, TEvents>
-  >(element: A | B) {
+  protected removeElementFromAllGroups(
+    elem: Entity<TAddons, TTraits, TEvents> | Tilemap<TAddons, TEvents>
+  ) {
     for (let i = 0; i < this.groups.length; i++) {
-      let removed = false; // element can be a part of multiple groups
       const group = this.groups[i];
 
-      if (element.type === 'entity') {
-        if (group.type === 'dynamic') {
-          if (
-            arrayRemove(group.entitiesA, element) ||
-            arrayRemove(group.entitiesB, element)
-          ) {
-            removed = true;
-          }
-        } else {
-          if (arrayRemove(group.entities, element)) {
-            removed = true;
-          }
-        }
-      } else if (group.type === 'static') {
-        if (arrayRemove(group.tilemaps, element)) {
-          removed = true;
-        }
-      }
-
-      if (removed) {
+      // check if the group can run without the removed element
+      if (group.removeChild(elem)) {
         try {
-          // check if the group can run without the removed element
-          this.validateGroup(group);
+          group.validate();
         } catch {
           arrayRemove(this.groups, group);
         }
@@ -187,8 +79,4 @@ export class Collisions<
   public destroy() {
     this.groups.length = 0;
   }
-}
-
-function assertNever(x: never): never {
-  throw new Error('Unexpected object: ' + x);
 }
