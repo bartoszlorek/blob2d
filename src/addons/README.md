@@ -114,9 +114,9 @@ interface Collisions
 Describes the relationships between the elements it contains and provides a way to resolve their collisions.
 
 ```ts
-CollisionsDynamicGroup,
-CollisionsSelfDynamicGroup,
-CollisionsStaticGroup,
+CollisionsDynamicGroup
+CollisionsSelfDynamicGroup
+CollisionsStaticGroup
 ```
 
 **Hint:** you can add a newly created element to an existing group, pushing it to the subgroup.
