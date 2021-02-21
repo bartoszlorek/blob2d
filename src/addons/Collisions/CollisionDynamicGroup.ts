@@ -9,7 +9,7 @@ export class CollisionDynamicGroup<A extends TAnyEntity, B extends TAnyEntity>
   public readonly entitiesA: A[];
   public readonly entitiesB: B[];
 
-  private response: TCollisionDynamicResponse<A, B>;
+  protected response: TCollisionDynamicResponse<A, B>;
 
   constructor(
     entitiesA: A[],

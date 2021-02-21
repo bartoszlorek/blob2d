@@ -8,7 +8,7 @@ export class CollisionSelfDynamicGroup<A extends TAnyEntity>
   public readonly type = 'self_dynamic';
   public readonly entities: A[];
 
-  private response: TCollisionDynamicResponse<A, A>;
+  protected response: TCollisionDynamicResponse<A, A>;
 
   constructor(entities: A[], response: TCollisionDynamicResponse<A, A>) {
     this.entities = [...entities];

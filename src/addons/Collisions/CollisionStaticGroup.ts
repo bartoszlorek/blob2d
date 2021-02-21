@@ -9,7 +9,7 @@ export class CollisionStaticGroup<A extends TAnyEntity, B extends TAnyTilemap>
   public readonly entities: A[];
   public readonly tilemaps: B[];
 
-  private response: TCollisionStaticResponse<A, B>;
+  protected response: TCollisionStaticResponse<A, B>;
 
   constructor(
     entities: A[],
