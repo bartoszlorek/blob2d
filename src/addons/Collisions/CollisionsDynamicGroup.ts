@@ -63,7 +63,7 @@ export class CollisionsDynamicGroup<A extends TAnyEntity, B extends TAnyEntity>
   validate(): void {
     if (this.entitiesA.length < 1 || this.entitiesB.length < 1) {
       throw new Error(
-        'A dynamic collisions group requires at least one entity from each sub-group.'
+        'A dynamic collisions group requires at least one entity from each subgroup.'
       );
     }
   }
